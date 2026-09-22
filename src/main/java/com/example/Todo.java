@@ -18,7 +18,6 @@ public class Todo {
         this.task = task;
     }
 
-
     public Todo(){
 
     }
