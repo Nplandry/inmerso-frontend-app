@@ -16,16 +16,17 @@ import com.vaadin.flow.component.textfield.TextField;
 @Route("")
 public class MainPage extends VerticalLayout {
     
-    private TodoRepo repo;
+    private TodoRepo repo; // Espacio para guardar el puntero
 
-    public MainPage(TodoRepo repo){
-        this.repo = repo; // retiene el puntero hacia ese repositorio para que otros métodos posteriores (como guardar(), buscar(), etc.) puedan usarlo.
+    public MainPage(TodoRepo repo){//entregando la implementacion de jpa
+        this.repo = repo; // // Guardas el objeto que Spring fabrica para ti
+    
 
         var task = new TextField();
         var button = new Button("new");
         var todosLayout = new VerticalLayout();
 
-        /**Irrelevante */
+        /**Irrelevante en cuanto a logica del front*/
         todosLayout.setPadding(false);
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         button.addClickShortcut(Key.ENTER);
