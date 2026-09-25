@@ -26,27 +26,19 @@ public class MainPage extends VerticalLayout {
     
         var Listobutton = new Button("Listo");
         Listobutton.addClassNames("action-btn", "action-btn--primary");
-        var todosLayout = new VerticalLayout();
-        todosLayout.addClassName("todos-container");
+
         var addTime = new Button("+15 MIN");
         addTime.addClassNames("action-btn", "action-btn--secondary");
+        
         var nuevaTarea = new Button("Agendar nueva tarea por voz");
         nuevaTarea.addClassNames("action-btn", "action-btn--voice");
-        var time = new H3("23:22");
-        time.addClassName("task-time");
-        var TareaReciente = new H2("Revisión de Arquitectura");
-        TareaReciente.addClassName("task-title");
-        var headerActual = new HorizontalLayout(new H1("HACIENDO AHORA"), time);
-        headerActual.addClassName("block-header");
-        var terminaEn = new H3("Termina en: 2 min");
-        terminaEn.addClassName("task-countdown");
-        var bloqueActual = new VerticalLayout(
-            headerActual, 
-            TareaReciente,
-            terminaEn 
-        );
+
+        var todosLayout = new VerticalLayout();
+        todosLayout.addClassName("todos-container");
+
+        // Contenedor que parte vacío sin elementos embebidos
+        var bloqueActual = new VerticalLayout();
         bloqueActual.setPadding(false);
-        bloqueActual.addClassNames("focus-block", "focus-block--current");
 
         var tituloProximo = new H2("PROXIMO BLOQUE");
         tituloProximo.addClassName("block-title");
@@ -58,23 +50,23 @@ public class MainPage extends VerticalLayout {
             tituloProximo, 
             descProximo 
         );
+
         bloqueProximo.setPadding(false);
         bloqueProximo.addClassNames("focus-block", "focus-block--next");
 
         var bloqueControles = new HorizontalLayout(addTime, Listobutton);
         bloqueControles.addClassName("controls-container");
 
-        todosLayout.setPadding(false);
         //button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         Listobutton.addClickShortcut(Key.ENTER);
 
         //----[Listeners]----
         nuevaTarea.addClickListener(click -> {
             var todo = repo.save(new Inmerso("nueva tarea"));
-            todosLayout.add(CrearBloque(todo));
+            bloqueActual.removeAll(); // Limpia cualquier bloque previo para evitar que se embeban
+            bloqueActual.add(CrearBloque(todo));
             System.out.println("Funcionando!!!");
         }); 
-
         //----[END Listeners]----
 
         var appTitle = new H1("Inmerso");
@@ -83,7 +75,6 @@ public class MainPage extends VerticalLayout {
         add(
             appTitle, 
             bloqueActual,
-            todosLayout,
             bloqueProximo,
             bloqueControles,
             nuevaTarea
@@ -91,8 +82,26 @@ public class MainPage extends VerticalLayout {
     }   
     
     private Component CrearBloque(Inmerso inmerso) {
+        var time = new H3("23:22");
+        time.addClassName("task-time");
+
+        var headerActual = new HorizontalLayout(new H1("HACIENDO AHORA"), time);
+        headerActual.addClassName("block-header");
+
         var msg = new H2(inmerso.getTask());
         msg.addClassName("task-title");
-        return msg;
+
+        var terminaEn = new H3("Termina en: 2 min");
+        terminaEn.addClassName("task-countdown");
+
+        var nuevoBloqueEntero = new VerticalLayout(
+            headerActual,
+            msg,
+            terminaEn
+        );
+        nuevoBloqueEntero.setPadding(false);
+        nuevoBloqueEntero.addClassNames("focus-block", "focus-block--current");
+
+        return nuevoBloqueEntero;
     }
 }
