@@ -13,17 +13,17 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-//import com.vaadin.flow.component.textfield.TextField;
 
 @Route("")
 public class MainPage extends VerticalLayout {
     
     private final InmersoRepo repo; //guardar espacio de puntero
+
     public MainPage(InmersoRepo repo) {
+        
         this.repo = repo;
         addClassName("main-view");
     
-        //var task = new TextField();
         var Listobutton = new Button("Listo");
         Listobutton.addClassNames("action-btn", "action-btn--primary");
         var todosLayout = new VerticalLayout();
@@ -41,9 +41,9 @@ public class MainPage extends VerticalLayout {
         var terminaEn = new H3("Termina en: 2 min");
         terminaEn.addClassName("task-countdown");
         var bloqueActual = new VerticalLayout(
-            headerActual, // Se queda el h1
+            headerActual, 
             TareaReciente,
-            terminaEn // Removido el VerticalLayout extra innecesario
+            terminaEn 
         );
         bloqueActual.setPadding(false);
         bloqueActual.addClassNames("focus-block", "focus-block--current");
@@ -55,25 +55,27 @@ public class MainPage extends VerticalLayout {
         descProximo.addClassName("next-task-desc");
 
         var bloqueProximo = new VerticalLayout(
-            tituloProximo, // Se queda
-            descProximo // Removido el HorizontalLayout extra innecesario
+            tituloProximo, 
+            descProximo 
         );
         bloqueProximo.setPadding(false);
         bloqueProximo.addClassNames("focus-block", "focus-block--next");
 
         var bloqueControles = new HorizontalLayout(addTime, Listobutton);
         bloqueControles.addClassName("controls-container");
-        // --- Fin de modularización ---
 
         todosLayout.setPadding(false);
         //button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         Listobutton.addClickShortcut(Key.ENTER);
 
+        //----[Listeners]----
         nuevaTarea.addClickListener(click -> {
-            //var todo = repo.save(new Todo(task.getValue()));
-            //todosLayout.add(createCheckbox(todo)); 
-            //task.clear();
-        });
+            var todo = repo.save(new Inmerso("nueva tarea"));
+            todosLayout.add(CrearBloque(todo));
+            System.out.println("Funcionando!!!");
+        }); 
+
+        //----[END Listeners]----
 
         var appTitle = new H1("Inmerso");
         appTitle.addClassName("app-title");
@@ -81,18 +83,16 @@ public class MainPage extends VerticalLayout {
         add(
             appTitle, 
             bloqueActual,
+            todosLayout,
             bloqueProximo,
             bloqueControles,
             nuevaTarea
         );
     }   
     
-    private Component CrearBloque(Inmerso inmerso){
-        Checkbox checkbox = new Checkbox(inmerso.getTask(), inmerso.isDone(), e -> {
-            inmerso.setDone(e.getValue());
-            //inmerso.save(repo);
-        });
-        checkbox.addClassName("task-checkbox");
-        return checkbox;
+    private Component CrearBloque(Inmerso inmerso) {
+        var msg = new H2(inmerso.getTask());
+        msg.addClassName("task-title");
+        return msg;
     }
 }

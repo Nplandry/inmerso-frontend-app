@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 public class Inmerso {
     @Id 
     @GeneratedValue 
-    private char id;
+    private Long id;
 
     private String task;
 
@@ -22,12 +22,12 @@ public class Inmerso {
 
     }
 
-    public char getId(){
-        return 'a';
+    public Long getId(){
+        return id;
     }
 
-    public void setId(long id){
-        this.id = 'a'; 
+    public void setId(Long id){
+        this.id = id; 
     }
 
     public String getTask() {
