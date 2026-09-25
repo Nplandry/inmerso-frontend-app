@@ -1,29 +1,153 @@
-/* Add your styles here */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-.app-logo {
-    border-radius: min(40%, var(--vaadin-radius-m));
-    margin-inline-start: var(--vaadin-padding-inline-container);
-}
-
-.app-name {
-    font-weight: var(--aura-font-weight-semibold);
-    font-size: var(--aura-font-size-l);
-}
-
-.app-footer {
-    color: var(--vaadin-text-color-secondary);
-    font-size: var(--aura-font-size-s);
-}
-
-/* TODO: This is only for demo purposes. You can delete it. */
-vaadin-side-nav:has(vaadin-side-nav-item:only-child)::after {
-    display: block;
-    content: "More menu items will appear here when you add more views.";
-    font-size: var(--aura-font-size-s);
-    color: var(--vaadin-text-color-secondary);
+.main-view {
+    background-color: #121316;
+    color: #ffffff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    padding: 1.5rem !important;
+    gap: 1.25rem !important;
     box-sizing: border-box;
-    padding: 1em;
-    max-width: 14em;
-    min-width: 100%;
-    white-space: normal;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-title {
+    font-size: 0.75rem !important;
+    letter-spacing: 0.15em;
+    color: #8E8E93 !important;
+    text-transform: uppercase;
+    margin: 0 !important;
+    font-weight: 700;
+}
+
+.block-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.block-header h1 {
+    font-size: 0.65rem !important;
+    color: #2AC9DE !important;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin: 0 !important;
+    text-transform: uppercase;
+}
+
+.task-time {
+    font-size: 0.75rem !important;
+    color: #8E8E93 !important;
+    margin: 0 !important;
+    font-weight: 400;
+}
+
+.focus-block--current {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 1.25rem !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.task-title {
+    font-size: 1.5rem !important;
+    font-weight: 700;
+    color: #ffffff !important;
+    line-height: 1.2;
+    margin: 0.25rem 0 !important;
+}
+
+.task-countdown {
+    font-size: 0.875rem !important;
+    color: #D1D5DB !important;
+    margin: 0.75rem 0 0 0 !important;
+    font-weight: 500;
+}
+
+.focus-block--next {
+    padding: 0.5rem 0.75rem !important;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.block-title {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.08em;
+    color: #6B7280 !important;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0 !important;
+}
+
+.next-task-desc {
+    font-size: 1.1rem !important;
+    font-weight: 600;
+    color: #E5E7EB !important;
+    margin: 0 !important;
+}
+
+.controls-container {
+    width: 100%;
+    display: flex;
+    gap: 0.75rem;
+    margin-top: auto;
+}
+
+.action-btn {
+    border-radius: 1rem !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.action-btn--secondary {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: none !important;
+    height: 3.25rem;
+}
+
+.action-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+}
+
+.action-btn--primary {
+    flex: 1;
+    background: rgba(42, 201, 222, 0.15) !important;
+    color: #2AC9DE !important;
+    border: 1px solid rgba(42, 201, 222, 0.3) !important;
+    height: 3.25rem;
+}
+
+.action-btn--primary:hover {
+    background: rgba(42, 201, 222, 0.25) !important;
+}
+
+.action-btn--voice {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #9CA3AF !important;
+    border: none !important;
+    border-radius: 0.75rem !important;
+    font-size: 0.75rem !important;
+    height: 2.75rem;
+    margin-top: 0.25rem;
+}
+
+.action-btn--voice:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.task-checkbox {
+    color: #E5E7EB;
 }

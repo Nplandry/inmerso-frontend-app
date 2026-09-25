@@ -1,7 +1,7 @@
 package com.example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TodoRepo extends JpaRepository<Todo, Long> {
+public interface InmersoRepo extends JpaRepository<Inmerso, Long> {
     
 }
 /**
