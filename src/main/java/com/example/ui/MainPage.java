@@ -4,8 +4,10 @@ import com.vaadin.flow.component.Key;
 import com.example.Inmerso;
 import com.example.InmersoRepo;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 //import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
@@ -13,6 +15,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 
 @Route("")
 public class MainPage extends VerticalLayout {
@@ -30,6 +33,9 @@ public class MainPage extends VerticalLayout {
         var addTime = new Button("+15 MIN");
         addTime.addClassNames("action-btn", "action-btn--secondary");
         
+        var nuevaTarea2 = new Button("Nueva Tarea");
+        nuevaTarea2.addClassNames("action-btn", "action-btn--voice");
+
         var nuevaTarea = new Button("Agendar nueva tarea por voz");
         nuevaTarea.addClassNames("action-btn", "action-btn--voice");
 
@@ -75,6 +81,11 @@ public class MainPage extends VerticalLayout {
             bloqueActual.add(CrearBloque(todo));
             System.out.println("Funcionando!!!");
         }); 
+
+        nuevaTarea2.addClickListener(click -> {
+            abrirModal();
+            System.out.println("Funcionando!!!");
+        });
         //----[END Listeners]----
 
         var appTitle = new H1("Inmerso");
@@ -85,10 +96,36 @@ public class MainPage extends VerticalLayout {
             bloqueActual,
             bloqueProximo,
             bloqueControles,
-            nuevaTarea
+            nuevaTarea,
+            nuevaTarea2
         );
+
     }   
-    
+    /*##LOGICA DEL MODAL */
+    public void abrirModal(){
+        Dialog dialog = new Dialog();
+        dialog.addClassName("modal-container"); 
+        dialog.setCloseOnOutsideClick(false);
+
+        dialog.setHeaderTitle("Ingrese su información");
+        TextField inputNombre = new TextField("Nombre Completo");
+        inputNombre.setPlaceholder("Ej. Juan Pérez");
+        VerticalLayout dialogLayout = new VerticalLayout(inputNombre);
+        dialog.add(dialogLayout);
+
+        Button botonGuardar = new Button("Guardar", e -> {
+            String valorIngresado = inputNombre.getValue();
+            dialog.close(); 
+        });
+        botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        Button botonCancelar = new Button("Cancelar", e -> dialog.close());
+        
+        dialog.getFooter().add(botonCancelar, botonGuardar);
+        dialog.open();
+    }
+    /*##FIN - LOGICA DEL MODAL */
+
     private Component CrearBloque(Inmerso inmerso) {
         var time = new H3("23:22");
         time.addClassName("task-time");

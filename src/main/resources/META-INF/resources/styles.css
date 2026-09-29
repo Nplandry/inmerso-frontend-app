@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+html {
+  color-scheme: dark;
+}
+
+:root,
+:host {
+  --aura-background-color-light: #121316;
+  --aura-background-color-dark: #121316;
+  --aura-accent-color-light: #2AC9DE;
+  --aura-accent-color-dark: #2AC9DE;
+}
+
 .main-view {
     background-color: #121316;
     color: #ffffff;
@@ -161,4 +173,73 @@ h3 {
 
 .task-checkbox {
     color: #E5E7EB;
+}
+
+
+vaadin-dialog.modal-container::part(overlay) {
+    background: #1c1d21 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+    padding: 0 !important;
+    color: #ffffff !important;
+}
+
+vaadin-dialog.modal-container::part(content) {
+    padding: 0 1.25rem !important;
+}
+
+vaadin-dialog.modal-container h2[slot="title"] {
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    padding: 1rem 1.25rem !important;
+}
+
+vaadin-dialog.modal-container::part(footer) {
+    display: flex !important;
+    gap: 0.75rem !important;
+    justify-content: flex-end !important;
+    padding: 0.75rem 1.25rem 1.25rem 1.25rem !important;
+}
+
+vaadin-dialog.modal-container vaadin-text-field::part(input-field) {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 0.75rem !important;
+    color: #ffffff !important;
+}
+
+vaadin-dialog.modal-container vaadin-text-field::part(label) {
+    color: #9CA3AF !important;
+}
+
+vaadin-dialog.modal-container vaadin-button {
+    border-radius: 0.75rem !important;
+    font-weight: 600 !important;
+}
+
+vaadin-dialog.modal-container vaadin-button[theme~="primary"] {
+    background: #2AC9DE !important;
+    color: #121316 !important;
+    border: none !important;
+}
+
+vaadin-dialog.modal-container vaadin-button[theme~="primary"]:hover {
+    background: #24b5c8 !important;
+}
+
+vaadin-dialog.modal-container vaadin-button[theme~="secondary"] {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+vaadin-dialog.modal-container vaadin-button[theme~="secondary"]:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+vaadin-dialog.modal-container::part(backdrop) {
+    background-color: rgba(0, 0, 0, 0.7) !important;
 }
