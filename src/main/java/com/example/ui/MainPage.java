@@ -44,11 +44,19 @@ public class MainPage extends VerticalLayout {
         tituloProximo.addClassName("block-title");
 
         var descProximo = new H3("Entrenamiento Gimnasio");
-        descProximo.addClassName("next-task-desc");
+        descProximo.addClassName("task-title");
+
+        var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
+        resumenProximo.addClassName("next-task-desc");
+
+        var proxTerminaEn = new H3("Termina en: 2 min");
+        proxTerminaEn.addClassName("task-countdown");
 
         var bloqueProximo = new VerticalLayout(
             tituloProximo, 
-            descProximo 
+            descProximo, 
+            resumenProximo,
+            proxTerminaEn
         );
 
         bloqueProximo.setPadding(false);
@@ -94,9 +102,13 @@ public class MainPage extends VerticalLayout {
         var terminaEn = new H3("Termina en: 2 min");
         terminaEn.addClassName("task-countdown");
 
+        var descActual = new H3("Descripcion: Descripcion de la nueva tarea");
+        descActual.addClassName("next-task-desc");
+
         var nuevoBloqueEntero = new VerticalLayout(
             headerActual,
             msg,
+            descActual,
             terminaEn
         );
         nuevoBloqueEntero.setPadding(false);

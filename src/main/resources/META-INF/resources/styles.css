@@ -12,13 +12,17 @@
     flex-direction: column;
 }
 
+h3 {
+    color: white;
+}
+
 .app-title {
-    font-size: 0.75rem !important;
     letter-spacing: 0.15em;
-    color: #8E8E93 !important;
     text-transform: uppercase;
-    margin: 0 !important;
     font-weight: 700;
+    font-size: 0.9rem !important;
+    color: rgb(142, 142, 147) !important;
+    margin: 0px 20px !important;
 }
 
 .block-header {
@@ -72,9 +76,16 @@
 }
 
 .focus-block--next {
-    padding: 0.5rem 0.75rem !important;
     width: 100%;
-    margin-top: 0.5rem;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1.5rem;
+    padding: 1.25rem !important;
+    padding-top: 0;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .block-title {
