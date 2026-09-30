@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 html {
   color-scheme: dark;
@@ -6,35 +6,63 @@ html {
 
 :root,
 :host {
-  --aura-background-color-light: #121316;
-  --aura-background-color-dark: #121316;
-  --aura-accent-color-light: #2AC9DE;
-  --aura-accent-color-dark: #2AC9DE;
+  --inm-bg: #090A0D;
+  --inm-cyan: #2AC9DE;
+  --inm-green: #30D158;
+  --inm-amber: #FFB020;
+  --inm-text-primary: #FFFFFF;
+  --inm-text-secondary: #94A3B8;
+  --inm-text-muted: #64748B;
+  
+  --aura-background-color-light: var(--inm-bg);
+  --aura-background-color-dark: var(--inm-bg);
+  --aura-accent-color-light: var(--inm-cyan);
+  --aura-accent-color-dark: var(--inm-cyan);
 }
 
 .main-view {
-    background-color: #121316;
-    color: #ffffff;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at 50% 0%, #11151F 0%, var(--inm-bg) 75%);
+    color: var(--inm-text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     padding: 1.5rem !important;
-    gap: 1.25rem !important;
+    gap: 1rem !important;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
 
-h3 {
-    color: white;
+.app-title {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 0.75rem !important;
+    color: var(--inm-text-muted) !important;
+    margin: 0 0.5rem !important;
 }
 
-.app-title {
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 0.9rem !important;
-    color: rgb(142, 142, 147) !important;
-    margin: 0px 20px !important;
+.focus-block--current {
+    width: 100%;
+    background: linear-gradient(145deg, rgba(42, 201, 222, 0.08) 0%, rgba(18, 20, 28, 0.85) 100%) !important;
+    border: 1px solid rgba(42, 201, 222, 0.3) !important;
+    border-radius: 1.75rem !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(42, 201, 222, 0.15);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.focus-block--current::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(42, 201, 222, 0.8), transparent);
 }
 
 .block-header {
@@ -46,74 +74,124 @@ h3 {
 }
 
 .block-header h1 {
-    font-size: 0.65rem !important;
-    color: #2AC9DE !important;
-    letter-spacing: 0.08em;
-    font-weight: 700;
+    font-size: 0.68rem !important;
+    color: var(--inm-cyan) !important;
+    letter-spacing: 0.1em;
+    font-weight: 800;
     margin: 0 !important;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.block-header h1::before {
+    content: '';
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background-color: var(--inm-cyan);
+    box-shadow: 0 0 8px var(--inm-cyan);
 }
 
 .task-time {
-    font-size: 0.75rem !important;
-    color: #8E8E93 !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem !important;
+    color: rgba(255, 255, 255, 0.6) !important;
     margin: 0 !important;
-    font-weight: 400;
+    font-weight: 500;
 }
 
-.focus-block--current {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem;
-    padding: 1.25rem !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.task-title {
-    font-size: 1.5rem !important;
-    font-weight: 700;
-    color: #ffffff !important;
-    line-height: 1.2;
+.focus-block--current .task-title {
+    font-size: 1.65rem !important;
+    font-weight: 800;
+    color: #FFFFFF !important;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
     margin: 0.25rem 0 !important;
 }
 
-.task-countdown {
+.focus-block--current .next-task-desc {
     font-size: 0.875rem !important;
-    color: #D1D5DB !important;
-    margin: 0.75rem 0 0 0 !important;
     font-weight: 500;
+    color: var(--inm-text-secondary) !important;
+    margin: 0.25rem 0 !important;
+    line-height: 1.4;
+}
+
+.focus-block--current .task-countdown {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem !important;
+    color: var(--inm-cyan) !important;
+    margin-top: 1rem !important;
+    font-weight: 600;
+    background: rgba(42, 201, 222, 0.1);
+    border: 1px solid rgba(42, 201, 222, 0.2);
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    display: inline-block;
+    width: fit-content;
 }
 
 .focus-block--next {
     width: 100%;
-    background: rgba(255, 255, 255, 0.01);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 1.5rem;
+    background: rgba(18, 20, 28, 0.35) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.12) !important;
+    border-radius: 1.5rem !important;
     padding: 1.25rem !important;
-    padding-top: 0;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    width: 100%;
     box-sizing: border-box;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.focus-block--next:hover {
+    opacity: 0.95;
+    border-color: rgba(255, 176, 32, 0.3) !important;
 }
 
 .block-title {
     font-size: 0.65rem !important;
-    letter-spacing: 0.08em;
-    color: #6B7280 !important;
+    letter-spacing: 0.1em;
+    color: var(--inm-amber) !important;
     text-transform: uppercase;
     font-weight: 700;
+    margin: 0 0 0.5rem 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.block-title::before {
+    content: '';
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--inm-amber);
+    box-sizing: border-box;
+}
+
+.focus-block--next .task-title {
+    font-size: 1.15rem !important;
+    font-weight: 700;
+    color: #E2E8F0 !important;
     margin: 0 0 0.25rem 0 !important;
 }
 
-.next-task-desc {
-    font-size: 1.1rem !important;
-    font-weight: 600;
-    color: #E5E7EB !important;
+.focus-block--next .next-task-desc {
+    font-size: 0.8rem !important;
+    font-weight: 400;
+    color: var(--inm-text-muted) !important;
     margin: 0 !important;
+}
+
+.focus-block--next .task-countdown {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem !important;
+    color: var(--inm-text-muted) !important;
+    margin-top: 0.5rem !important;
+    font-weight: 500;
 }
 
 .controls-container {
@@ -121,98 +199,111 @@ h3 {
     display: flex;
     gap: 0.75rem;
     margin-top: auto;
+    padding-top: 0.5rem;
 }
 
 .action-btn {
-    border-radius: 1rem !important;
-    font-weight: 600 !important;
+    border-radius: 1.15rem !important;
+    font-weight: 700 !important;
     font-size: 0.875rem !important;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-.action-btn--secondary {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
-    border: none !important;
-    height: 3.25rem;
-}
-
-.action-btn--secondary:hover {
-    background: rgba(255, 255, 255, 0.18) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .action-btn--primary {
-    flex: 1;
-    background: rgba(42, 201, 222, 0.15) !important;
-    color: #2AC9DE !important;
-    border: 1px solid rgba(42, 201, 222, 0.3) !important;
-    height: 3.25rem;
+flex: 1;
+height: 3.25rem;
+background: rgba(26, 46, 34, 0.53) !important;
+color: rgba(40, 158, 83, 0.81) !important;
+border: 1px solid rgba(35, 71, 50, 0.4) !important;
 }
 
 .action-btn--primary:hover {
-    background: rgba(42, 201, 222, 0.25) !important;
+    background: rgba(36, 69, 49, 0.28) !important;
+    border-color: rgba(46, 94, 65, 0.36) !important;
+}
+
+.action-btn--secondary {
+    flex: 0.8;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #E2E8F0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    height: 3.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem !important;
+}
+
+.action-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #FFFFFF !important;
 }
 
 .action-btn--voice {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: #9CA3AF !important;
-    border: none !important;
-    border-radius: 0.75rem !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: var(--inm-text-secondary) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 0.85rem !important;
     font-size: 0.75rem !important;
+    font-weight: 600 !important;
     height: 2.75rem;
-    margin-top: 0.25rem;
 }
 
 .action-btn--voice:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
 }
-
-.task-checkbox {
-    color: #E5E7EB;
-}
-
 
 vaadin-dialog.modal-container::part(overlay) {
-    background: #1c1d21 !important;
+    margin: 0px;
+    width: 80%;
+    background: rgb(28, 29, 33) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 1.25rem !important;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
-    padding: 0 !important;
-    color: #ffffff !important;
+    box-shadow: rgba(0, 0, 0, 0.6) 0px 20px 60px !important;
+    padding: 0px !important;
+    color: rgb(255, 255, 255) !important;
 }
 
 vaadin-dialog.modal-container::part(content) {
-    padding: 0 1.25rem !important;
+    padding: 0px !important;
+    margin: 0px auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 vaadin-dialog.modal-container h2[slot="title"] {
-    color: #ffffff !important;
+    color: rgb(255, 255, 255) !important;
     font-size: 1rem !important;
     font-weight: 700 !important;
-    margin: 0 !important;
+    margin: 0px !important;
     padding: 1rem 1.25rem !important;
 }
 
 vaadin-dialog.modal-container::part(footer) {
+    align-self: center;
     display: flex !important;
     gap: 0.75rem !important;
-    justify-content: flex-end !important;
-    padding: 0.75rem 1.25rem 1.25rem 1.25rem !important;
+    padding: 0.75rem 1.25rem 1.25rem !important;
+}
+
+/* Fuerza al campo de texto a ocupar el 100% del contenedor */
+vaadin-dialog.modal-container vaadin-text-field {
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 vaadin-dialog.modal-container vaadin-text-field::part(input-field) {
     background: rgba(255, 255, 255, 0.06) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-radius: 0.75rem !important;
-    color: #ffffff !important;
+    color: rgb(255, 255, 255) !important;
 }
 
 vaadin-dialog.modal-container vaadin-text-field::part(label) {
-    color: #9CA3AF !important;
+    color: rgb(156, 163, 175) !important;
 }
 
 vaadin-dialog.modal-container vaadin-button {
@@ -221,18 +312,18 @@ vaadin-dialog.modal-container vaadin-button {
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="primary"] {
-    background: #2AC9DE !important;
-    color: #121316 !important;
-    border: none !important;
+    background: rgb(42, 201, 222) !important;
+    color: rgb(18, 19, 22) !important;
+    border: medium !important;
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="primary"]:hover {
-    background: #24b5c8 !important;
+    background: rgb(36, 181, 200) !important;
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="secondary"] {
     background: rgba(255, 255, 255, 0.08) !important;
-    color: #ffffff !important;
+    color: rgb(255, 255, 255) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 

@@ -76,7 +76,7 @@ public class MainPage extends VerticalLayout {
 
         //----[Listeners]----
         nuevaTarea.addClickListener(click -> {
-            var todo = repo.save(new Inmerso("nueva tarea"));
+            var todo = repo.save(new Inmerso("Nueva tarea"));
             bloqueActual.removeAll(); // Limpia cualquier bloque previo para evitar que se embeban
             bloqueActual.add(CrearBloque(todo));
             System.out.println("Funcionando!!!");
