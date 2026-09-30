@@ -21,6 +21,7 @@ import com.vaadin.flow.component.textfield.TextField;
 public class MainPage extends VerticalLayout {
     
     private final InmersoRepo repo; //guardar espacio de puntero
+    private VerticalLayout bloqueActual; // Convertir a atributo de la clase
 
     public MainPage(InmersoRepo repo) {
         
@@ -43,7 +44,7 @@ public class MainPage extends VerticalLayout {
         todosLayout.addClassName("todos-container");
 
         // Contenedor que parte vacío sin elementos embebidos
-        var bloqueActual = new VerticalLayout();
+        bloqueActual = new VerticalLayout();
         bloqueActual.setPadding(false);
 
         var tituloProximo = new H2("PROXIMO BLOQUE");
@@ -75,12 +76,13 @@ public class MainPage extends VerticalLayout {
         Listobutton.addClickShortcut(Key.ENTER);
 
         //----[Listeners]----
-        nuevaTarea.addClickListener(click -> {
+        /*nuevaTarea.addClickListener(click -> {
             var todo = repo.save(new Inmerso("Nueva tarea"));
             bloqueActual.removeAll(); // Limpia cualquier bloque previo para evitar que se embeban
             bloqueActual.add(CrearBloque(todo));
             System.out.println("Funcionando!!!");
         }); 
+        */
 
         nuevaTarea2.addClickListener(click -> {
             abrirModal();
@@ -100,11 +102,11 @@ public class MainPage extends VerticalLayout {
             nuevaTarea2
         );
 
-    }   
+    }
     /*##LOGICA DEL MODAL */
     public void abrirModal(){
         Dialog dialog = new Dialog();
-        dialog.addClassName("modal-container"); 
+           dialog.addClassName("modal-container"); 
         dialog.setCloseOnOutsideClick(false);
 
         dialog.setHeaderTitle("Ingrese su información");
@@ -114,10 +116,17 @@ public class MainPage extends VerticalLayout {
         dialog.add(dialogLayout);
 
         Button botonGuardar = new Button("Guardar", e -> {
-            String valorIngresado = inputNombre.getValue();
+            //String valorIngresado = inputNombre.getValue();
             dialog.close(); 
         });
         botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        botonGuardar.addClickListener((e) -> {
+        var todo = repo.save(new Inmerso("Nueva tarea"));
+        bloqueActual.removeAll();
+        bloqueActual.add(CrearBloque(todo));
+        System.out.println("Funcionando!!!");
+        });
 
         Button botonCancelar = new Button("Cancelar", e -> dialog.close());
         
@@ -125,6 +134,8 @@ public class MainPage extends VerticalLayout {
         dialog.open();
     }
     /*##FIN - LOGICA DEL MODAL */
+
+
 
     private Component CrearBloque(Inmerso inmerso) {
         var time = new H3("23:22");
