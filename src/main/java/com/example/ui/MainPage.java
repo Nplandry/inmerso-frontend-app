@@ -37,13 +37,10 @@ public class MainPage extends VerticalLayout {
         var nuevaTarea2 = new Button("Nueva Tarea");
         nuevaTarea2.addClassNames("action-btn", "action-btn--voice");
 
-        var nuevaTarea = new Button("Agendar nueva tarea por voz");
-        nuevaTarea.addClassNames("action-btn", "action-btn--voice");
-
         var todosLayout = new VerticalLayout();
         todosLayout.addClassName("todos-container");
 
-        // Contenedor que parte vacío sin elementos embebidos
+        // Contenedor que parte vacío sin elementos embebidos, ya definido, encapsulado y persistente.
         bloqueActual = new VerticalLayout();
         bloqueActual.setPadding(false);
 
@@ -98,7 +95,6 @@ public class MainPage extends VerticalLayout {
             bloqueActual,
             bloqueProximo,
             bloqueControles,
-            nuevaTarea,
             nuevaTarea2
         );
 
