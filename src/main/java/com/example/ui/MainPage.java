@@ -75,7 +75,6 @@ public class MainPage extends VerticalLayout {
         //----[Listeners]----
         nuevaTarea.addClickListener(click -> {
             abrirModal();
-            System.out.println("Funcionando!!!");
         });
         //----[END Listeners]----
 
@@ -113,6 +112,7 @@ public class MainPage extends VerticalLayout {
 
         botonGuardar.addClickListener((e) -> {
         var todo = repo.save(new Inmerso(valorIngresado)); //Falta validarlo
+        //todo: Componente en memoria mientras se hace la peticion al backend 
         bloqueActual.removeAll();
         bloqueActual.add(CrearBloque(todo));
         });
@@ -127,7 +127,7 @@ public class MainPage extends VerticalLayout {
 
 
     private Component CrearBloque(Inmerso inmerso) {
-        var time = new H3("23:22");
+        var time = new H3(inmerso.getFechaLocal().toString());
         time.addClassName("task-time");
 
         var headerActual = new HorizontalLayout(new H1("HACIENDO AHORA"), time);

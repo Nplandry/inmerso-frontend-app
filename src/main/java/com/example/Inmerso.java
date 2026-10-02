@@ -1,5 +1,8 @@
 package com.example;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,12 +17,32 @@ public class Inmerso {
 
     private boolean done;
 
-    public Inmerso(String task){
+    private LocalDate fechaLocal;
+
+    private static final ZoneId CHILE_ZONE = ZoneId.of("America/Santiago");
+
+
+    public Inmerso(String task) {
         this.task = task;
+        this.fechaLocal = LocalDate.now(CHILE_ZONE);
+    }   
+
+
+    public Inmerso(String task, LocalDate fecha) {
+        this.task = task;
+        this.fechaLocal = fecha != null ? fecha : LocalDate.now(CHILE_ZONE);
     }
 
     public Inmerso(){
 
+    }
+
+    public LocalDate getFechaLocal() {
+        return fechaLocal;
+    }
+
+    public void setFechaLocal(LocalDate fechaLocal) {
+        this.fechaLocal = fechaLocal;
     }
 
     public Long getId(){
@@ -31,7 +54,7 @@ public class Inmerso {
     }
 
     public String getTask() {
-        return task;
+        return task;  //podriamos devolver un json o un objeto para trabajarlo... nose si string
     }
 
     public void setTask(String task) {
