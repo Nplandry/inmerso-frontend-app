@@ -24,7 +24,7 @@ public class MainPage extends VerticalLayout {
     private VerticalLayout bloqueActual; // Convertir a atributo de la clase
     private String valorIngresado;
     private Inmerso tareaActual;
-
+    private H2 ready;
     public MainPage(InmersoRepo repo) {
         
         this.repo = repo;
@@ -79,6 +79,24 @@ public class MainPage extends VerticalLayout {
             abrirModal();
         });
 
+        Listobutton.addClickListener(click -> {
+            if (tareaActual != null) {
+            tareaActual.setDone(true);
+            repo.save(tareaActual);
+            bloqueActual.removeAll();
+
+            var completado = new VerticalLayout(
+                new H1("COMPLETADO"),
+                new H2(tareaActual.getTask())
+            );
+            completado.addClassName("focus-block--completed");
+            bloqueActual.add(completado);
+
+            Listobutton.setEnabled(false);
+            addTime.setEnabled(false);
+        }
+        });
+
         addTime.addClickListener(click -> {
         // Asume que tienes una referencia a la tarea actual
         if (tareaActual != null) {
@@ -116,7 +134,7 @@ public class MainPage extends VerticalLayout {
         dialog.add(dialogLayout);
         
         Button botonGuardar = new Button("Guardar", e -> {
-            valorIngresado = inputNombre.getValue();
+            valorIngresado = inputNombre.getValue(); //TODO: controlar valor nulo
             System.out.println(valorIngresado); // Valor input!!
             dialog.close(); 
         });
@@ -137,7 +155,6 @@ public class MainPage extends VerticalLayout {
         dialog.open();
     }
     /*##FIN - LOGICA DEL MODAL */
-
     private Component CrearBloque(Inmerso inmerso) {
         var time = new H3(inmerso.getHoraFormato()); 
         time.addClassName("task-time");
@@ -159,6 +176,7 @@ public class MainPage extends VerticalLayout {
             msg,
             descActual,
             terminaEn
+
         );
         nuevoBloqueEntero.setPadding(false);
         nuevoBloqueEntero.addClassNames("focus-block", "focus-block--current");
