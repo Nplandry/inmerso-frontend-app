@@ -22,7 +22,7 @@ public class MainPage extends VerticalLayout {
     
     private final InmersoRepo repo; //guardar espacio de puntero
     private VerticalLayout bloqueActual; // Convertir a atributo de la clase
-
+    private String valorIngresado;
     public MainPage(InmersoRepo repo) {
         
         this.repo = repo;
@@ -34,8 +34,8 @@ public class MainPage extends VerticalLayout {
         var addTime = new Button("+15 MIN");
         addTime.addClassNames("action-btn", "action-btn--secondary");
         
-        var nuevaTarea2 = new Button("Nueva Tarea");
-        nuevaTarea2.addClassNames("action-btn", "action-btn--voice");
+        var nuevaTarea = new Button("Nueva Tarea");
+        nuevaTarea.addClassNames("action-btn", "action-btn--voice");
 
         var todosLayout = new VerticalLayout();
         todosLayout.addClassName("todos-container");
@@ -73,15 +73,7 @@ public class MainPage extends VerticalLayout {
         Listobutton.addClickShortcut(Key.ENTER);
 
         //----[Listeners]----
-        /*nuevaTarea.addClickListener(click -> {
-            var todo = repo.save(new Inmerso("Nueva tarea"));
-            bloqueActual.removeAll(); // Limpia cualquier bloque previo para evitar que se embeban
-            bloqueActual.add(CrearBloque(todo));
-            System.out.println("Funcionando!!!");
-        }); 
-        */
-
-        nuevaTarea2.addClickListener(click -> {
+        nuevaTarea.addClickListener(click -> {
             abrirModal();
             System.out.println("Funcionando!!!");
         });
@@ -95,7 +87,7 @@ public class MainPage extends VerticalLayout {
             bloqueActual,
             bloqueProximo,
             bloqueControles,
-            nuevaTarea2
+            nuevaTarea
         );
 
     }
@@ -106,22 +98,23 @@ public class MainPage extends VerticalLayout {
         dialog.setCloseOnOutsideClick(false);
 
         dialog.setHeaderTitle("Ingrese su información");
-        TextField inputNombre = new TextField("Nombre Completo");
-        inputNombre.setPlaceholder("Ej. Juan Pérez");
+        TextField inputNombre = new TextField("Descripcion Tarea");
+        inputNombre.setPlaceholder("Estudiar en una hora mas");
         VerticalLayout dialogLayout = new VerticalLayout(inputNombre);
         dialog.add(dialogLayout);
-
+        
         Button botonGuardar = new Button("Guardar", e -> {
-            //String valorIngresado = inputNombre.getValue();
+            valorIngresado = inputNombre.getValue();
+            System.out.println(valorIngresado); // Valor input!!
             dialog.close(); 
         });
+        botonGuardar.addClickShortcut(Key.ENTER);
         botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         botonGuardar.addClickListener((e) -> {
-        var todo = repo.save(new Inmerso("Nueva tarea"));
+        var todo = repo.save(new Inmerso(valorIngresado)); //Falta validarlo
         bloqueActual.removeAll();
         bloqueActual.add(CrearBloque(todo));
-        System.out.println("Funcionando!!!");
         });
 
         Button botonCancelar = new Button("Cancelar", e -> dialog.close());
