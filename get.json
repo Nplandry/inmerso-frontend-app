@@ -1,0 +1,25 @@
+{
+  "status": "success",
+  "data": {
+    "current_task": "Revisar documentación",
+    "current_ends_in_minutes": 25,
+    "next_task": "Llamada con equipo",
+    "next_starts_in_minutes": 50,
+    "time_remaining": {
+      "current_ends_in_minutes": 25,
+      "current_ends_in_seconds": 1523
+    },
+    "busy_blocks": [
+      {
+        "title": "Revisar documentación",
+        "start": "2024-01-15T14:30:00-05:00",
+        "end": "2024-01-15T14:55:00-05:00"
+      },
+      {
+        "title": "Llamada con equipo",
+        "start": "2024-01-15T15:20:00-05:00",
+        "end": "2024-01-15T16:00:00-05:00"
+      }
+    ]
+  }
+}
