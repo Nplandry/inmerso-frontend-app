@@ -12,7 +12,7 @@ html {
   --inm-amber: #FFB020;
   --inm-text-primary: #FFFFFF;
   --inm-text-secondary: #94A3B8;
-  --inm-text-muted: #64748B;
+  --inm-text-muted: #93a5bf;
   
   --aura-background-color-light: var(--inm-bg);
   --aura-background-color-dark: var(--inm-bg);
@@ -137,16 +137,16 @@ html {
 .focus-block--next {
     width: 100%;
     background: rgba(18, 20, 28, 0.35) !important;
-    border: 1px dashed rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 176, 32, 0.15) !important;
     border-radius: 1.5rem !important;
     padding: 1.25rem !important;
     box-sizing: border-box;
-    opacity: 0.75;
+    opacity: 0.90;
     transition: opacity 0.2s ease, border-color 0.2s ease;
 }
 
 .focus-block--next:hover {
-    opacity: 0.95;
+    opacity: 1;
     border-color: rgba(255, 176, 32, 0.3) !important;
 }
 
@@ -333,4 +333,63 @@ vaadin-dialog.modal-container vaadin-button[theme~="secondary"]:hover {
 
 vaadin-dialog.modal-container::part(backdrop) {
     background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+
+.focus-block--completed {
+    width: 100%;
+    background: linear-gradient(145deg, rgba(48, 209, 88, 0.08) 0%, rgba(18, 20, 28, 0.85) 100%) !important;
+    border: 1px solid rgba(48, 209, 88, 0.35) !important;
+    border-radius: 1.75rem !important;
+    padding: 1.5rem 1.5rem 2rem 1.5rem !important;
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(48, 209, 88, 0.15);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.focus-block--completed::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(48, 209, 88, 0.8), transparent);
+}
+
+.focus-block--completed h1 {
+    font-size: 0.68rem !important;
+    color: var(--inm-green) !important;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+    margin: 0 !important;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.focus-block--completed h1::before {
+    content: '';
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background-color: var(--inm-green);
+    box-shadow: 0 0 8px var(--inm-green);
+}
+
+.focus-block--completed h2 {
+    font-size: 1.5rem !important;
+    font-weight: 700;
+    color: #FFFFFF !important;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 !important;
+    opacity: 0.85;
+    text-decoration: line-through;
+    text-decoration-color: rgba(48, 209, 88, 0.7);
 }
