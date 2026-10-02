@@ -6,7 +6,7 @@ import com.example.InmersoRepo;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 //import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
+//import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -23,6 +23,8 @@ public class MainPage extends VerticalLayout {
     private final InmersoRepo repo; //guardar espacio de puntero
     private VerticalLayout bloqueActual; // Convertir a atributo de la clase
     private String valorIngresado;
+    private Inmerso tareaActual;
+
     public MainPage(InmersoRepo repo) {
         
         this.repo = repo;
@@ -76,6 +78,17 @@ public class MainPage extends VerticalLayout {
         nuevaTarea.addClickListener(click -> {
             abrirModal();
         });
+
+        addTime.addClickListener(click -> {
+        // Asume que tienes una referencia a la tarea actual
+        if (tareaActual != null) {
+            tareaActual.sumarTiempoRestante();
+            repo.save(tareaActual); // Persiste los cambios
+            bloqueActual.removeAll();
+            bloqueActual.add(CrearBloque(tareaActual));
+        }
+    });
+
         //----[END Listeners]----
 
         var appTitle = new H1("Inmerso");
@@ -113,6 +126,7 @@ public class MainPage extends VerticalLayout {
         botonGuardar.addClickListener((e) -> {
         var todo = repo.save(new Inmerso(valorIngresado)); //Falta validarlo
         //todo: Componente en memoria mientras se hace la peticion al backend 
+        tareaActual = todo; 
         bloqueActual.removeAll();
         bloqueActual.add(CrearBloque(todo));
         });
@@ -124,10 +138,8 @@ public class MainPage extends VerticalLayout {
     }
     /*##FIN - LOGICA DEL MODAL */
 
-
-
     private Component CrearBloque(Inmerso inmerso) {
-        var time = new H3(inmerso.getFechaLocal().toString());
+        var time = new H3(inmerso.getHoraFormato()); 
         time.addClassName("task-time");
 
         var headerActual = new HorizontalLayout(new H1("HACIENDO AHORA"), time);
@@ -136,7 +148,7 @@ public class MainPage extends VerticalLayout {
         var msg = new H2(inmerso.getTask());
         msg.addClassName("task-title");
 
-        var terminaEn = new H3("Termina en: 2 min");
+        var terminaEn = new H3("Termina en: " + inmerso.getTiempoRestante() + " MIN");
         terminaEn.addClassName("task-countdown");
 
         var descActual = new H3("Descripcion: Descripcion de la nueva tarea");

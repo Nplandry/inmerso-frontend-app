@@ -1,7 +1,8 @@
 package com.example;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,31 +18,41 @@ public class Inmerso {
 
     private boolean done;
 
-    private LocalDate fechaLocal;
+    private LocalTime fechaLocal;
+
+    private int tiempoRestante;
 
     private static final ZoneId CHILE_ZONE = ZoneId.of("America/Santiago");
+    private static final DateTimeFormatter HORA_FORMATO = DateTimeFormatter.ofPattern("HH:mm");
 
 
     public Inmerso(String task) {
         this.task = task;
-        this.fechaLocal = LocalDate.now(CHILE_ZONE);
+        this.fechaLocal = LocalTime.now(CHILE_ZONE);
+        this.tiempoRestante = 60;
     }   
-
-
-    public Inmerso(String task, LocalDate fecha) {
-        this.task = task;
-        this.fechaLocal = fecha != null ? fecha : LocalDate.now(CHILE_ZONE);
-    }
 
     public Inmerso(){
 
     }
 
-    public LocalDate getFechaLocal() {
+    public int getTiempoRestante(){
+        return tiempoRestante;
+    }
+
+    public void sumarTiempoRestante(){
+        this.tiempoRestante += 15;
+    }
+
+    public LocalTime getFechaLocal() {
         return fechaLocal;
     }
 
-    public void setFechaLocal(LocalDate fechaLocal) {
+    public String getHoraFormato() {
+        return fechaLocal != null ? fechaLocal.format(HORA_FORMATO) : "";
+    }
+
+    public void setFechaLocal(LocalTime fechaLocal) {
         this.fechaLocal = fechaLocal;
     }
 
@@ -54,7 +65,7 @@ public class Inmerso {
     }
 
     public String getTask() {
-        return task;  //podriamos devolver un json o un objeto para trabajarlo... nose si string
+        return task;
     }
 
     public void setTask(String task) {
