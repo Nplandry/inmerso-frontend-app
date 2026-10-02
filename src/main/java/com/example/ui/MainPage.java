@@ -24,18 +24,26 @@ public class MainPage extends VerticalLayout {
     private VerticalLayout bloqueActual; // Convertir a atributo de la clase
     private String valorIngresado;
     private Inmerso tareaActual;
-    private H2 ready;
+    private Button Listobutton; 
+    private Button addTime; 
+
+
     public MainPage(InmersoRepo repo) {
         
         this.repo = repo;
         addClassName("main-view");
     
-        var Listobutton = new Button("Listo");
+        Listobutton = new Button("Listo");
         Listobutton.addClassNames("action-btn", "action-btn--primary");
 
-        var addTime = new Button("+15 MIN");
+        Listobutton.setEnabled(false);
+
+
+        addTime = new Button("+15 MIN");
         addTime.addClassNames("action-btn", "action-btn--secondary");
         
+        addTime.setEnabled(false);
+
         var nuevaTarea = new Button("Nueva Tarea");
         nuevaTarea.addClassNames("action-btn", "action-btn--voice");
 
@@ -91,7 +99,6 @@ public class MainPage extends VerticalLayout {
             );
             completado.addClassName("focus-block--completed");
             bloqueActual.add(completado);
-
             Listobutton.setEnabled(false);
             addTime.setEnabled(false);
         }
@@ -145,6 +152,8 @@ public class MainPage extends VerticalLayout {
         var todo = repo.save(new Inmerso(valorIngresado)); //Falta validarlo
         //todo: Componente en memoria mientras se hace la peticion al backend 
         tareaActual = todo; 
+        Listobutton.setEnabled(true);  // Habilitar
+        addTime.setEnabled(true);    
         bloqueActual.removeAll();
         bloqueActual.add(CrearBloque(todo));
         });
