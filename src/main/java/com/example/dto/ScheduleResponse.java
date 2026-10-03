@@ -7,7 +7,7 @@ public record ScheduleResponse(
     ScheduleData data
 ) {
     public static record ScheduleData(
-        TaskInfo current_task,           // Cambiado de String a TaskInfo
+        TaskInfo current_task,          
         Integer current_ends_in_minutes,
         TaskInfo next_task,
         Integer next_starts_in_minutes,
@@ -23,7 +23,7 @@ public record ScheduleResponse(
 
     public static record TimeRemaining(
         Integer current_ends_in_minutes,
-        Integer current_ends_in_seconds
+        Integer next_starts_in_minutes
     ) {}
 
     public static record BusyBlock(

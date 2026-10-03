@@ -390,6 +390,4 @@ vaadin-dialog.modal-container::part(backdrop) {
     line-height: 1.2;
     margin: 0 !important;
     opacity: 0.85;
-    text-decoration: line-through;
-    text-decoration-color: rgba(48, 209, 88, 0.7);
 }

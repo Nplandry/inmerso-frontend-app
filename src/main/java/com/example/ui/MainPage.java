@@ -69,7 +69,7 @@ public class MainPage extends VerticalLayout {
         var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
         resumenProximo.addClassName("next-task-desc");
 
-        var proxTerminaEn = new H3("Empieza en: 60 min");
+        var proxTerminaEn = new H3("Empieza en: " + apiService.obtenerTiempoSiguente() + " MIN");
         proxTerminaEn.addClassName("task-countdown");
 
         var bloqueProximo = new VerticalLayout(

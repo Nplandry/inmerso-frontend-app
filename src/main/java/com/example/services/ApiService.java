@@ -43,11 +43,22 @@ public class ApiService {
 
   public int obtenerTiempoRestante() {
     ScheduleResponse response = obtenerScheduleCompleto();
-    if (response != null && response.data() != null && response.data().current_ends_in_minutes() != null) {
-      return response.data().current_ends_in_minutes();
+    if (response != null && response.data() != null && response.data().time_remaining() != null) {
+      return response.data().time_remaining().current_ends_in_minutes();
     }
     return 0;
   }
+
+
+ public int obtenerTiempoSiguente() {
+    ScheduleResponse response = obtenerScheduleCompleto();
+    if (response != null && response.data() != null && response.data().time_remaining() != null) {
+      System.out.println(response.data().time_remaining().next_starts_in_minutes());
+      return response.data().time_remaining().next_starts_in_minutes();
+    }
+    return 0;
+}
+
 
   public String obtenerSiguienteTarea() {
     ScheduleResponse response = obtenerScheduleCompleto();
