@@ -5,24 +5,30 @@ import java.util.List;
 public record ScheduleResponse(
     String status,
     ScheduleData data
-) {}
+) {
+    public static record ScheduleData(
+        TaskInfo current_task,           // Cambiado de String a TaskInfo
+        Integer current_ends_in_minutes,
+        TaskInfo next_task,
+        Integer next_starts_in_minutes,
+        TimeRemaining time_remaining,
+        List<BusyBlock> busy_blocks
+    ) {}
 
-record ScheduleData(
-    String current_task,
-    int current_ends_in_minutes,
-    String next_task,
-    int next_starts_in_minutes,
-    TimeRemaining time_remaining,
-    List<BusyBlock> busy_blocks
-) {}
+    public static record TaskInfo(
+        String title,
+        String start,
+        String end
+    ) {}
 
-record TimeRemaining(
-    int current_ends_in_minutes,
-    int current_ends_in_seconds
-) {}
+    public static record TimeRemaining(
+        Integer current_ends_in_minutes,
+        Integer current_ends_in_seconds
+    ) {}
 
-record BusyBlock(
-    String title,
-    String start,
-    String end
-) {}
+    public static record BusyBlock(
+        String title,
+        String start,
+        String end
+    ) {}
+}

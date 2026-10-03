@@ -3,6 +3,8 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.example.Inmerso;
 import com.example.InmersoRepo;
+import com.example.services.ApiService;
+import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 //import com.vaadin.flow.component.button.ButtonVariant;
@@ -20,7 +22,9 @@ import com.vaadin.flow.component.textfield.TextField;
 @Route("")
 public class MainPage extends VerticalLayout {
     
-    private final InmersoRepo repo; //guardar espacio de puntero
+    private final InmersoRepo repo;
+    private final ApiService apiService;
+
     private VerticalLayout bloqueActual; // Convertir a atributo de la clase
     private String valorIngresado;
     private Inmerso tareaActual;
@@ -28,9 +32,10 @@ public class MainPage extends VerticalLayout {
     private Button addTime; 
 
 
-    public MainPage(InmersoRepo repo) {
-        
+    public MainPage(InmersoRepo repo, ApiService apiService) {
         this.repo = repo;
+        this.apiService = apiService;
+
         addClassName("main-view");
     
         Listobutton = new Button("Listo");
@@ -57,7 +62,8 @@ public class MainPage extends VerticalLayout {
         var tituloProximo = new H2("PROXIMO BLOQUE");
         tituloProximo.addClassName("block-title");
 
-        var descProximo = new H3("Entrenamiento Gimnasio");
+        String siguienteTarea = apiService.obtenerSiguienteTarea();
+        var descProximo = new H3(siguienteTarea != null ? siguienteTarea : "Tarea Personalizada");
         descProximo.addClassName("task-title");
 
         var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
@@ -87,6 +93,7 @@ public class MainPage extends VerticalLayout {
             abrirModal();
         });
 
+
         Listobutton.addClickListener(click -> {
             if (tareaActual != null) {
             tareaActual.setDone(true);
@@ -104,6 +111,7 @@ public class MainPage extends VerticalLayout {
         }
         });
 
+
         addTime.addClickListener(click -> {
         // Asume que tienes una referencia a la tarea actual
         if (tareaActual != null) {
@@ -113,8 +121,7 @@ public class MainPage extends VerticalLayout {
             bloqueActual.add(CrearBloque(tareaActual));
         }
     });
-
-        //----[END Listeners]----
+//----[END Listeners]----
 
         var appTitle = new H1("Inmerso");
         appTitle.addClassName("app-title");
@@ -145,6 +152,7 @@ public class MainPage extends VerticalLayout {
             System.out.println(valorIngresado); // Valor input!!
             dialog.close(); 
         });
+
         botonGuardar.addClickShortcut(Key.ENTER);
         botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
@@ -163,6 +171,20 @@ public class MainPage extends VerticalLayout {
         dialog.getFooter().add(botonCancelar, botonGuardar);
         dialog.open();
     }
+
+    //###Logica backend
+    @PostConstruct
+    public void cargarTareaDelBackend(){
+        var tarea = apiService.obtenerTareaActual();
+        //var hora = apiService.obtenerTiempoRestante();
+        //System.out.println(hora);
+        if(tarea != null){
+            var todo = repo.save(new Inmerso(tarea)); 
+            bloqueActual.add(CrearBloque(todo));
+        }
+    } 
+
+
     /*##FIN - LOGICA DEL MODAL */
     private Component CrearBloque(Inmerso inmerso) {
         var time = new H3(inmerso.getHoraFormato()); 
