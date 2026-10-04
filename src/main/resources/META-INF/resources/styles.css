@@ -24,12 +24,14 @@ html {
     background: radial-gradient(circle at 50% 0%, #11151F 0%, var(--inm-bg) 75%);
     color: var(--inm-text-primary);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    min-height: 100vh;
-    padding: 1.5rem !important;
-    gap: 1rem !important;
+    gap: .5rem !important;
     box-sizing: border-box;
     display: flex;
-    flex-direction: column;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(2rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+    min-height: 100vh;
 }
 
 .app-title {
@@ -72,6 +74,7 @@ html {
     align-items: center;
     margin-bottom: 0.5rem;
 }
+
 
 .block-header h1 {
     font-size: 0.68rem !important;
@@ -212,7 +215,7 @@ html {
 
 .action-btn--primary {
 flex: 1;
-height: 3.25rem;
+height: 3.5rem;
 background: rgba(26, 46, 34, 0.53) !important;
 color: rgba(40, 158, 83, 0.81) !important;
 border: 1px solid rgba(35, 71, 50, 0.4) !important;
@@ -247,7 +250,8 @@ border: 1px solid rgba(35, 71, 50, 0.4) !important;
     border-radius: 0.85rem !important;
     font-size: 0.75rem !important;
     font-weight: 600 !important;
-    height: 2.75rem;
+    height: 3.2rem;
+    margin-top: .4rem;
 }
 
 .action-btn--voice:hover {
