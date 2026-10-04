@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Key;
 import com.example.Inmerso;
 import com.example.InmersoRepo;
 import com.example.services.ApiService;
+import com.example.dto.ScheduleResponse;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -40,60 +41,31 @@ public class MainPage extends VerticalLayout {
     
         Listobutton = new Button("Listo");
         Listobutton.addClassNames("action-btn", "action-btn--primary");
-
         Listobutton.setEnabled(false);
-
+        Listobutton.addClickShortcut(Key.ENTER);
 
         addTime = new Button("+15 MIN");
         addTime.addClassNames("action-btn", "action-btn--secondary");
-        
         addTime.setEnabled(false);
 
+        /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
+        var appTitle = new H1("Inmerso");
+        appTitle.addClassName("app-title");
         var nuevaTarea = new Button("Nueva Tarea");
         nuevaTarea.addClassNames("action-btn", "action-btn--voice");
-
         var todosLayout = new VerticalLayout();
         todosLayout.addClassName("todos-container");
-
-        // Contenedor que parte vacío sin elementos embebidos, ya definido, encapsulado y persistente.
-        bloqueActual = new VerticalLayout();
+        bloqueActual = new VerticalLayout(); // Contenedor que parte vacío sin elementos embebidos, ya definido, encapsulado y persistente.
         bloqueActual.setPadding(false);
-
-        var tituloProximo = new H2("PROXIMO BLOQUE");
-        tituloProximo.addClassName("block-title");
-
-        String siguienteTarea = apiService.obtenerSiguienteTarea();
-        var descProximo = new H3(siguienteTarea != null ? siguienteTarea : "Tarea Personalizada");
-        descProximo.addClassName("task-title");
-
-        var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
-        resumenProximo.addClassName("next-task-desc");
-
-        var proxTerminaEn = new H3("Empieza en: " + apiService.obtenerTiempoSiguente() + " MIN");
-        proxTerminaEn.addClassName("task-countdown");
-
-        var bloqueProximo = new VerticalLayout(
-            tituloProximo, 
-            descProximo, 
-            resumenProximo,
-            proxTerminaEn
-        );
-
-        bloqueProximo.setPadding(false);
-        bloqueProximo.addClassNames("focus-block", "focus-block--next");
-
         var bloqueControles = new HorizontalLayout(addTime, Listobutton);
         bloqueControles.addClassName("controls-container");
+        /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
-        //button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        Listobutton.addClickShortcut(Key.ENTER);
 
-        //----[Listeners]----
+        //#######--[Listeners]----#######
         nuevaTarea.addClickListener(click -> {
             abrirModal();
         });
-
-
         Listobutton.addClickListener(click -> {
             if (tareaActual != null) {
             tareaActual.setDone(true);
@@ -110,8 +82,6 @@ public class MainPage extends VerticalLayout {
             addTime.setEnabled(false);
         }
         });
-
-
         addTime.addClickListener(click -> {
         // Asume que tienes una referencia a la tarea actual
         if (tareaActual != null) {
@@ -121,21 +91,13 @@ public class MainPage extends VerticalLayout {
             bloqueActual.add(CrearBloque(tareaActual));
         }
     });
-//----[END Listeners]----
+    //#######----[END Listeners]----#######
+        add(appTitle, bloqueActual,
+            //CrearProximoBloque(),
+                NoBloquesSiguentesDisponibles(), bloqueControles, nuevaTarea
+        );}
 
-        var appTitle = new H1("Inmerso");
-        appTitle.addClassName("app-title");
-
-        add(
-            appTitle, 
-            bloqueActual,
-            bloqueProximo,
-            bloqueControles,
-            nuevaTarea
-        );
-
-    }
-    /*##LOGICA DEL MODAL */
+    /*######--LOGICA DEL MODAL--######*/
     public void abrirModal(){
         Dialog dialog = new Dialog();
            dialog.addClassName("modal-container"); 
@@ -171,21 +133,79 @@ public class MainPage extends VerticalLayout {
         dialog.getFooter().add(botonCancelar, botonGuardar);
         dialog.open();
     }
+    /*######--FIN: LOGICA DEL MODAL--######*/
 
-    //###Logica backend
+    /*######--LOGICA DEL BACKEND--######*/
     @PostConstruct
     public void cargarTareaDelBackend(){
-        var tarea = apiService.obtenerTareaActual();
-        //var hora = apiService.obtenerTiempoRestante();
-        //System.out.println(hora);
-        if(tarea != null){
-            var todo = repo.save(new Inmerso(tarea)); 
-            bloqueActual.add(CrearBloque(todo));
+        var response = apiService.obtenerScheduleCompleto();
+        
+        if (response != null && response.data() != null) {
+            var data = response.data();
+            
+            // Verificar si hay tarea actual
+            if (data.current_task() != null) {
+                var tarea = data.current_task().title();
+                var todo = repo.save(new Inmerso(tarea));
+                tareaActual = todo;
+                Listobutton.setEnabled(true);
+                addTime.setEnabled(true);
+                bloqueActual.add(CrearBloque(todo));
+            }
         }
-    } 
+    }
 
+    private Component CrearProximoBloque(){
+        var response = apiService.obtenerScheduleCompleto();
+        
+        if (response != null && response.data() != null) {
+            var data = response.data();
+            
+            String siguienteTarea = (data.next_task() != null) 
+                ? data.next_task().title() 
+                : "Tarea Personalizada";
+            
+            Integer tiempoSiguiente = (data.time_remaining() != null && data.time_remaining().next_starts_in_minutes() != null)
+                ? data.time_remaining().next_starts_in_minutes()
+                : 0;
+            
+            var tituloProximo = new H2("PROXIMO BLOQUE");
+            tituloProximo.addClassName("block-title");
+            
+            var descProximo = new H3(siguienteTarea);
+            descProximo.addClassName("task-title");
+            
+            var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
+            resumenProximo.addClassName("next-task-desc");
+            
+            var proxTerminaEn = new H3("Empieza en: " + tiempoSiguiente + " MIN");
+            proxTerminaEn.addClassName("task-countdown");
+            
+            var bloqueProximo = new VerticalLayout(
+                tituloProximo,
+                descProximo,
+                resumenProximo,
+                proxTerminaEn
+            );
+            bloqueProximo.setPadding(false);
+            bloqueProximo.addClassNames("focus-block", "focus-block--next");
+            
+            return bloqueProximo;
+        }
+        
+        return NoBloquesSiguentesDisponibles();
+    }
 
-    /*##FIN - LOGICA DEL MODAL */
+    public Component NoBloquesSiguentesDisponibles() {
+    var bloqueVacio = new VerticalLayout(
+        new H1("SIN TAREAS"),
+        new H2("No hay tareas para despues")
+    );
+    bloqueVacio.addClassName("focus-block--completed");
+    bloqueVacio.addClassName("focus-unavailable-task");
+    return bloqueVacio;
+    }
+
     private Component CrearBloque(Inmerso inmerso) {
         var time = new H3(inmerso.getHoraFormato()); 
         time.addClassName("task-time");
