@@ -27,6 +27,14 @@ public class Tarea {
         this.completada = false;
     }   
     
+    public Tarea(Long id, String descripcion, boolean completada, LocalTime horaCreacion, int tiempoRestanteMinutos) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.completada = completada;
+        this.horaCreacion = horaCreacion;
+        this.tiempoRestanteMinutos = tiempoRestanteMinutos;
+    }
+    
     public Tarea() {
     }
     
