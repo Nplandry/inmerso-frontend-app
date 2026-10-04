@@ -36,17 +36,16 @@ public class MainPage extends VerticalLayout {
     public MainPage(InmersoRepo repo, ApiService apiService) {
         this.repo = repo;
         this.apiService = apiService;
-
         addClassName("main-view");
     
         Listobutton = new Button("Listo");
         Listobutton.addClassNames("action-btn", "action-btn--primary");
         Listobutton.setEnabled(false);
         Listobutton.addClickShortcut(Key.ENTER);
-
         addTime = new Button("+15 MIN");
         addTime.addClassNames("action-btn", "action-btn--secondary");
         addTime.setEnabled(false);
+
 
         /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
         var appTitle = new H1("Inmerso");
@@ -62,10 +61,12 @@ public class MainPage extends VerticalLayout {
         /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
 
+
         //#######--[Listeners]----#######
         nuevaTarea.addClickListener(click -> {
             abrirModal();
         });
+
         Listobutton.addClickListener(click -> {
             if (tareaActual != null) {
             tareaActual.setDone(true);
@@ -92,6 +93,8 @@ public class MainPage extends VerticalLayout {
         }
     });
     //#######----[END Listeners]----#######
+
+
         add(appTitle, bloqueActual,
             CrearProximoBloque(),
                 //NoBloquesSiguentesDisponibles(), 
@@ -139,12 +142,12 @@ public class MainPage extends VerticalLayout {
     /*######--LOGICA DEL BACKEND--######*/
     @PostConstruct
     public void cargarTareaDelBackend(){
+        //#######ENCAPSULAR########
         var response = apiService.obtenerScheduleCompleto();
         
         if (response != null && response.data() != null) {
             var data = response.data();
             
-            // Verificar si hay tarea actual
             if (data.current_task() != null) {
                 var tarea = data.current_task().title();
                 var todo = repo.save(new Inmerso(tarea));
@@ -154,9 +157,11 @@ public class MainPage extends VerticalLayout {
                 bloqueActual.add(CrearBloque(todo));
             }
         }
+        //#######FIN ENCAPSULAR########
     }
 
     private Component CrearProximoBloque(){
+        //######ENCAPSULAR######*/
         var response = apiService.obtenerScheduleCompleto();
         
         if (response != null && response.data() != null) {
@@ -169,6 +174,8 @@ public class MainPage extends VerticalLayout {
             Integer tiempoSiguiente = (data.time_remaining() != null && data.time_remaining().next_starts_in_minutes() != null)
                 ? data.time_remaining().next_starts_in_minutes()
                 : 0;
+          //######ENCAPSULAR######*/
+            
             
             var tituloProximo = new H2("PROXIMO BLOQUE");
             tituloProximo.addClassName("block-title");
@@ -208,6 +215,7 @@ public class MainPage extends VerticalLayout {
     }
 
     private Component CrearBloque(Inmerso inmerso) {
+        //######ENCAPSULAR######*/
         var time = new H3(inmerso.getHoraFormato()); 
         time.addClassName("task-time");
 
@@ -223,6 +231,7 @@ public class MainPage extends VerticalLayout {
                 ? data.time_remaining().current_ends_in_minutes()
                 : 0;
             
+        //######FIN ENCAPSULAR######*/
 
         var terminaEn = new H3("Termina en: " + tiempoSiguiente + " MIN");
         terminaEn.addClassName("task-countdown");

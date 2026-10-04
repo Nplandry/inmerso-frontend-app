@@ -32,7 +32,7 @@ public class ApiService {
 
     return response.getBody();
   }
-
+  /*
   public String obtenerTareaActual() {
     ScheduleResponse response = obtenerScheduleCompleto();
     if (response != null && response.data() != null && response.data().current_task() != null) {
@@ -69,4 +69,5 @@ public class ApiService {
     }
     return null;
   }
+  */
 }
