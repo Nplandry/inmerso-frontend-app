@@ -93,8 +93,9 @@ public class MainPage extends VerticalLayout {
     });
     //#######----[END Listeners]----#######
         add(appTitle, bloqueActual,
-            //CrearProximoBloque(),
-                NoBloquesSiguentesDisponibles(), bloqueControles, nuevaTarea
+            CrearProximoBloque(),
+                //NoBloquesSiguentesDisponibles(), 
+                bloqueControles, nuevaTarea
         );}
 
     /*######--LOGICA DEL MODAL--######*/
@@ -216,7 +217,14 @@ public class MainPage extends VerticalLayout {
         var msg = new H2(inmerso.getTask());
         msg.addClassName("task-title");
 
-        var terminaEn = new H3("Termina en: " + inmerso.getTiempoRestante() + " MIN");
+        var response = apiService.obtenerScheduleCompleto();
+        var data = response.data();
+        Integer tiempoSiguiente = (data.time_remaining() != null && data.time_remaining().current_ends_in_minutes() != null)
+                ? data.time_remaining().current_ends_in_minutes()
+                : 0;
+            
+
+        var terminaEn = new H3("Termina en: " + tiempoSiguiente + " MIN");
         terminaEn.addClassName("task-countdown");
 
         var descActual = new H3("Descripcion: Descripcion de la nueva tarea");
