@@ -1,10 +1,9 @@
 package com.example.ui;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
-import com.example.Inmerso;
-import com.example.InmersoRepo;
-import com.example.services.ApiService;
-import com.example.dto.ScheduleResponse;
+import com.example.app.TareaAppService;
+import com.example.domain.Tarea;
+import com.example.infraestructure.external.dto.ScheduleMapper;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -23,19 +22,19 @@ import com.vaadin.flow.component.textfield.TextField;
 @Route("")
 public class MainPage extends VerticalLayout {
     
-    private final InmersoRepo repo;
-    private final ApiService apiService;
+    private final TareaAppService tareaService;
+    private final ScheduleMapper scheduleMapper;
 
     private VerticalLayout bloqueActual; // Convertir a atributo de la clase
     private String valorIngresado;
-    private Inmerso tareaActual;
+    private Tarea tareaActual;
     private Button Listobutton; 
     private Button addTime; 
 
 
-    public MainPage(InmersoRepo repo, ApiService apiService) {
-        this.repo = repo;
-        this.apiService = apiService;
+    public MainPage(TareaAppService tareaService, ScheduleMapper scheduleMapper) {
+        this.tareaService = tareaService;
+        this.scheduleMapper = scheduleMapper;
         addClassName("main-view");
     
         Listobutton = new Button("Listo");
@@ -69,13 +68,13 @@ public class MainPage extends VerticalLayout {
 
         Listobutton.addClickListener(click -> {
             if (tareaActual != null) {
-            tareaActual.setDone(true);
-            repo.save(tareaActual);
+            tareaService.completarTarea(tareaActual.getId())
+                    .ifPresent(tarea -> tareaActual = tarea);
             bloqueActual.removeAll();
 
             var completado = new VerticalLayout(
                 new H1("COMPLETADO"),
-                new H2(tareaActual.getTask())
+                new H2(tareaActual.getDescripcion())
             );
             completado.addClassName("focus-block--completed");
             bloqueActual.add(completado);
@@ -86,8 +85,8 @@ public class MainPage extends VerticalLayout {
         addTime.addClickListener(click -> {
         // Asume que tienes una referencia a la tarea actual
         if (tareaActual != null) {
-            tareaActual.sumarTiempoRestante();
-            repo.save(tareaActual); // Persiste los cambios
+            tareaService.agregarTiempo(tareaActual.getId(), 15)
+                    .ifPresent(tarea -> tareaActual = tarea);
             bloqueActual.removeAll();
             bloqueActual.add(CrearBloque(tareaActual));
         }
@@ -123,13 +122,13 @@ public class MainPage extends VerticalLayout {
         botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         botonGuardar.addClickListener((e) -> {
-        var todo = repo.save(new Inmerso(valorIngresado)); //Falta validarlo
+        var todo = tareaService.crearTarea(valorIngresado);
         //todo: Componente en memoria mientras se hace la peticion al backend 
         tareaActual = todo; 
         Listobutton.setEnabled(true);  // Habilitar
         addTime.setEnabled(true);    
         bloqueActual.removeAll();
-        bloqueActual.add(CrearBloque(todo));
+        bloqueActual.add(CrearBloque(tareaActual));
         });
 
         Button botonCancelar = new Button("Cancelar", e -> dialog.close());
@@ -143,18 +142,17 @@ public class MainPage extends VerticalLayout {
     @PostConstruct
     public void cargarTareaDelBackend(){
         //#######ENCAPSULAR########
-        var response = apiService.obtenerScheduleCompleto();
+        var response = scheduleMapper.obtenerScheduleCompleto();
         
         if (response != null && response.data() != null) {
             var data = response.data();
             
             if (data.current_task() != null) {
                 var tarea = data.current_task().title();
-                var todo = repo.save(new Inmerso(tarea));
-                tareaActual = todo;
+                tareaActual = tareaService.crearTarea(tarea);
                 Listobutton.setEnabled(true);
                 addTime.setEnabled(true);
-                bloqueActual.add(CrearBloque(todo));
+                bloqueActual.add(CrearBloque(tareaActual));
             }
         }
         //#######FIN ENCAPSULAR########
@@ -162,7 +160,7 @@ public class MainPage extends VerticalLayout {
 
     private Component CrearProximoBloque(){
         //######ENCAPSULAR######*/
-        var response = apiService.obtenerScheduleCompleto();
+        var response = scheduleMapper.obtenerScheduleCompleto();
         
         if (response != null && response.data() != null) {
             var data = response.data();
@@ -214,18 +212,18 @@ public class MainPage extends VerticalLayout {
     return bloqueVacio;
     }
 
-    private Component CrearBloque(Inmerso inmerso) {
+    private Component CrearBloque(Tarea tarea) {
         //######ENCAPSULAR######*/
-        var time = new H3(inmerso.getHoraFormato()); 
+        var time = new H3(tarea.getHoraFormato()); 
         time.addClassName("task-time");
 
         var headerActual = new HorizontalLayout(new H1("HACIENDO AHORA"), time);
         headerActual.addClassName("block-header");
 
-        var msg = new H2(inmerso.getTask());
+        var msg = new H2(tarea.getDescripcion());
         msg.addClassName("task-title");
 
-        var response = apiService.obtenerScheduleCompleto();
+        var response = scheduleMapper.obtenerScheduleCompleto();
         var data = response.data();
         Integer tiempoSiguiente = (data.time_remaining() != null && data.time_remaining().current_ends_in_minutes() != null)
                 ? data.time_remaining().current_ends_in_minutes()

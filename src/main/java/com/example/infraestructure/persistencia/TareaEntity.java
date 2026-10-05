@@ -1,27 +1,30 @@
 package com.example.infraestructure.persistencia;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalTime;
 
+@Entity
 public class TareaEntity {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String descripcion;
     private boolean completada;
     private LocalTime horaCreacion;
     private int tiempoRestanteMinutos;
 
-    public TareaEntity() {}
-
-    public TareaEntity(String descripcion, LocalTime horaCreacion, int tiempoRestanteMinutos) {
-        this.descripcion = descripcion;
-        this.horaCreacion = horaCreacion;
-        this.tiempoRestanteMinutos = tiempoRestanteMinutos;
+    public TareaEntity() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

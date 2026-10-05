@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -21,14 +22,18 @@ public class ScheduleMapper {
         
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         
-        ResponseEntity<ScheduleResponse> response = restTemplate.exchange(
-            "https://inmerso-backend.onrender.com/api/v1/focus/status",
-            HttpMethod.GET,
-            entity,
-            ScheduleResponse.class
-        );
-        
-        return response.getBody();
+        try {
+            ResponseEntity<ScheduleResponse> response = restTemplate.exchange(
+                "https://inmerso-backend.onrender.com/api/v1/focus/status",
+                HttpMethod.GET,
+                entity,
+                ScheduleResponse.class
+            );
+
+            return response.getBody();
+        } catch (RestClientException exception) {
+            return null;
+        }
     }
     
     public String obtenerTareaActual() {

@@ -28,10 +28,12 @@ public class TareaAppService {
 
     
     public Tarea crearTarea(String descripcion) {
-        Tarea tarea = new Tarea(descripcion);
-        TareaEntity entity = toEntity(tarea);
-        TareaEntity guardada = tareaRepo.save(entity);
-        return toDomain(guardada);
+        if (descripcion == null || descripcion.isBlank()) {
+            throw new IllegalArgumentException("La descripción es obligatoria");
+        }
+
+        Tarea tarea = new Tarea(descripcion.trim());
+        return toDomain(tareaRepo.save(toEntity(tarea)));
     }
     
     public Optional<Tarea> obtenerTarea(Long id) {
@@ -44,6 +46,24 @@ public class TareaAppService {
                 .collect(Collectors.toList());
     }
     
+    public Optional<Tarea> agregarTiempo(Long id, int minutos) {
+        return tareaRepo.findById(id)
+                .map(this::toDomain)
+                .map(tarea -> {
+                    tarea.agregarTiempo(minutos);
+                    return toDomain(tareaRepo.save(toEntity(tarea)));
+                });
+    }
+
+    public Optional<Tarea> completarTarea(Long id) {
+        return tareaRepo.findById(id)
+                .map(this::toDomain)
+                .map(tarea -> {
+                    tarea.completar();
+                    return toDomain(tareaRepo.save(toEntity(tarea)));
+                });
+    }
+
     public void eliminarTarea(Long id) {
         tareaRepo.deleteById(id);
     }
