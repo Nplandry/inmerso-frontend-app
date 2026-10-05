@@ -2,8 +2,9 @@ package com.example.app;
 
 import org.springframework.stereotype.Service;
 import com.example.domain.Tarea;
-import com.example.infraestructure.persistencia.TareaEntity;
-import com.example.infraestructure.persistencia.TareaRepo;
+import com.example.infraestructure.persistence.TareaEntity;
+import com.example.infraestructure.persistence.TareaRepo;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

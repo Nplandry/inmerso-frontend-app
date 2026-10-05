@@ -36,6 +36,27 @@ public class ScheduleMapper {
         }
     }
     
+    public ScheduleResponse obtenerProximoBloque() {
+        ScheduleResponse response = obtenerScheduleCompleto();
+        if (response == null || response.data() == null) {
+            return null;
+        }
+
+        var data = response.data();
+        var tarea = data.next_task();
+        var tiempo = data.time_remaining();
+
+        return new ScheduleResponse(
+        "OK",
+            new ScheduleResponse.ScheduleData(
+                null,
+                tarea,
+                tiempo,
+                java.util.Collections.emptyList()
+            )
+    );
+    }
+
     public String obtenerTareaActual() {
         ScheduleResponse response = obtenerScheduleCompleto();
         if (response != null && response.data() != null && response.data().current_task() != null) {

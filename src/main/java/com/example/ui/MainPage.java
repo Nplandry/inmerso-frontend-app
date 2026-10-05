@@ -93,12 +93,7 @@ public class MainPage extends VerticalLayout {
     });
     //#######----[END Listeners]----#######
 
-
-        add(appTitle, bloqueActual,
-            CrearProximoBloque(),
-                //NoBloquesSiguentesDisponibles(), 
-                bloqueControles, nuevaTarea
-        );}
+    add(appTitle, bloqueActual, CrearProximoBloque(), bloqueControles, nuevaTarea);}
 
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal(){
@@ -141,7 +136,6 @@ public class MainPage extends VerticalLayout {
     /*######--LOGICA DEL BACKEND--######*/
     @PostConstruct
     public void cargarTareaDelBackend(){
-        //#######ENCAPSULAR########
         var response = scheduleMapper.obtenerScheduleCompleto();
         
         if (response != null && response.data() != null) {
@@ -155,51 +149,48 @@ public class MainPage extends VerticalLayout {
                 bloqueActual.add(CrearBloque(tareaActual));
             }
         }
-        //#######FIN ENCAPSULAR########
     }
 
-    private Component CrearProximoBloque(){
-        //######ENCAPSULAR######*/
-        var response = scheduleMapper.obtenerScheduleCompleto();
-        
-        if (response != null && response.data() != null) {
-            var data = response.data();
-            
-            String siguienteTarea = (data.next_task() != null) 
-                ? data.next_task().title() 
-                : "Tarea Personalizada";
-            
-            Integer tiempoSiguiente = (data.time_remaining() != null && data.time_remaining().next_starts_in_minutes() != null)
-                ? data.time_remaining().next_starts_in_minutes()
-                : 0;
-          //######ENCAPSULAR######*/
-            
-            
-            var tituloProximo = new H2("PROXIMO BLOQUE");
-            tituloProximo.addClassName("block-title");
-            
-            var descProximo = new H3(siguienteTarea);
-            descProximo.addClassName("task-title");
-            
-            var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
-            resumenProximo.addClassName("next-task-desc");
-            
-            var proxTerminaEn = new H3("Empieza en: " + tiempoSiguiente + " MIN");
-            proxTerminaEn.addClassName("task-countdown");
-            
-            var bloqueProximo = new VerticalLayout(
-                tituloProximo,
-                descProximo,
-                resumenProximo,
-                proxTerminaEn
-            );
-            bloqueProximo.setPadding(false);
-            bloqueProximo.addClassNames("focus-block", "focus-block--next");
-            
-            return bloqueProximo;
+    private Component CrearProximoBloque() {
+        var response = scheduleMapper.obtenerProximoBloque();
+
+        if (response == null || response.data() == null || response.data().next_task() == null) {
+            return NoBloquesSiguentesDisponibles();
         }
-        
-        return NoBloquesSiguentesDisponibles();
+
+        var nextTask = response.data().next_task();
+        var timeRemaining = response.data().time_remaining();
+
+        String siguienteTarea = (nextTask.title() != null && !nextTask.title().isBlank())
+            ? nextTask.title()
+            : "Tarea Personalizada";
+
+        Integer tiempoSiguiente = (timeRemaining != null && timeRemaining.next_starts_in_minutes() != null)
+            ? timeRemaining.next_starts_in_minutes()
+            : 0;
+
+        var tituloProximo = new H2("PROXIMO BLOQUE");
+        tituloProximo.addClassName("block-title");
+
+        var descProximo = new H3(siguienteTarea);
+        descProximo.addClassName("task-title");
+
+        var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
+        resumenProximo.addClassName("next-task-desc");
+
+        var proxTerminaEn = new H3("Empieza en: " + tiempoSiguiente + " MIN");
+        proxTerminaEn.addClassName("task-countdown");
+
+        var bloqueProximo = new VerticalLayout(
+            tituloProximo,
+            descProximo,
+            resumenProximo,
+            proxTerminaEn
+        );
+        bloqueProximo.setPadding(false);
+        bloqueProximo.addClassNames("focus-block", "focus-block--next");
+
+        return bloqueProximo;
     }
 
     public Component NoBloquesSiguentesDisponibles() {
@@ -207,13 +198,12 @@ public class MainPage extends VerticalLayout {
         new H1("SIN TAREAS"),
         new H2("No hay tareas para despues")
     );
-    bloqueVacio.addClassName("focus-block--completed");
-    bloqueVacio.addClassName("focus-unavailable-task");
-    return bloqueVacio;
+        bloqueVacio.addClassName("focus-block--completed");
+        bloqueVacio.addClassName("focus-unavailable-task");
+        return bloqueVacio;
     }
 
     private Component CrearBloque(Tarea tarea) {
-        //######ENCAPSULAR######*/
         var time = new H3(tarea.getHoraFormato()); 
         time.addClassName("task-time");
 
@@ -224,12 +214,12 @@ public class MainPage extends VerticalLayout {
         msg.addClassName("task-title");
 
         var response = scheduleMapper.obtenerScheduleCompleto();
-        var data = response.data();
-        Integer tiempoSiguiente = (data.time_remaining() != null && data.time_remaining().current_ends_in_minutes() != null)
+        var data = response != null ? response.data() : null;
+        Integer tiempoSiguiente = (data != null && data.time_remaining() != null
+                && data.time_remaining().current_ends_in_minutes() != null)
                 ? data.time_remaining().current_ends_in_minutes()
                 : 0;
             
-        //######FIN ENCAPSULAR######*/
 
         var terminaEn = new H3("Termina en: " + tiempoSiguiente + " MIN");
         terminaEn.addClassName("task-countdown");

@@ -29,4 +29,10 @@ public record ScheduleResponse(
         String start,
         String end
     ) {}
+
+    public record ProximoBloqueDto(
+    String titulo,
+    Integer minutosRestantes,
+    String descripcion
+) {}
 }
