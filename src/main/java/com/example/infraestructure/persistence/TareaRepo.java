@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TareaRepo extends JpaRepository<TareaEntity, Long> {
-    // JpaRepository ya proporciona automáticamente:
+    // JpaRepository ya proporciona:
     // - save(TareaEntity tarea)
     // - findById(Long id)
     // - findAll()
@@ -13,6 +13,4 @@ public interface TareaRepo extends JpaRepository<TareaEntity, Long> {
     // - deleteById(Long id)
     // - count()
     // - existsById(Long id)
-    
-    // Aquí solo agregas métodos personalizados si los necesitas
 }

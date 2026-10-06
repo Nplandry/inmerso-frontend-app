@@ -7,7 +7,6 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-/** Abstracción visual común para los bloques de tareas. */
 public abstract class BloqueTarea extends VerticalLayout {
     protected BloqueTarea() {
         setPadding(false);
