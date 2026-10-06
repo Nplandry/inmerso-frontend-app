@@ -2,6 +2,7 @@ package com.example.ui;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.example.app.TareaAppService;
+import com.example.controller.ApiController;
 import com.example.domain.Tarea;
 import com.example.infraestructure.external.dto.ScheduleMapper;
 import com.example.infraestructure.external.dto.ScheduleResponse;
@@ -25,6 +26,7 @@ public class MainPage extends VerticalLayout {
     
     private final TareaAppService tareaService;
     private final ScheduleMapper scheduleMapper;
+    private  final ApiController apiController;
 
     private final VerticalLayout bloqueActual = new VerticalLayout();
     private Tarea tareaActual;
@@ -33,9 +35,10 @@ public class MainPage extends VerticalLayout {
     private final Button agregarTiempoButton;
 
 
-    public MainPage(TareaAppService tareaService, ScheduleMapper scheduleMapper) {
+    public MainPage(TareaAppService tareaService, ScheduleMapper scheduleMapper, ApiController apiController) {
         this.tareaService = tareaService;
         this.scheduleMapper = scheduleMapper;
+        this.apiController = apiController;
         addClassName("main-view");
     
         listoButton = new Button("Listo");
@@ -46,6 +49,10 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton = new Button("+15 MIN");
         agregarTiempoButton.addClassNames("action-btn", "action-btn--secondary");
         agregarTiempoButton.setEnabled(false);
+
+
+        var respondeService = apiController.obtenerTodas();
+        System.out.println("AHI VAAA: " + respondeService);
 
 
         /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
@@ -149,7 +156,7 @@ public class MainPage extends VerticalLayout {
     @PostConstruct
     public void cargarTareaDelBackend(){
         var response = scheduleMapper.obtenerScheduleCompleto();
-        
+
         if (response != null && response.data() != null) {
             var data = response.data();
             

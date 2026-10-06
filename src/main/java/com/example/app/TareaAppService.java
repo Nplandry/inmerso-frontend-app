@@ -40,7 +40,7 @@ public class TareaAppService {
     public Optional<Tarea> obtenerTarea(Long id) {
         return tareaRepo.findById(id).map(this::toDomain);
     }
-    
+    // MainPage -> TareaAppService/apiController -> Tarea.Java/TareaRestPort -> dto/mapper [donde nace el repo]
     public List<Tarea> obtenerTodasLasTareas() {
         return tareaRepo.findAll().stream()
                 .map(this::toDomain)

@@ -16,18 +16,18 @@ public class ApiController {
     }
     
     @PostMapping
-    public ResponseEntity<Tarea> crearTarea(@RequestBody String descripcion) {
+    public ResponseEntity<Tarea> crearTarea(@RequestBody String descripcion) { //Interface creada
         Tarea tarea = tareaService.crearTarea(descripcion);
         return ResponseEntity.ok(tarea);
     }
     
     @GetMapping
-    public ResponseEntity<List<Tarea>> obtenerTodas() {
+    public ResponseEntity<List<Tarea>> obtenerTodas() { 
         return ResponseEntity.ok(tareaService.obtenerTodasLasTareas());
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Tarea> obtenerTarea(@PathVariable Long id) {
+    public ResponseEntity<Tarea> obtenerTarea(@PathVariable Long id) { //Interface creada
         return tareaService.obtenerTarea(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
