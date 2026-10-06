@@ -1,11 +1,10 @@
 package com.example.ui;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
+import com.example.app.ScheduleAppService;
 import com.example.app.TareaAppService;
-import com.example.controller.ApiController;
+import com.example.domain.Schedule;
 import com.example.domain.Tarea;
-import com.example.infraestructure.external.dto.ScheduleMapper;
-import com.example.infraestructure.external.dto.ScheduleResponse;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -25,8 +24,7 @@ import com.vaadin.flow.component.textfield.TextField;
 public class MainPage extends VerticalLayout {
     
     private final TareaAppService tareaService;
-    private final ScheduleMapper scheduleMapper;
-    private  final ApiController apiController;
+    private final ScheduleAppService scheduleService;
 
     private final VerticalLayout bloqueActual = new VerticalLayout();
     private Tarea tareaActual;
@@ -35,10 +33,9 @@ public class MainPage extends VerticalLayout {
     private final Button agregarTiempoButton;
 
 
-    public MainPage(TareaAppService tareaService, ScheduleMapper scheduleMapper, ApiController apiController) {
+    public MainPage(TareaAppService tareaService, ScheduleAppService scheduleService) {
         this.tareaService = tareaService;
-        this.scheduleMapper = scheduleMapper;
-        this.apiController = apiController;
+        this.scheduleService = scheduleService;
         addClassName("main-view");
     
         listoButton = new Button("Listo");
@@ -49,11 +46,6 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton = new Button("+15 MIN");
         agregarTiempoButton.addClassNames("action-btn", "action-btn--secondary");
         agregarTiempoButton.setEnabled(false);
-
-
-        var respondeService = apiController.obtenerTodas();
-        System.out.println("AHI VAAA: " + respondeService);
-
 
         /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
         var appTitle = new H1("Inmerso");
@@ -155,18 +147,16 @@ public class MainPage extends VerticalLayout {
     /*######--LOGICA DEL BACKEND--######*/
     @PostConstruct
     public void cargarTareaDelBackend(){
-        var response = scheduleMapper.obtenerScheduleCompleto();
-
-        if (response != null && response.data() != null) {
-            var data = response.data();
-            
-            if (data.current_task() != null) {
-                var tarea = data.current_task().title();
-                tareaActual = tareaService.crearTarea(tarea);
-                tiempoActual = obtenerTiempoActual(data);
+        scheduleService.obtenerSchedule().ifPresent(schedule -> {
+            String tituloTareaActual = schedule.currentTaskTitle();
+            if (tituloTareaActual != null && !tituloTareaActual.isBlank()) {
+                tareaActual = tareaService.crearTarea(tituloTareaActual);
+                tiempoActual = schedule.currentEndsInMinutes() == null
+                        ? 0
+                        : schedule.currentEndsInMinutes();
                 actualizarBloqueActual();
             }
-        }
+        });
     }
 
     private Component crearBloque(Tarea tarea) {
@@ -181,30 +171,19 @@ public class MainPage extends VerticalLayout {
                 : tarea.getTiempoRestanteMinutos();
     }
 
-    private int obtenerTiempoActual(ScheduleResponse.ScheduleData data) {
-        return data.time_remaining() != null
-                && data.time_remaining().current_ends_in_minutes() != null
-                ? data.time_remaining().current_ends_in_minutes()
-                : 0;
-    }
-
     private Component crearBloqueProximo() {
-        var response = scheduleMapper.obtenerBloque();
-
-        if (response == null || response.data() == null || response.data().next_task() == null) {
+        var schedule = scheduleService.obtenerSchedule();
+        if (schedule.isEmpty() || schedule.get().nextTaskTitle() == null) {
             return NoBloquesSiguentesDisponibles();
         }
 
-        var nextTask = response.data().next_task();
-        var timeRemaining = response.data().time_remaining();
-
-        String siguienteTarea = (nextTask.title() != null && !nextTask.title().isBlank())
-            ? nextTask.title()
-            : "Tarea Personalizada";
-
-        Integer tiempoSiguiente = (timeRemaining != null && timeRemaining.next_starts_in_minutes() != null)
-            ? timeRemaining.next_starts_in_minutes()
-            : 0;
+        Schedule nextSchedule = schedule.get();
+        String siguienteTarea = !nextSchedule.nextTaskTitle().isBlank()
+                ? nextSchedule.nextTaskTitle()
+                : "Tarea Personalizada";
+        Integer tiempoSiguiente = nextSchedule.nextStartsInMinutes() == null
+                ? 0
+                : nextSchedule.nextStartsInMinutes();
 
         var tituloProximo = new H2("PROXIMO BLOQUE");
         tituloProximo.addClassName("block-title");

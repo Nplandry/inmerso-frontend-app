@@ -1,94 +1,27 @@
 package com.example.infraestructure.external.dto;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import com.example.domain.Schedule;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.util.Optional;
+
+@Component
 public class ScheduleMapper {
-    private final RestTemplate restTemplate;
-    
-    public ScheduleMapper(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-    
-    public ScheduleResponse obtenerScheduleCompleto() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-api-key", "inmerso_dev_key_change_me");
-        
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-        
-        try {
-            ResponseEntity<ScheduleResponse> response = restTemplate.exchange(
-                "https://inmerso-backend.onrender.com/api/v1/focus/status",
-                HttpMethod.GET,
-                entity,
-                ScheduleResponse.class
-            );
-
-            return response.getBody();
-        } catch (RestClientException exception) {
-            return null;
-        }
-    }
-    //Encapsulacion de obtener todo el shedule
-    public ScheduleResponse obtenerBloque() {
-        ScheduleResponse response = obtenerScheduleCompleto();
+    public Optional<Schedule> toDomain(ScheduleResponse response) {
         if (response == null || response.data() == null) {
-            return null;
+            return Optional.empty();
         }
 
         var data = response.data();
-        var tareaActual = data.current_task();
-        var tareaSiguiente = data.next_task();
-        var tiempo = data.time_remaining();
+        var currentTask = data.current_task();
+        var nextTask = data.next_task();
+        var timeRemaining = data.time_remaining();
 
-        return new ScheduleResponse(
-        "OK",
-        new ScheduleResponse.ScheduleData(
-            tareaActual,
-            tareaSiguiente,
-            tiempo,
-            java.util.Collections.emptyList()
-        )
-    );
-    }
-
-    public String obtenerTareaActual() {
-        ScheduleResponse response = obtenerScheduleCompleto();
-        if (response != null && response.data() != null && response.data().current_task() != null) {
-            return response.data().current_task().title();
-        }
-        return null;
-    }
-    
-    public int obtenerTiempoRestante() {
-        ScheduleResponse response = obtenerScheduleCompleto();
-        if (response != null && response.data() != null && response.data().time_remaining() != null
-                && response.data().time_remaining().current_ends_in_minutes() != null) {
-            return response.data().time_remaining().current_ends_in_minutes();
-        }
-        return 0;
-    }
-    
-    public int obtenerTiempoSiguiente() {
-        ScheduleResponse response = obtenerScheduleCompleto();
-        if (response != null && response.data() != null && response.data().time_remaining() != null 
-                && response.data().time_remaining().next_starts_in_minutes() != null) {
-            return response.data().time_remaining().next_starts_in_minutes();
-        }
-        return 0;
-    }
-    
-    public String obtenerSiguienteTarea() {
-        ScheduleResponse response = obtenerScheduleCompleto();
-        if (response != null && response.data() != null && response.data().next_task() != null) {
-            return response.data().next_task().title();
-        }
-        return null;
+        return Optional.of(new Schedule(
+                currentTask == null ? null : currentTask.title(),
+                nextTask == null ? null : nextTask.title(),
+                timeRemaining == null ? null : timeRemaining.current_ends_in_minutes(),
+                timeRemaining == null ? null : timeRemaining.next_starts_in_minutes()
+        ));
     }
 }

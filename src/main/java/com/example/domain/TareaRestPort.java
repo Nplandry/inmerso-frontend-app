@@ -8,6 +8,6 @@ public interface TareaRestPort {
     Optional<Tarea> buscarPorId(Long id);
     List<Tarea> obtenerTodas();
     void eliminarPorId(Long id);
-    Long Contar();
+    Long contar();
     boolean existePorId(Long id);   
 }

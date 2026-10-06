@@ -2,30 +2,18 @@ package com.example.app;
 
 import org.springframework.stereotype.Service;
 import com.example.domain.Tarea;
-import com.example.infraestructure.persistence.TareaEntity;
-import com.example.infraestructure.persistence.TareaRepo;
+import com.example.domain.TareaRestPort;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TareaAppService {
-    private final TareaRepo tareaRepo;
+    private final TareaRestPort tareaPort;
     
-    public TareaAppService(TareaRepo tareaRepo) {
-        this.tareaRepo = tareaRepo;
+    public TareaAppService(TareaRestPort tareaPort) {
+        this.tareaPort = tareaPort;
     }
-
-    private Tarea toDomain(TareaEntity entity) {
-    return new Tarea(
-        entity.getId(),
-        entity.getDescripcion(),
-        entity.isCompletada(),
-        entity.getHoraCreacion(),
-        entity.getTiempoRestanteMinutos()
-    );
-}
 
     
     public Tarea crearTarea(String descripcion) {
@@ -34,59 +22,42 @@ public class TareaAppService {
         }
 
         Tarea tarea = new Tarea(descripcion.trim());
-        return toDomain(tareaRepo.save(toEntity(tarea)));
+        return tareaPort.guardar(tarea);
     }
     
     public Optional<Tarea> obtenerTarea(Long id) {
-        return tareaRepo.findById(id).map(this::toDomain);
+        return tareaPort.buscarPorId(id);
     }
-    // MainPage -> TareaAppService/apiController -> Tarea.Java/TareaRestPort -> dto/mapper [donde nace el repo]
+
     public List<Tarea> obtenerTodasLasTareas() {
-        return tareaRepo.findAll().stream()
-                .map(this::toDomain)
-                .collect(Collectors.toList());
+        return tareaPort.obtenerTodas();
     }
     
     public Optional<Tarea> agregarTiempo(Long id, int minutos) {
-        return tareaRepo.findById(id)
-                .map(this::toDomain)
+        return tareaPort.buscarPorId(id)
                 .map(tarea -> {
                     tarea.agregarTiempo(minutos);
-                    return toDomain(tareaRepo.save(toEntity(tarea)));
+                    return tareaPort.guardar(tarea);
                 });
     }
 
     public Optional<Tarea> completarTarea(Long id) {
-        return tareaRepo.findById(id)
-                .map(this::toDomain)
+        return tareaPort.buscarPorId(id)
                 .map(tarea -> {
                     tarea.completar();
-                    return toDomain(tareaRepo.save(toEntity(tarea)));
+                    return tareaPort.guardar(tarea);
                 });
     }
 
     public void eliminarTarea(Long id) {
-        tareaRepo.deleteById(id);
+        tareaPort.eliminarPorId(id);
     }
     
     public long contarTareas() {
-        return tareaRepo.count();
+        return tareaPort.contar();
     }
     
     public boolean existeTarea(Long id) {
-        return tareaRepo.existsById(id);
+        return tareaPort.existePorId(id);
     }
-    
-    private TareaEntity toEntity(Tarea tarea) {
-    TareaEntity entity = new TareaEntity();
-    if (tarea.getId() != null) {
-        entity.setId(tarea.getId());
-    }
-        entity.setDescripcion(tarea.getDescripcion());
-        entity.setCompletada(tarea.isCompletada());
-        entity.setHoraCreacion(tarea.getHoraCreacion());
-        entity.setTiempoRestanteMinutos(tarea.getTiempoRestanteMinutos());
-        return entity;
-    }
-    
 }

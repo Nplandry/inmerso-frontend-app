@@ -42,7 +42,7 @@ public class TareaAdapter implements TareaRestPort {
     }
 
     @Override
-    public Long Contar() {
+    public Long contar() {
         return tareaRepo.count();
     }
 
