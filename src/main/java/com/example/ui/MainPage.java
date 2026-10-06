@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Key;
 import com.example.app.TareaAppService;
 import com.example.domain.Tarea;
 import com.example.infraestructure.external.dto.ScheduleMapper;
+import com.example.infraestructure.external.dto.ScheduleResponse;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -25,11 +26,11 @@ public class MainPage extends VerticalLayout {
     private final TareaAppService tareaService;
     private final ScheduleMapper scheduleMapper;
 
-    private VerticalLayout bloqueActual; // Convertir a atributo de la clase
-    private String valorIngresado;
+    private final VerticalLayout bloqueActual = new VerticalLayout();
     private Tarea tareaActual;
-    private Button Listobutton; 
-    private Button addTime; 
+    private Integer tiempoActual;
+    private final Button listoButton;
+    private final Button agregarTiempoButton;
 
 
     public MainPage(TareaAppService tareaService, ScheduleMapper scheduleMapper) {
@@ -37,13 +38,14 @@ public class MainPage extends VerticalLayout {
         this.scheduleMapper = scheduleMapper;
         addClassName("main-view");
     
-        Listobutton = new Button("Listo");
-        Listobutton.addClassNames("action-btn", "action-btn--primary");
-        Listobutton.setEnabled(false);
-        Listobutton.addClickShortcut(Key.ENTER);
-        addTime = new Button("+15 MIN");
-        addTime.addClassNames("action-btn", "action-btn--secondary");
-        addTime.setEnabled(false);
+        listoButton = new Button("Listo");
+        listoButton.addClassNames("action-btn", "action-btn--primary");
+        listoButton.setEnabled(false);
+        listoButton.addClickShortcut(Key.ENTER);
+
+        agregarTiempoButton = new Button("+15 MIN");
+        agregarTiempoButton.addClassNames("action-btn", "action-btn--secondary");
+        agregarTiempoButton.setEnabled(false);
 
 
         /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
@@ -53,9 +55,8 @@ public class MainPage extends VerticalLayout {
         nuevaTarea.addClassNames("action-btn", "action-btn--voice");
         var todosLayout = new VerticalLayout();
         todosLayout.addClassName("todos-container");
-        bloqueActual = new VerticalLayout(); // Contenedor que parte vacío sin elementos embebidos, ya definido, encapsulado y persistente.
         bloqueActual.setPadding(false);
-        var bloqueControles = new HorizontalLayout(addTime, Listobutton);
+        var bloqueControles = new HorizontalLayout(agregarTiempoButton, listoButton);
         bloqueControles.addClassName("controls-container");
         /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
@@ -66,70 +67,81 @@ public class MainPage extends VerticalLayout {
             abrirModal();
         });
 
-        Listobutton.addClickListener(click -> {
-            if (tareaActual != null) {
-            tareaService.completarTarea(tareaActual.getId())
-                    .ifPresent(tarea -> tareaActual = tarea);
-            bloqueActual.removeAll();
-
-            var completado = new VerticalLayout(
-                new H1("COMPLETADO"),
-                new H2(tareaActual.getDescripcion())
-            );
-            completado.addClassName("focus-block--completed");
-            bloqueActual.add(completado);
-            Listobutton.setEnabled(false);
-            addTime.setEnabled(false);
-        }
-        });
-        addTime.addClickListener(click -> {
-        // Asume que tienes una referencia a la tarea actual
-        if (tareaActual != null) {
-            tareaService.agregarTiempo(tareaActual.getId(), 15)
-                    .ifPresent(tarea -> tareaActual = tarea);
-            bloqueActual.removeAll();
-            bloqueActual.add(CrearBloque(tareaActual));
-        }
-    });
+        listoButton.addClickListener(click -> completarTareaActual());
+        agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
 
-    add(appTitle, bloqueActual, CrearProximoBloque(), bloqueControles, nuevaTarea);}
+    add(appTitle, bloqueActual, crearBloqueProximo(), bloqueControles, nuevaTarea);}
 
     /*######--LOGICA DEL MODAL--######*/
-    public void abrirModal(){
+    public void abrirModal() {
         Dialog dialog = new Dialog();
            dialog.addClassName("modal-container"); 
         dialog.setCloseOnOutsideClick(false);
-
         dialog.setHeaderTitle("Ingrese su información");
-        TextField inputNombre = new TextField("Descripcion Tarea");
-        inputNombre.setPlaceholder("Estudiar en una hora mas");
+
+        TextField inputNombre = new TextField("Descripción de la tarea");
+        inputNombre.setPlaceholder("Estudiar en una hora más");
+        inputNombre.setWidthFull();
+
+        Button botonGuardar = new Button("Guardar");
+        botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        botonGuardar.addClickListener(event -> guardarTarea(inputNombre, dialog));
+        inputNombre.addKeyDownListener(Key.ENTER, event -> botonGuardar.click());
+
+        Button botonCancelar = new Button("Cancelar", event -> dialog.close());
         VerticalLayout dialogLayout = new VerticalLayout(inputNombre);
         dialog.add(dialogLayout);
-        
-        Button botonGuardar = new Button("Guardar", e -> {
-            valorIngresado = inputNombre.getValue(); //TODO: controlar valor nulo
-            System.out.println(valorIngresado); // Valor input!!
-            dialog.close(); 
-        });
-
-        botonGuardar.addClickShortcut(Key.ENTER);
-        botonGuardar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        botonGuardar.addClickListener((e) -> {
-        var todo = tareaService.crearTarea(valorIngresado);
-        //todo: Componente en memoria mientras se hace la peticion al backend 
-        tareaActual = todo; 
-        Listobutton.setEnabled(true);  // Habilitar
-        addTime.setEnabled(true);    
-        bloqueActual.removeAll();
-        bloqueActual.add(CrearBloque(tareaActual));
-        });
-
-        Button botonCancelar = new Button("Cancelar", e -> dialog.close());
-        
         dialog.getFooter().add(botonCancelar, botonGuardar);
         dialog.open();
+    }
+
+    private void guardarTarea(TextField input, Dialog dialog) {
+        String descripcion = input.getValue().trim();
+        if (descripcion.isBlank()) {
+            input.setErrorMessage("La descripción es obligatoria");
+            input.setInvalid(true);
+            return;
+        }
+
+        tareaActual = tareaService.crearTarea(descripcion);
+        tiempoActual = null;
+        actualizarBloqueActual();
+        dialog.close();
+    }
+
+    private void actualizarBloqueActual() {
+        bloqueActual.removeAll();
+        boolean hayTarea = tareaActual != null;
+        listoButton.setEnabled(hayTarea);
+        agregarTiempoButton.setEnabled(hayTarea);
+        if (hayTarea) {
+            bloqueActual.add(crearBloque(tareaActual));
+        }
+    }
+
+    private void completarTareaActual() {
+        if (tareaActual == null) {
+            return;
+        }
+        tareaService.completarTarea(tareaActual.getId())
+                .ifPresent(tarea -> tareaActual = tarea);
+        bloqueActual.removeAll();
+        bloqueActual.add(new BloqueTareaCompletada(tareaActual));
+        listoButton.setEnabled(false);
+        agregarTiempoButton.setEnabled(false);
+    }
+
+    private void agregarTiempoATareaActual(int minutos) {
+        if (tareaActual == null) {
+            return;
+        }
+        tareaService.agregarTiempo(tareaActual.getId(), minutos)
+                .ifPresent(tarea -> {
+                    tareaActual = tarea;
+                    tiempoActual = tarea.getTiempoRestanteMinutos();
+                });
+        actualizarBloqueActual();
     }
     /*######--FIN: LOGICA DEL MODAL--######*/
 
@@ -144,15 +156,33 @@ public class MainPage extends VerticalLayout {
             if (data.current_task() != null) {
                 var tarea = data.current_task().title();
                 tareaActual = tareaService.crearTarea(tarea);
-                Listobutton.setEnabled(true);
-                addTime.setEnabled(true);
-                bloqueActual.add(CrearBloque(tareaActual));
+                tiempoActual = obtenerTiempoActual(data);
+                actualizarBloqueActual();
             }
         }
     }
 
-    private Component CrearProximoBloque() {
-        var response = scheduleMapper.obtenerProximoBloque();
+    private Component crearBloque(Tarea tarea) {
+        return tarea == null
+                ? new BloqueSinTareas()
+                : new BloqueTareaActual(tarea, tiempoVisible(tarea));
+    }
+
+    private int tiempoVisible(Tarea tarea) {
+        return tiempoActual != null
+                ? tiempoActual
+                : tarea.getTiempoRestanteMinutos();
+    }
+
+    private int obtenerTiempoActual(ScheduleResponse.ScheduleData data) {
+        return data.time_remaining() != null
+                && data.time_remaining().current_ends_in_minutes() != null
+                ? data.time_remaining().current_ends_in_minutes()
+                : 0;
+    }
+
+    private Component crearBloqueProximo() {
+        var response = scheduleMapper.obtenerBloque();
 
         if (response == null || response.data() == null || response.data().next_task() == null) {
             return NoBloquesSiguentesDisponibles();
@@ -194,49 +224,8 @@ public class MainPage extends VerticalLayout {
     }
 
     public Component NoBloquesSiguentesDisponibles() {
-    var bloqueVacio = new VerticalLayout(
-        new H1("SIN TAREAS"),
-        new H2("No hay tareas para despues")
-    );
-        bloqueVacio.addClassName("focus-block--completed");
-        bloqueVacio.addClassName("focus-unavailable-task");
-        return bloqueVacio;
+        return new BloqueSinTareas();
     }
 
-    private Component CrearBloque(Tarea tarea) {
-        var time = new H3(tarea.getHoraFormato()); 
-        time.addClassName("task-time");
-
-        var headerActual = new HorizontalLayout(new H1("HACIENDO AHORA"), time);
-        headerActual.addClassName("block-header");
-
-        var msg = new H2(tarea.getDescripcion());
-        msg.addClassName("task-title");
-
-        var response = scheduleMapper.obtenerScheduleCompleto();
-        var data = response != null ? response.data() : null;
-        Integer tiempoSiguiente = (data != null && data.time_remaining() != null
-                && data.time_remaining().current_ends_in_minutes() != null)
-                ? data.time_remaining().current_ends_in_minutes()
-                : 0;
-            
-
-        var terminaEn = new H3("Termina en: " + tiempoSiguiente + " MIN");
-        terminaEn.addClassName("task-countdown");
-
-        var descActual = new H3("Descripcion: Descripcion de la nueva tarea");
-        descActual.addClassName("next-task-desc");
-
-        var nuevoBloqueEntero = new VerticalLayout(
-            headerActual,
-            msg,
-            descActual,
-            terminaEn
-
-        );
-        nuevoBloqueEntero.setPadding(false);
-        nuevoBloqueEntero.addClassNames("focus-block", "focus-block--current");
-
-        return nuevoBloqueEntero;
-    }
+    /* El bloque actual usa la tarea de dominio, no vuelve a consultar el backend. */
 }

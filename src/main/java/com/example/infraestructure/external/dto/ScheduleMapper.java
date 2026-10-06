@@ -35,25 +35,26 @@ public class ScheduleMapper {
             return null;
         }
     }
-    
-    public ScheduleResponse obtenerProximoBloque() {
+    //Encapsulacion de obtener todo el shedule
+    public ScheduleResponse obtenerBloque() {
         ScheduleResponse response = obtenerScheduleCompleto();
         if (response == null || response.data() == null) {
             return null;
         }
 
         var data = response.data();
-        var tarea = data.next_task();
+        var tareaActual = data.current_task();
+        var tareaSiguiente = data.next_task();
         var tiempo = data.time_remaining();
 
         return new ScheduleResponse(
         "OK",
-            new ScheduleResponse.ScheduleData(
-                null,
-                tarea,
-                tiempo,
-                java.util.Collections.emptyList()
-            )
+        new ScheduleResponse.ScheduleData(
+            tareaActual,
+            tareaSiguiente,
+            tiempo,
+            java.util.Collections.emptyList()
+        )
     );
     }
 
