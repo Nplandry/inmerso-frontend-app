@@ -404,6 +404,7 @@ vaadin-dialog.modal-container::part(backdrop) {
     background: linear-gradient(145deg, rgba(255, 149, 0, 0.08) 0%, rgba(18, 20, 28, 0.85) 100%) !important;
     border: 1px solid rgba(255, 149, 0, 0.35) !important;
     box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(255, 149, 0, 0.15);
+    margin-top: 12px;
 }
 
 .focus-block--completed.focus-unavailable-task::before {

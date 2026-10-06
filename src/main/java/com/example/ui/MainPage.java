@@ -59,8 +59,6 @@ public class MainPage extends VerticalLayout {
         bloqueControles.addClassName("controls-container");
         /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
-
-
         //#######--[Listeners]----#######
         nuevaTarea.addClickListener(click -> {
             abrirModal();
@@ -212,6 +210,4 @@ public class MainPage extends VerticalLayout {
     public Component NoBloquesSiguentesDisponibles() {
         return new BloqueSinTareas();
     }
-
-    /* El bloque actual usa la tarea de dominio, no vuelve a consultar el backend. */
 }
