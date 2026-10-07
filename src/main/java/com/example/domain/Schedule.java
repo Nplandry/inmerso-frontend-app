@@ -5,5 +5,5 @@ public record Schedule(
         String nextTaskTitle,
         Integer currentEndsInMinutes,
         Integer nextStartsInMinutes
-) {
-}
+) {}
+

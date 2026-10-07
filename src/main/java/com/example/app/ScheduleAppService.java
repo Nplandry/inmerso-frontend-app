@@ -1,5 +1,6 @@
 package com.example.app;
 
+import com.example.domain.FocusScheduleRequest;
 import com.example.domain.Schedule;
 import com.example.domain.SchedulePort;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,9 @@ public class ScheduleAppService {
 
     public Optional<Schedule> obtenerSchedule() {
         return schedulePort.obtenerSchedule();
+    }
+
+    public Optional<Schedule> actualizarSchedule(String text) {
+        return schedulePort.actualizarSchedule(new FocusScheduleRequest(text));
     }
 }

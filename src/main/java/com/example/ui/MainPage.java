@@ -68,6 +68,10 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
 
+    //####TEST####
+    scheduleService.actualizarSchedule("Estudiar 1 Hora en 1 minuto mas");
+
+
     add(appTitle, bloqueActual, crearBloqueProximo(), bloqueControles, nuevaTarea);}
 
     /*######--LOGICA DEL MODAL--######*/
