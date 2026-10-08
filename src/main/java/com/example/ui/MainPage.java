@@ -116,7 +116,7 @@ public class MainPage extends VerticalLayout {
         listoButton.setEnabled(hayTarea);
         agregarTiempoButton.setEnabled(hayTarea);
         if (hayTarea) {
-            bloqueActual.add(crearBloque(tareaActual));
+            bloqueActual.add(crearBloque(tareaActual));}
         }
     }
 
@@ -205,6 +205,7 @@ public class MainPage extends VerticalLayout {
             resumenProximo,
             proxTerminaEn
         );
+
 
 
         return bloqueProximo;
