@@ -104,9 +104,10 @@ public class MainPage extends VerticalLayout {
             return;
         }
 
-        //Hacer que el cliente espere al backend y refresque automaticamente 
+        //todo: Hacer que el cliente espere al backend y refresque automaticamente 
         scheduleService.actualizarSchedule(descripcion);
         //tareaActual = tareaService.crearTarea(descripcion);
+        //falta conectarlo con el objeto del cliente para poder realizar el todo
         tiempoActual = null;
         actualizarBloqueActual();
         dialog.close();
