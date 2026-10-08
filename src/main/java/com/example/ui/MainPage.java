@@ -69,8 +69,7 @@ public class MainPage extends VerticalLayout {
     //#######----[END Listeners]----#######
 
     //####TEST####
-    scheduleService.actualizarSchedule("Estudiar 1 Hora en 1 minuto mas");
-
+    
 
     add(appTitle, bloqueActual, crearBloqueProximo(), bloqueControles, nuevaTarea);}
 
@@ -105,7 +104,9 @@ public class MainPage extends VerticalLayout {
             return;
         }
 
-        tareaActual = tareaService.crearTarea(descripcion);
+        //Hacer que el cliente espere al backend y refresque automaticamente 
+        scheduleService.actualizarSchedule(descripcion);
+        //tareaActual = tareaService.crearTarea(descripcion);
         tiempoActual = null;
         actualizarBloqueActual();
         dialog.close();
