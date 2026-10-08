@@ -8,8 +8,6 @@ import com.example.domain.Tarea;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-//import com.vaadin.flow.component.button.ButtonVariant;
-//import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
