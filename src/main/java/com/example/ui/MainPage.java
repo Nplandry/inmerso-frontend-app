@@ -27,6 +27,7 @@ public class MainPage extends VerticalLayout {
     private final ScheduleAppService scheduleService;
 
     private final VerticalLayout bloqueActual = new VerticalLayout();
+    private final VerticalLayout bloqueProximo = new VerticalLayout();
     private Tarea tareaActual;
     private Integer tiempoActual;
     private final Button listoButton;
@@ -68,7 +69,6 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
 
-    //####TEST####
     
 
     add(appTitle, bloqueActual, crearBloqueProximo(), bloqueControles, nuevaTarea);}
@@ -106,7 +106,7 @@ public class MainPage extends VerticalLayout {
 
         //todo: Hacer que el cliente espere al backend y refresque automaticamente 
         scheduleService.actualizarSchedule(descripcion);
-        //tareaActual = tareaService.crearTarea(descripcion);
+        tareaActual = tareaService.crearTarea(descripcion); // Debe ser a la proxima, no
         //falta conectarlo con el objeto del cliente para poder realizar el todo
         tiempoActual = null;
         actualizarBloqueActual();
@@ -189,26 +189,26 @@ public class MainPage extends VerticalLayout {
                 ? 0
                 : nextSchedule.nextStartsInMinutes();
 
+        /*#####IGNORAR POR AHORA##### */
         var tituloProximo = new H2("PROXIMO BLOQUE");
         tituloProximo.addClassName("block-title");
-
         var descProximo = new H3(siguienteTarea);
         descProximo.addClassName("task-title");
-
         var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
         resumenProximo.addClassName("next-task-desc");
-
         var proxTerminaEn = new H3("Empieza en: " + tiempoSiguiente + " MIN");
         proxTerminaEn.addClassName("task-countdown");
+        bloqueProximo.setPadding(false);
+        bloqueProximo.addClassNames("focus-block", "focus-block--next");
+        /*#####FIN IGNORAR POR AHORA##### */
 
-        var bloqueProximo = new VerticalLayout(
+        bloqueProximo.add(
             tituloProximo,
             descProximo,
             resumenProximo,
             proxTerminaEn
         );
-        bloqueProximo.setPadding(false);
-        bloqueProximo.addClassNames("focus-block", "focus-block--next");
+
 
         return bloqueProximo;
     }
