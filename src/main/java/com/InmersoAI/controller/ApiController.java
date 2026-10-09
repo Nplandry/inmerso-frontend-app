@@ -1,9 +1,11 @@
-package com.example.controller;
+package com.InmersoAI.controller;
 
-import com.example.app.TareaAppService;
-import com.example.domain.Tarea;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.InmersoAI.app.TareaAppService;
+import com.InmersoAI.domain.Tarea;
+
 import java.util.List;
 
 @RestController

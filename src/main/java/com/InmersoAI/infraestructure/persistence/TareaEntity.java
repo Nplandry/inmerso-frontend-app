@@ -1,4 +1,4 @@
-package com.example.infraestructure.persistence;
+package com.InmersoAI.infraestructure.persistence;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

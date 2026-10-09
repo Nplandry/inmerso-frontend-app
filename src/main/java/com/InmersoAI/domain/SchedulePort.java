@@ -1,4 +1,4 @@
-package com.example.domain;
+package com.InmersoAI.domain;
 
 import java.util.Optional;
 

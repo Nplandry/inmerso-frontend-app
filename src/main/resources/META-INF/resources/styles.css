@@ -24,7 +24,7 @@ html {
     background: radial-gradient(circle at 50% 0%, #11151F 0%, var(--inm-bg) 75%);
     color: var(--inm-text-primary);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    gap: .5rem !important;
+    gap: .9rem !important;
     box-sizing: border-box;
     display: flex;
     padding: 3vw 20vw;
@@ -44,11 +44,10 @@ html {
 
 .focus-block--current {
     width: 100%;
-    background: linear-gradient(145deg, rgba(42, 201, 222, 0.08) 0%, rgba(18, 20, 28, 0.85) 100%) !important;
-    border: 1px solid rgba(42, 201, 222, 0.3) !important;
+    background: linear-gradient(145deg, rgba(42, 201, 222, 0.05) 0%, rgba(18, 20, 28, 0.05) 100%) !important;
     border-radius: 1.75rem !important;
     padding: 1.5rem !important;
-    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(42, 201, 222, 0.15);
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.3), 0 0 20px -2px rgba(42, 201, 222, 0.03);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     box-sizing: border-box;
@@ -71,8 +70,8 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: -0.7rem; 
 }
-
 
 .block-header h1 {
     font-size: 0.68rem !important;
@@ -127,28 +126,31 @@ html {
     color: var(--inm-cyan) !important;
     margin-top: 1rem !important;
     font-weight: 600;
-    background: rgba(42, 201, 222, 0.1);
-    border: 1px solid rgba(42, 201, 222, 0.2);
+    background: rgba(42, 201, 222, 0.08);
+    border: 1px solid rgba(42, 201, 222, 0.25);
     padding: 0.35rem 0.75rem;
     border-radius: 9999px;
     display: inline-block;
     width: fit-content;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 .focus-block--next {
     width: 100%;
-    background: rgba(18, 20, 28, 0.35) !important;
-    border: 1px solid rgba(255, 176, 32, 0.15) !important;
-    border-radius: 1.5rem !important;
-    padding: 1.25rem !important;
     box-sizing: border-box;
-    opacity: 0.90;
-    transition: opacity 0.2s ease, border-color 0.2s ease;
-}
-
-.focus-block--next:hover {
-    opacity: 1;
-    border-color: rgba(255, 176, 32, 0.3) !important;
+    transition: opacity 0.2s, border-color 0.2s;
+    min-height: 150px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    position: relative;
+    overflow: hidden;
+    opacity: 0.6;
+    border-top-left-radius: 1.5rem !important;
+    border-top-right-radius: 1.5rem !important;
+    padding: 0.8rem 1.25rem 1.25rem !important;
+    background: linear-gradient(rgb(18, 20, 28) -20%, rgba(42, 201, 222, 0.08) 30%, rgba(42, 201, 222, 0) 90%) !important;
 }
 
 .block-title {
@@ -193,13 +195,6 @@ html {
     font-weight: 700;
     line-height: 1.4;
     margin: 0 !important;
-}
-
-.focus-block--current .empty-task-message {
-    color: #FFFFFF !important;
-}
-
-.focus-block--next .empty-task-message {
     color: #FFFFFF !important;
 }
 
@@ -220,69 +215,116 @@ html {
 }
 
 .action-btn {
+    position: relative;
     border-radius: 1.15rem !important;
     font-weight: 700 !important;
     font-size: 0.875rem !important;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-sizing: border-box;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
 }
 
 .action-btn--primary {
-flex: 1;
-height: 3.5rem;
-background: rgba(26, 46, 34, 0.53) !important;
-color: rgba(40, 158, 83, 0.81) !important;
-border: 1px solid rgba(35, 71, 50, 0.4) !important;
+    flex: 1;
+    height: 3.5rem;
+    background: linear-gradient(135deg, rgba(48, 209, 88, 0.22) 0%, rgba(20, 80, 40, 0.28) 100%) !important;
+    color: #43EE6D !important;
+    border: 1px solid rgba(48, 209, 88, 0.3) !important;
+    box-shadow: 0 8px 20px -4px rgba(48, 209, 88, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    text-shadow: 0 0 12px rgba(48, 209, 88, 0.4);
 }
 
 .action-btn--primary:hover {
-    background: rgba(36, 69, 49, 0.28) !important;
-    border-color: rgba(46, 94, 65, 0.36) !important;
+    background: linear-gradient(135deg, rgba(48, 209, 88, 0.35) 0%, rgba(25, 95, 48, 0.42) 100%) !important;
+    border-color: rgba(48, 209, 88, 0.5) !important;
+    color: #65FF8C !important;
+    box-shadow: 0 12px 28px -4px rgba(48, 209, 88, 0.04),
+                0 0 15px rgba(48, 209, 88, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .action-btn--secondary {
     flex: 0.8;
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: #E2E8F0 !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     height: 3.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+    color: #F1F5F9 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.8rem !important;
+    box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .action-btn--secondary:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
     color: #FFFFFF !important;
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.5),
+                0 0 12px rgba(255, 255, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .action-btn--voice {
+    position: relative;
     width: 100%;
-    background: rgba(255, 255, 255, 0.03) !important;
-    color: var(--inm-text-secondary) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: 0.85rem !important;
-    font-size: 0.75rem !important;
-    font-weight: 600 !important;
     height: 3.2rem;
-    margin-top: .4rem;
+    margin-top: 0.4rem;
+    background: linear-gradient(135deg, rgba(42, 201, 222, 0.1) 0%, rgba(18, 20, 28, 0.3) 100%) !important;
+    color: #A5F3FC !important;
+    border: 1px solid rgba(42, 201, 222, 0.2) !important;
+    border-radius: 0.95rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.action-btn--voice::before {
+    background: linear-gradient(90deg, transparent, rgba(42, 201, 222, 0.6), transparent);
 }
 
 .action-btn--voice:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: linear-gradient(135deg, rgba(42, 201, 222, 0.2) 0%, rgba(20, 35, 45, 0.5) 100%) !important;
     color: #FFFFFF !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(42, 201, 222, 0.4) !important;
 }
 
 vaadin-dialog.modal-container::part(overlay) {
     margin: 0px;
     width: 80%;
-    background: rgb(28, 29, 33) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 1.25rem !important;
-    box-shadow: rgba(0, 0, 0, 0.6) 0px 20px 60px !important;
+    max-width: 500px;
+    background: linear-gradient(145deg, rgba(25, 28, 36, 0.85) 0%, rgba(13, 15, 20, 0.92) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.8), 
+                0 0 30px -5px rgba(42, 201, 222, 0.15) !important;
+    backdrop-filter: blur(32px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
     padding: 0px !important;
     color: rgb(255, 255, 255) !important;
+    overflow: hidden;
 }
 
 vaadin-dialog.modal-container::part(content) {
@@ -294,70 +336,96 @@ vaadin-dialog.modal-container::part(content) {
 
 vaadin-dialog.modal-container h2[slot="title"] {
     color: rgb(255, 255, 255) !important;
-    font-size: 1rem !important;
+    font-size: 1.05rem !important;
     font-weight: 700 !important;
+    letter-spacing: -0.01em;
     margin: 0px !important;
-    padding: 1rem 1.25rem !important;
+    padding: 1.25rem 1.5rem 0.75rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 vaadin-dialog.modal-container::part(footer) {
     align-self: center;
     display: flex !important;
     gap: 0.75rem !important;
-    padding: 0.75rem 1.25rem 1.25rem !important;
+    padding: 1rem 1.5rem 1.5rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-end;
 }
 
-/* Fuerza al campo de texto a ocupar el 100% del contenedor */
 vaadin-dialog.modal-container vaadin-text-field {
     width: 100% !important;
     box-sizing: border-box !important;
+    padding: 0 1.5rem;
 }
 
 vaadin-dialog.modal-container vaadin-text-field::part(input-field) {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 0.75rem !important;
+    border-radius: 0.85rem !important;
     color: rgb(255, 255, 255) !important;
+    backdrop-filter: blur(12px);
+    transition: all 0.2s ease;
+}
+
+vaadin-dialog.modal-container vaadin-text-field[focused]::part(input-field) {
+    border-color: var(--inm-cyan) !important;
+    box-shadow: 0 0 12px rgba(42, 201, 222, 0.25) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
 }
 
 vaadin-dialog.modal-container vaadin-text-field::part(label) {
-    color: rgb(156, 163, 175) !important;
+    color: var(--inm-text-secondary) !important;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 vaadin-dialog.modal-container vaadin-button {
-    border-radius: 0.75rem !important;
-    font-weight: 600 !important;
+    border-radius: 0.85rem !important;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    height: 2.75rem !important;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="primary"] {
-    background: rgb(42, 201, 222) !important;
-    color: rgb(18, 19, 22) !important;
-    border: medium !important;
+    background: linear-gradient(135deg, rgba(42, 201, 222, 0.9) 0%, rgba(20, 150, 175, 0.9) 100%) !important;
+    color: #090A0D !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(42, 201, 222, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="primary"]:hover {
-    background: rgb(36, 181, 200) !important;
+    background: linear-gradient(135deg, rgba(50, 220, 240, 1) 0%, rgba(30, 170, 195, 1) 100%) !important;
+    box-shadow: 0 6px 20px rgba(42, 201, 222, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+    transform: translateY(-1px);
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="secondary"] {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: rgb(255, 255, 255) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #E2E8F0 !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(10px) !important;
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="secondary"]:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #FFFFFF !important;
 }
 
 vaadin-dialog.modal-container::part(backdrop) {
-    background-color: rgba(0, 0, 0, 0.7) !important;
+    background-color: rgba(4, 5, 8, 0.75) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
-
 
 .focus-block--completed {
     width: 100%;
     background: linear-gradient(145deg, rgba(48, 209, 88, 0.08) 0%, rgba(18, 20, 28, 0.85) 100%) !important;
-    border: 1px solid rgba(48, 209, 88, 0.35) !important;
+    border: 1px solid rgba(48, 209, 88, 0.25) !important;
     border-radius: 1.75rem !important;
     padding: 1.5rem 1.5rem 2rem 1.5rem !important;
     box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(48, 209, 88, 0.15);
@@ -367,7 +435,6 @@ vaadin-dialog.modal-container::part(backdrop) {
     position: relative;
     overflow: hidden;
 }
-
 
 .focus-block--completed::before {
     content: '';
@@ -412,12 +479,12 @@ vaadin-dialog.modal-container::part(backdrop) {
 }
 
 .focus-block--completed, .focus-unavailable-task {
-    color: black;
+    color: #FFFFFF;
 }
 
 .focus-block--completed.focus-unavailable-task {
     background: linear-gradient(145deg, rgba(255, 149, 0, 0.08) 0%, rgba(18, 20, 28, 0.85) 100%) !important;
-    border: 1px solid rgba(255, 149, 0, 0.35) !important;
+    border: 1px solid rgba(255, 149, 0, 0.25) !important;
     box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(255, 149, 0, 0.15);
     margin-top: 12px;
 }
@@ -433,4 +500,19 @@ vaadin-dialog.modal-container::part(backdrop) {
 .focus-block--completed.focus-unavailable-task h1::before {
     background-color: #FF9500;
     box-shadow: 0 0 8px #FF9500;
+}
+
+.SkeletonBlock {
+    margin-top: 1.8vw;
+    background: linear-gradient(0deg, rgb(18, 20, 28) 0%, rgba(42, 201, 222, 0.08) 30%, rgba(42, 201, 222, 0) 80%) !important;
+    opacity: 50%;
+    height: 80px;
+    border-bottom-left-radius: 1.5rem !important;
+    border-bottom-right-radius: 1.5rem !important;
+    border: 1px solid rgba(42, 201, 222, 0.03) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 }

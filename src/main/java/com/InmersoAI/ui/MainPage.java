@@ -1,10 +1,11 @@
-package com.example.ui;
+package com.InmersoAI.ui;
+import com.InmersoAI.app.ScheduleAppService;
+import com.InmersoAI.app.TareaAppService;
+import com.InmersoAI.domain.Schedule;
+import com.InmersoAI.domain.Tarea;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
-import com.example.app.ScheduleAppService;
-import com.example.app.TareaAppService;
-import com.example.domain.Schedule;
-import com.example.domain.Tarea;
+
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -55,6 +56,9 @@ public class MainPage extends VerticalLayout {
         bloqueActual.setPadding(false);
         var bloqueControles = new HorizontalLayout(agregarTiempoButton, listoButton);
         bloqueControles.addClassName("controls-container");
+
+        var skeletonBloque = new VerticalLayout();
+        skeletonBloque.addClassName("SkeletonBlock");
         /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
         //#######--[Listeners]----#######
@@ -67,7 +71,7 @@ public class MainPage extends VerticalLayout {
     //#######----[END Listeners]----#######
     
 
-    add(appTitle, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);}
+    add(appTitle, skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);}
 
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal() {

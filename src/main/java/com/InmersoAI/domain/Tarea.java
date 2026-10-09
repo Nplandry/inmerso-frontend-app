@@ -1,4 +1,4 @@
-package com.example.domain;
+package com.InmersoAI.domain;
 
 import java.time.LocalTime;
 import java.time.ZoneId;

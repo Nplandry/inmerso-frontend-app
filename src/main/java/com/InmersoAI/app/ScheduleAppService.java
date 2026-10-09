@@ -1,9 +1,10 @@
-package com.example.app;
+package com.InmersoAI.app;
 
-import com.example.domain.FocusScheduleRequest;
-import com.example.domain.Schedule;
-import com.example.domain.SchedulePort;
 import org.springframework.stereotype.Service;
+
+import com.InmersoAI.domain.FocusScheduleRequest;
+import com.InmersoAI.domain.Schedule;
+import com.InmersoAI.domain.SchedulePort;
 
 import java.util.Optional;
 

@@ -1,5 +1,5 @@
-package com.example.ui;
-import com.example.domain.Schedule;
+package com.InmersoAI.ui;
+import com.InmersoAI.domain.Schedule;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 

@@ -1,4 +1,4 @@
-package com.example.ui;
+package com.InmersoAI.ui;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;

@@ -1,8 +1,9 @@
-package com.example.infraestructure.persistence;
+package com.InmersoAI.infraestructure.persistence;
 
-import com.example.domain.Tarea;
-import com.example.domain.TareaRestPort;
 import org.springframework.stereotype.Repository;
+
+import com.InmersoAI.domain.Tarea;
+import com.InmersoAI.domain.TareaRestPort;
 
 import java.util.List;
 import java.util.Optional;

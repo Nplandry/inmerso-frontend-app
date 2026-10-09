@@ -1,7 +1,8 @@
-package com.example.infraestructure.external.dto;
+package com.InmersoAI.infraestructure.external.dto;
 
-import com.example.domain.Schedule;
 import org.springframework.stereotype.Component;
+
+import com.InmersoAI.domain.Schedule;
 
 import java.util.Optional;
 

@@ -1,12 +1,4 @@
-package com.example.infraestructure.external;
-
-import com.example.app.ScheduleAppService;
-import com.example.domain.FocusScheduleRequest;
-import com.example.domain.Schedule;
-import com.example.domain.SchedulePort;
-import com.example.domain.Tarea;
-import com.example.infraestructure.external.dto.ScheduleMapper;
-import com.example.infraestructure.external.dto.ScheduleResponse;
+package com.InmersoAI.infraestructure.external;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import com.InmersoAI.domain.FocusScheduleRequest;
+import com.InmersoAI.domain.Schedule;
+import com.InmersoAI.domain.SchedulePort;
+import com.InmersoAI.infraestructure.external.dto.ScheduleMapper;
+import com.InmersoAI.infraestructure.external.dto.ScheduleResponse;
+
 import org.springframework.http.MediaType;
 import java.util.Optional;
 import java.util.logging.Level;

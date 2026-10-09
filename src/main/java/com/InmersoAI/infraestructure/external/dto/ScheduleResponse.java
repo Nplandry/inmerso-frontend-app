@@ -1,4 +1,4 @@
-package com.example.infraestructure.external.dto;
+package com.InmersoAI.infraestructure.external.dto;
 
 import java.util.List;
 
