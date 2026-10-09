@@ -183,9 +183,6 @@ public class MainPage extends VerticalLayout {
                 : new BloqueProximaTarea(tarea, tiempoVisible(tarea));
     }
   
-    //new BloqueProximaTarea(tarea, tiempoVisible(tarea));
-
-
 
     private int tiempoVisible(Tarea tarea) {
         return tiempoActual != null

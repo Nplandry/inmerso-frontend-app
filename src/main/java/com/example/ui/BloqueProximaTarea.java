@@ -2,6 +2,7 @@ package com.example.ui;
 
 import com.example.domain.Tarea;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 
 public final class BloqueProximaTarea extends BloqueTarea {
@@ -11,7 +12,7 @@ public final class BloqueProximaTarea extends BloqueTarea {
     }
 
     public BloqueProximaTarea(Tarea tarea, int minutosRestantes) {
-        Component tituloEncabezado = encabezado("PRÓXIMO BLOQUE");
+        H2 tituloEncabezado = new H2("PROXIMO BLOQUE");
         tituloEncabezado.addClassName("block-title");
 
         Component tituloTarea = titulo(tarea);
@@ -20,14 +21,14 @@ public final class BloqueProximaTarea extends BloqueTarea {
         H3 descTarea = descripcion(tarea);
         descTarea.addClassName("next-task-desc");
 
-        H3 cuentaRegresiva = new H3("Empieza en: " + minutosRestantes + " MIN");
-        cuentaRegresiva.addClassName("task-countdown");
+        H3 proxTerminaEn = new H3("Empieza en: " + minutosRestantes + " MIN");
+        proxTerminaEn.addClassName("task-countdown");
 
         add(
             tituloEncabezado,
             tituloTarea,
             descTarea,
-            cuentaRegresiva
+            proxTerminaEn
         );
 
         setPadding(false);
