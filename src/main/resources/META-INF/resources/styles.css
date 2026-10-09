@@ -71,7 +71,6 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
 }
 
 
@@ -158,7 +157,7 @@ html {
     color: var(--inm-amber) !important;
     text-transform: uppercase;
     font-weight: 700;
-    margin: 0 0 0.5rem 0 !important;
+    margin: 0 !important;
     display: flex;
     align-items: center;
     gap: 0.35rem;
@@ -186,6 +185,22 @@ html {
     font-weight: 400;
     color: var(--inm-text-muted) !important;
     margin: 0 !important;
+}
+
+.focus-block--current .empty-task-message,
+.focus-block--next .empty-task-message {
+    font-size: 1.15rem !important;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 !important;
+}
+
+.focus-block--current .empty-task-message {
+    color: #FFFFFF !important;
+}
+
+.focus-block--next .empty-task-message {
+    color: #FFFFFF !important;
 }
 
 .focus-block--next .task-countdown {

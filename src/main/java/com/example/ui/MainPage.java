@@ -8,13 +8,9 @@ import com.example.domain.Tarea;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-//import com.vaadin.flow.component.button.ButtonVariant;
-//import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-//import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -38,6 +34,7 @@ public class MainPage extends VerticalLayout {
         this.tareaService = tareaService;
         this.scheduleService = scheduleService;
         addClassName("main-view");
+        bloqueProximo.setPadding(false); 
     
         listoButton = new Button("Listo");
         listoButton.addClassNames("action-btn", "action-btn--primary");
@@ -68,11 +65,9 @@ public class MainPage extends VerticalLayout {
         listoButton.addClickListener(click -> completarTareaActual());
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
-
-    //####TEST####
     
 
-    add(appTitle, bloqueActual, crearBloqueProximo(), bloqueControles, nuevaTarea);}
+    add(appTitle, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);}
 
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal() {
@@ -105,20 +100,26 @@ public class MainPage extends VerticalLayout {
             return;
         }
 
-        //todo: Hacer que el cliente espere al backend y refresque automaticamente 
-        scheduleService.actualizarSchedule(descripcion);
-        tareaActual = tareaService.crearTarea(descripcion); // Debe ser a la proxima, no
-        //falta conectarlo con el objeto del cliente para poder realizar el todo
-        tiempoActual = null;
-        //actualizarBloqueActual(); no hay porque ejecutar este metodo porque esta enfocado a la consistencia....
-        bloqueProximo.removeAll();
+        var scheduleActualizado = scheduleService.actualizarSchedule(descripcion);
+        tareaService.crearTarea(descripcion);
+        scheduleActualizado.ifPresentOrElse(
+                this::actualizarBloqueSiguiente,
+                this::actualizarBloqueSiguiente
+        );
         dialog.close();
-        boolean hayTarea = tareaActual != null;
-        listoButton.setEnabled(hayTarea);
-        if (hayTarea) {
-           add(crearBloqueProximo(tareaActual));
-        }
+    }
 
+    private void actualizarBloqueSiguiente() {
+
+        scheduleService.obtenerSchedule().ifPresentOrElse(
+                this::actualizarBloqueSiguiente,
+                () -> actualizarBloqueSiguiente(null)
+        );
+    }
+
+    private void actualizarBloqueSiguiente(Schedule schedule) {
+        bloqueProximo.removeAll();
+        bloqueProximo.add(crearBloqueProximo(schedule));
     }
 
     private void actualizarBloqueActual() {
@@ -128,7 +129,23 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.setEnabled(hayTarea);
         if (hayTarea) {
             bloqueActual.add(crearBloque(tareaActual));
+        } else {
+            bloqueActual.add(crearBloqueActualVacio());
         }
+    }
+
+    private Component crearBloqueActualVacio() {
+        H1 estado = new H1("HACIENDO AHORA");
+        HorizontalLayout encabezado = new HorizontalLayout(estado);
+        encabezado.addClassName("block-header");
+
+        H2 mensaje = new H2("No hay tarea en curso");
+        mensaje.addClassNames("task-title", "empty-task-message");
+
+        VerticalLayout bloqueVacio = new VerticalLayout(encabezado, mensaje);
+        bloqueVacio.setPadding(false);
+        bloqueVacio.addClassNames("focus-block", "focus-block--current");
+        return bloqueVacio;
     }
 
     private void completarTareaActual() {
@@ -155,19 +172,26 @@ public class MainPage extends VerticalLayout {
         actualizarBloqueActual();
     }
     /*######--FIN: LOGICA DEL MODAL--######*/
-
-    /*######--LOGICA DEL BACKEND [se ejecuta al cargar la pagina]--######*/
     @PostConstruct
     public void cargarTareaDelBackend(){
-        scheduleService.obtenerSchedule().ifPresent(schedule -> {
+        scheduleService.obtenerSchedule().ifPresentOrElse(schedule -> {
             String tituloTareaActual = schedule.currentTaskTitle();
             if (tituloTareaActual != null && !tituloTareaActual.isBlank()) {
                 tareaActual = tareaService.crearTarea(tituloTareaActual);
                 tiempoActual = schedule.currentEndsInMinutes() == null
                         ? 0
                         : schedule.currentEndsInMinutes();
-                actualizarBloqueActual();
+            } else {
+                tareaActual = null;
+                tiempoActual = null;
             }
+            actualizarBloqueActual();
+            actualizarBloqueSiguiente(schedule);
+        }, () -> {
+            tareaActual = null;
+            tiempoActual = null;
+            actualizarBloqueActual();
+            actualizarBloqueSiguiente(null);
         });
     }
     /*######--FIN LOGICA DEL BACKEND [se ejecuta al cargar la pagina]--######*/
@@ -177,56 +201,14 @@ public class MainPage extends VerticalLayout {
                 ? new BloqueSinTareas()
                 : new BloqueTareaActual(tarea, tiempoVisible(tarea));
     }
-    private Component crearBloqueProximo(Tarea tarea) {
-        return tarea == null
-                ? new BloqueSinTareas()
-                : new BloqueProximaTarea(tarea, tiempoVisible(tarea));
+    private Component crearBloqueProximo(Schedule schedule) {
+        return new BloqueProximaTarea(schedule);
     }
-  
-
     private int tiempoVisible(Tarea tarea) {
         return tiempoActual != null
                 ? tiempoActual
                 : tarea.getTiempoRestanteMinutos();
     }
-
-    private Component crearBloqueProximo() {
-        var schedule = scheduleService.obtenerSchedule();
-        if (schedule.isEmpty() || schedule.get().nextTaskTitle() == null) {
-            return NoBloquesSiguentesDisponibles();
-        }
-
-        Schedule nextSchedule = schedule.get();
-        String siguienteTarea = !nextSchedule.nextTaskTitle().isBlank()
-                ? nextSchedule.nextTaskTitle()
-                : "Tarea Personalizada";
-        Integer tiempoSiguiente = nextSchedule.nextStartsInMinutes() == null
-                ? 0
-                : nextSchedule.nextStartsInMinutes();
-
-        /*#####IGNORAR POR AHORA##### */
-        var tituloProximo = new H2("PROXIMO BLOQUE");
-        tituloProximo.addClassName("block-title");
-        var descProximo = new H3(siguienteTarea);
-        descProximo.addClassName("task-title");
-        var resumenProximo = new H3("Descripcion: Descripcion del nuevo entrenamiento");
-        resumenProximo.addClassName("next-task-desc");
-        var proxTerminaEn = new H3("Empieza en: " + tiempoSiguiente + " MIN");
-        proxTerminaEn.addClassName("task-countdown");
-        /*#####FIN IGNORAR POR AHORA##### */
-
-        bloqueProximo.add(
-            tituloProximo,
-            descProximo,
-            resumenProximo,
-            proxTerminaEn
-        );
-        bloqueProximo.setPadding(false);
-        bloqueProximo.addClassNames("focus-block", "focus-block--next");
-
-        return bloqueProximo;
-    }
-
     public Component NoBloquesSiguentesDisponibles() {
         return new BloqueSinTareas();
     }

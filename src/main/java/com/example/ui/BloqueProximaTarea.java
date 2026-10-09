@@ -1,41 +1,39 @@
 package com.example.ui;
-
-import com.example.domain.Tarea;
-import com.vaadin.flow.component.Component;
+import com.example.domain.Schedule;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 
 public final class BloqueProximaTarea extends BloqueTarea {
 
-    public BloqueProximaTarea(Tarea tarea) {
-        this(tarea, tarea.getTiempoRestanteMinutos());
-    }
+    public BloqueProximaTarea(Schedule schedule) {
+        H2 encabezado = new H2("PROXIMO BLOQUE");
+        encabezado.addClassName("block-title");
+        add(encabezado);
 
-    public BloqueProximaTarea(Tarea tarea, int minutosRestantes) {
-        H2 tituloEncabezado = new H2("PROXIMO BLOQUE");
-        tituloEncabezado.addClassName("block-title");
+        String tituloActual = schedule == null ? null : schedule.currentTaskTitle();
+        String tituloProximo = schedule == null ? null : schedule.nextTaskTitle();
+        boolean hayProximo = tituloProximo != null
+                && !tituloProximo.isBlank()
+                && (tituloActual == null || tituloActual.isBlank()
+                    || !tituloActual.trim().equalsIgnoreCase(tituloProximo.trim()));
 
-        Component tituloTarea = titulo(tarea);
-        tituloTarea.addClassName("task-title");
+        if (!hayProximo) {
+            H3 sinTarea = new H3("No hay tareas para después");
+            sinTarea.addClassNames("next-task-desc", "empty-task-message");
+            add(sinTarea);
+        } else {
+            H3 tituloTarea = new H3(tituloProximo);
+            tituloTarea.addClassName("task-title");
 
-        H3 descTarea = descripcion(tarea);
-        descTarea.addClassName("next-task-desc");
+            int minutosHastaInicio = schedule.nextStartsInMinutes() == null
+                    ? 0
+                    : schedule.nextStartsInMinutes();
+            H3 cuentaRegresiva = new H3("Empieza en: " + minutosHastaInicio + " MIN");
+            cuentaRegresiva.addClassName("task-countdown");
 
-        H3 proxTerminaEn = new H3("Empieza en: " + minutosRestantes + " MIN");
-        proxTerminaEn.addClassName("task-countdown");
+            add(tituloTarea, cuentaRegresiva);
+        }
 
-        add(
-            tituloEncabezado,
-            tituloTarea,
-            descTarea,
-            proxTerminaEn
-        );
-
-        setPadding(false);
         addClassNames("focus-block", "focus-block--next");
-    }
-
-    private H3 descripcion(Tarea tarea) {
-        return new H3("Descripción: " + tarea.getDescripcion());
     }
 }
