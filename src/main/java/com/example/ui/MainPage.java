@@ -8,10 +8,13 @@ import com.example.domain.Tarea;
 import jakarta.annotation.PostConstruct;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+//import com.vaadin.flow.component.button.ButtonVariant;
+//import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
+//import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -66,6 +69,7 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
 
+    //####TEST####
     
 
     add(appTitle, bloqueActual, crearBloqueProximo(), bloqueControles, nuevaTarea);}
@@ -106,8 +110,15 @@ public class MainPage extends VerticalLayout {
         tareaActual = tareaService.crearTarea(descripcion); // Debe ser a la proxima, no
         //falta conectarlo con el objeto del cliente para poder realizar el todo
         tiempoActual = null;
-        actualizarBloqueActual();
+        //actualizarBloqueActual(); no hay porque ejecutar este metodo porque esta enfocado a la consistencia....
+        bloqueProximo.removeAll();
         dialog.close();
+        boolean hayTarea = tareaActual != null;
+        listoButton.setEnabled(hayTarea);
+        if (hayTarea) {
+           add(crearBloqueProximo(tareaActual));
+        }
+
     }
 
     private void actualizarBloqueActual() {
@@ -116,7 +127,7 @@ public class MainPage extends VerticalLayout {
         listoButton.setEnabled(hayTarea);
         agregarTiempoButton.setEnabled(hayTarea);
         if (hayTarea) {
-            bloqueActual.add(crearBloque(tareaActual));}
+            bloqueActual.add(crearBloque(tareaActual));
         }
     }
 
@@ -145,7 +156,7 @@ public class MainPage extends VerticalLayout {
     }
     /*######--FIN: LOGICA DEL MODAL--######*/
 
-    /*######--LOGICA DEL BACKEND--######*/
+    /*######--LOGICA DEL BACKEND [se ejecuta al cargar la pagina]--######*/
     @PostConstruct
     public void cargarTareaDelBackend(){
         scheduleService.obtenerSchedule().ifPresent(schedule -> {
@@ -159,12 +170,22 @@ public class MainPage extends VerticalLayout {
             }
         });
     }
+    /*######--FIN LOGICA DEL BACKEND [se ejecuta al cargar la pagina]--######*/
 
     private Component crearBloque(Tarea tarea) {
         return tarea == null
                 ? new BloqueSinTareas()
                 : new BloqueTareaActual(tarea, tiempoVisible(tarea));
     }
+    private Component crearBloqueProximo(Tarea tarea) {
+        return tarea == null
+                ? new BloqueSinTareas()
+                : new BloqueProximaTarea(tarea, tiempoVisible(tarea));
+    }
+  
+    //new BloqueProximaTarea(tarea, tiempoVisible(tarea));
+
+
 
     private int tiempoVisible(Tarea tarea) {
         return tiempoActual != null
@@ -195,8 +216,6 @@ public class MainPage extends VerticalLayout {
         resumenProximo.addClassName("next-task-desc");
         var proxTerminaEn = new H3("Empieza en: " + tiempoSiguiente + " MIN");
         proxTerminaEn.addClassName("task-countdown");
-        bloqueProximo.setPadding(false);
-        bloqueProximo.addClassNames("focus-block", "focus-block--next");
         /*#####FIN IGNORAR POR AHORA##### */
 
         bloqueProximo.add(
@@ -205,8 +224,8 @@ public class MainPage extends VerticalLayout {
             resumenProximo,
             proxTerminaEn
         );
-
-
+        bloqueProximo.setPadding(false);
+        bloqueProximo.addClassNames("focus-block", "focus-block--next");
 
         return bloqueProximo;
     }
