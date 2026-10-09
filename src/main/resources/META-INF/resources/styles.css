@@ -9,7 +9,7 @@ html {
   --inm-bg: #090A0D;
   --inm-cyan: #2AC9DE;
   --inm-green: #30D158;
-  --inm-amber: #FFB020;
+  --inm-amber: rgb(2, 132, 199);
   --inm-text-primary: #FFFFFF;
   --inm-text-secondary: #94A3B8;
   --inm-text-muted: #93a5bf;
@@ -53,6 +53,7 @@ html {
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
+    min-height: 14em;
 }
 
 .focus-block--current::before {
@@ -83,16 +84,6 @@ html {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-}
-
-.block-header h1::before {
-    content: '';
-    display: inline-block;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background-color: var(--inm-cyan);
-    box-shadow: 0 0 8px var(--inm-cyan);
 }
 
 .task-time {
@@ -141,7 +132,7 @@ html {
     width: 100%;
     box-sizing: border-box;
     transition: opacity 0.2s, border-color 0.2s;
-    min-height: 150px;
+    min-height: 200px;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     position: relative;
@@ -163,16 +154,6 @@ html {
     display: flex;
     align-items: center;
     gap: 0.35rem;
-}
-
-.block-title::before {
-    content: '';
-    display: inline-block;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    border: 1.5px solid var(--inm-amber);
-    box-sizing: border-box;
 }
 
 .focus-block--next .task-title {
