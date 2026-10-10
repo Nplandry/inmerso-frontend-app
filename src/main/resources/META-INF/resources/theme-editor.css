@@ -1,0 +1,10 @@
+/*
+ * This file has been created by the Vaadin Theme Editor. Please note that
+ * manual changes to individual CSS properties may be overwritten by the theme editor.
+ */
+html {
+  --aura-base-size:12;
+  --aura-content-color-scheme:dark;
+  --aura-notification-color-scheme:dark;
+  color-scheme:light;
+}

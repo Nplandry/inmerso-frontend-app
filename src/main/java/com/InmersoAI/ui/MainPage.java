@@ -3,6 +3,7 @@ import com.InmersoAI.app.ScheduleAppService;
 import com.InmersoAI.app.TareaAppService;
 import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.Tarea;
+import com.InmersoAI.ui.Layouts.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 
@@ -17,7 +18,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
-@Route("")
+@Route(value = "", layout = MainLayout.class)
 public class MainPage extends VerticalLayout {
     
     private final TareaAppService tareaService;
@@ -47,8 +48,6 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.setEnabled(false);
 
         /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
-        var appTitle = new H1("Inmerso");
-        appTitle.addClassName("app-title");
         var nuevaTarea = new Button("Nueva Tarea");
         nuevaTarea.addClassNames("action-btn", "action-btn--voice");
         var todosLayout = new VerticalLayout();
@@ -71,7 +70,7 @@ public class MainPage extends VerticalLayout {
     //#######----[END Listeners]----#######
     
 
-    add(appTitle, skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);}
+    add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);}
 
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal() {

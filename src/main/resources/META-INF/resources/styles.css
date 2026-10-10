@@ -27,9 +27,10 @@ html {
     gap: .9rem !important;
     box-sizing: border-box;
     display: flex;
-    padding: 3vw 20vw;
+    /*padding: 0 20vw 3vw 20vw; para pc*/ 
+    padding: 0 10vw 3vw 10vw;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 !important;
     min-height: 100vh;
 }
 
@@ -484,7 +485,7 @@ vaadin-dialog.modal-container::part(backdrop) {
 }
 
 .SkeletonBlock {
-    margin-top: 1.8vw;
+    margin-top: 0 !important;
     background: linear-gradient(0deg, rgb(18, 20, 28) 0%, rgba(42, 201, 222, 0.08) 30%, rgba(42, 201, 222, 0) 80%) !important;
     opacity: 50%;
     height: 80px;
@@ -496,4 +497,29 @@ vaadin-dialog.modal-container::part(backdrop) {
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+vaadin-app-layout {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+vaadin-app-layout::part(content) {
+    height: 100%;
+    overflow-y: hidden;
+    overscroll-behavior-y: none;
+}
+
+.main-view {
+    height: 100%;
+    min-height: 0;
+    overflow-y: hidden;
+    overscroll-behavior-y: none;
 }
