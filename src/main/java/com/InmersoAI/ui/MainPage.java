@@ -69,9 +69,15 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
     
-
-    add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);}
-
+    /*LOGICA AUTENTIFICACION */
+       if(!false){
+            add(new H1("Falta Autenticar"));
+       } else {
+        add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
+        }
+    }
+    /*FIN LOGICA AUTENTIFICACION */
+    
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal() {
         Dialog dialog = new Dialog();
