@@ -84,7 +84,7 @@ public class MainPage extends VerticalLayout {
 
 
     /*LOGICA AUTENTIFICACION */
-       if(false){
+       if(!false){
             add(new H1("Falta Autenticar"), autentificationForm);
        } else {
         add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);

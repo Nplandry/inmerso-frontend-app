@@ -9,12 +9,19 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
+import com.vaadin.flow.router.RouterLink;
 
 public class MainLayout extends AppLayout {
 
+    //instanciar objeto, clase autentificaion...
+
     public MainLayout() {
-        createHeader();
-        createDrawer();
+        //if (authContext.isAuthenticated()) 
+        if (!true) {
+            //todo: Esta la mejor opcion en principios de java?
+            createHeader();
+            createDrawer();
+        }
     }
 
     private void createHeader() {
