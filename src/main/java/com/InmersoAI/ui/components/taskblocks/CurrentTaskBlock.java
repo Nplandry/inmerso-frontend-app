@@ -1,14 +1,14 @@
-package com.InmersoAI.ui;
+package com.InmersoAI.ui.components.taskblocks;
 
 import com.InmersoAI.domain.Tarea;
 import com.vaadin.flow.component.html.H3;
 
-public final class BloqueTareaActual extends BloqueTarea {
-    public BloqueTareaActual(Tarea tarea) {
+public final class CurrentTaskBlock extends TaskBlock {
+    public CurrentTaskBlock(Tarea tarea) {
         this(tarea, tarea.getTiempoRestanteMinutos());
     }
 
-    public BloqueTareaActual(Tarea tarea, int minutosRestantes) {
+    public CurrentTaskBlock(Tarea tarea, int minutosRestantes) {
         H3 cuentaRegresiva = new H3(
             "Termina en: " + minutosRestantes + " MIN"
         );

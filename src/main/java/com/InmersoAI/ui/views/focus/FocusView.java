@@ -1,9 +1,14 @@
-package com.InmersoAI.ui;
+package com.InmersoAI.ui.views.focus;
+
 import com.InmersoAI.app.ScheduleAppService;
 import com.InmersoAI.app.TareaAppService;
 import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.Tarea;
-import com.InmersoAI.ui.Layouts.MainLayout;
+import com.InmersoAI.ui.layouts.MainLayout;
+import com.InmersoAI.ui.components.taskblocks.CompletedTaskBlock;
+import com.InmersoAI.ui.components.taskblocks.CurrentTaskBlock;
+import com.InmersoAI.ui.components.taskblocks.EmptyTaskBlock;
+import com.InmersoAI.ui.components.taskblocks.NextTaskBlock;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 
@@ -20,7 +25,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 @Route(value = "", layout = MainLayout.class)
-public class MainPage extends VerticalLayout {
+public class FocusView extends VerticalLayout {
     
     private final TareaAppService tareaService;
     private final ScheduleAppService scheduleService;
@@ -33,7 +38,7 @@ public class MainPage extends VerticalLayout {
     private final Button agregarTiempoButton;
 
 
-    public MainPage(TareaAppService tareaService, ScheduleAppService scheduleService) {
+    public FocusView(TareaAppService tareaService, ScheduleAppService scheduleService) {
         this.tareaService = tareaService;
         this.scheduleService = scheduleService;
         addClassName("main-view");
@@ -81,7 +86,7 @@ public class MainPage extends VerticalLayout {
     //No llamar al backend / que pida autentificar
     //Ni renderizar navigator aun
 
-        if(!false){ add(new H1("Falta Autenticar"), autentificationForm); } else { 
+        if(false){ add(new H1("Falta Autenticar"), autentificationForm); } else { 
             add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea); } }
 
 
@@ -202,7 +207,7 @@ public class MainPage extends VerticalLayout {
         tareaService.completarTarea(tareaActual.getId())
                 .ifPresent(tarea -> tareaActual = tarea);
         bloqueActual.removeAll();
-        bloqueActual.add(new BloqueTareaCompletada(tareaActual));
+        bloqueActual.add(new CompletedTaskBlock(tareaActual));
         listoButton.setEnabled(false);
         agregarTiempoButton.setEnabled(false);
     }
@@ -245,11 +250,11 @@ public class MainPage extends VerticalLayout {
 
     private Component crearBloque(Tarea tarea) {
         return tarea == null
-                ? new BloqueSinTareas()
-                : new BloqueTareaActual(tarea, tiempoVisible(tarea));
+                ? new EmptyTaskBlock()
+                : new CurrentTaskBlock(tarea, tiempoVisible(tarea));
     }
     private Component crearBloqueProximo(Schedule schedule) {
-        return new BloqueProximaTarea(schedule);
+        return new NextTaskBlock(schedule);
     }
     private int tiempoVisible(Tarea tarea) {
         return tiempoActual != null
@@ -257,6 +262,6 @@ public class MainPage extends VerticalLayout {
                 : tarea.getTiempoRestanteMinutos();
     }
     public Component NoBloquesSiguentesDisponibles() {
-        return new BloqueSinTareas();
+        return new EmptyTaskBlock();
     }
 }

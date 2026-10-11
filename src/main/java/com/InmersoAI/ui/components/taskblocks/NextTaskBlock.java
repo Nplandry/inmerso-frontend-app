@@ -1,11 +1,11 @@
-package com.InmersoAI.ui;
+package com.InmersoAI.ui.components.taskblocks;
 import com.InmersoAI.domain.Schedule;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 
-public final class BloqueProximaTarea extends BloqueTarea {
+public final class NextTaskBlock extends TaskBlock {
 
-    public BloqueProximaTarea(Schedule schedule) {
+    public NextTaskBlock(Schedule schedule) {
         H2 encabezado = new H2("PROXIMO BLOQUE");
         encabezado.addClassName("block-title");
         add(encabezado);

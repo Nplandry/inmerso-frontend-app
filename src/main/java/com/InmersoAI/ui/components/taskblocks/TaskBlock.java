@@ -1,4 +1,4 @@
-package com.InmersoAI.ui;
+package com.InmersoAI.ui.components.taskblocks;
 
 import com.InmersoAI.domain.Tarea;
 import com.vaadin.flow.component.html.H1;
@@ -6,8 +6,8 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-public abstract class BloqueTarea extends VerticalLayout {
-    protected BloqueTarea() {
+public abstract class TaskBlock extends VerticalLayout {
+    protected TaskBlock() {
         setPadding(false);
     }
 
