@@ -13,6 +13,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -69,9 +70,22 @@ public class MainPage extends VerticalLayout {
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
     
+    var autentificationForm = new VerticalLayout();
+    autentificationForm.add(new H1("Inicio de sesion"));
+    var inputUser = new Input();
+    var inputContraseña = new Input();
+    var buttonLogin = new Button("Entrar");
+    autentificationForm.add(inputUser, inputContraseña, buttonLogin);
+    autentificationForm.add(new H2("No tienes cuenta?"), new Button("Crear Cuenta"));
+    //todo
+    //No llamar al backend / que pida autentificar
+    //Ni renderizar navigator aun
+
+
+
     /*LOGICA AUTENTIFICACION */
-       if(!false){
-            add(new H1("Falta Autenticar"));
+       if(false){
+            add(new H1("Falta Autenticar"), autentificationForm);
        } else {
         add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
         }
