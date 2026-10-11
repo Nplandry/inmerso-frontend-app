@@ -274,8 +274,6 @@ html {
     border-radius: 0.95rem !important;
     font-size: 0.78rem !important;
     font-weight: 600 !important;
-    box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .action-btn--voice::before {
@@ -371,12 +369,10 @@ vaadin-dialog.modal-container vaadin-button[theme~="primary"] {
     background: linear-gradient(135deg, rgba(42, 201, 222, 0.9) 0%, rgba(20, 150, 175, 0.9) 100%) !important;
     color: #090A0D !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    box-shadow: 0 4px 15px rgba(42, 201, 222, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
 vaadin-dialog.modal-container vaadin-button[theme~="primary"]:hover {
     background: linear-gradient(135deg, rgba(50, 220, 240, 1) 0%, rgba(30, 170, 195, 1) 100%) !important;
-    box-shadow: 0 6px 20px rgba(42, 201, 222, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
     transform: translateY(-1px);
 }
 

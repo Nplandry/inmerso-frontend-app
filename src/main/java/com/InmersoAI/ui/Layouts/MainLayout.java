@@ -1,5 +1,7 @@
 package com.InmersoAI.ui.layouts;
 
+import com.InmersoAI.ui.views.auth.LoginView;
+import com.InmersoAI.ui.views.auth.RegisterView;
 import com.InmersoAI.ui.views.focus.FocusView;
 import com.InmersoAI.ui.views.settings.*;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -8,6 +10,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 public class MainLayout extends AppLayout {
@@ -17,7 +20,6 @@ public class MainLayout extends AppLayout {
     public MainLayout() {
         //if (authContext.isAuthenticated())
         if (true) {
-            //todo: Esta la mejor opcion en principios de java?
             createHeader();
             createDrawer();
         }
@@ -38,9 +40,13 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
-        nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()
-));
+        if(false) {
+            nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
+            nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()));
+        } else {
+            nav.addItem(new SideNavItem("Logueo", LoginView.class, VaadinIcon.HOME.create()));
+            nav.addItem(new SideNavItem("Registro", RegisterView.class, VaadinIcon.HOME.create()));
+        }
 
         addToDrawer(nav);
     }

@@ -13,18 +13,23 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.PermitAll;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Input;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 @Route(value = "", layout = MainLayout.class)
+@PageTitle("Inicio")
+@PermitAll
 public class FocusView extends VerticalLayout {
     
     private final TareaAppService tareaService;
@@ -74,53 +79,8 @@ public class FocusView extends VerticalLayout {
         listoButton.addClickListener(click -> completarTareaActual());
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
-    
-    var autentificationForm = new VerticalLayout();
-    autentificationForm.add(new H1("Inicio de sesion"));
-    var inputUser = new Input();
-    var inputContraseña = new Input();
-    var buttonLogin = new Button("Entrar");
-    autentificationForm.add(inputUser, inputContraseña, buttonLogin);
-    autentificationForm.add(new H2("No tienes cuenta?"), new Button("Crear Cuenta"));
-    //todo
-    //No llamar al backend / que pida autentificar
-    //Ni renderizar navigator aun
-
-        if(false){ add(new H1("Falta Autenticar"), autentificationForm); } else { 
-            add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea); } }
-
-
-    /*LOGICA AUTENTIFICACION */
-    /* 
-       switch ("INVITADO") {
-    case "INVITADO":
-        // El usuario acaba de entrar y no ha iniciado sesión
-        add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea); 
-        break;
-
-    case false:
-        // Se registró pero falta completar su perfil (onboarding)
-        add(new H1("Completa tu perfil"), formularioOnboarding);
-        break;
-
-    case false:
-        // Estaba autenticado pero cerró sesión o expiró
-        add(new H1("Sesión finalizada"), mensajeDespedida, loginForm);
-        break;
-
-    case false:
-        // Usuario recurrente con sesión activa (Tu bloque 'else' original)
-        add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
-        break;
-
-    case false:
-        // Cuenta suspendida o verificación de correo pendiente
-        add(new H1("Cuenta Inactiva"), mensajeSoporte);
-        break;
+    add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
     }
-    } */
-    /*FIN LOGICA AUTENTIFICACION */
-    
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal() {
         Dialog dialog = new Dialog();
