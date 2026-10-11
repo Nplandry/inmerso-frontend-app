@@ -81,15 +81,39 @@ public class MainPage extends VerticalLayout {
     //No llamar al backend / que pida autentificar
     //Ni renderizar navigator aun
 
+        if(!false){ add(new H1("Falta Autenticar"), autentificationForm); } else { 
+            add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea); } }
 
 
     /*LOGICA AUTENTIFICACION */
-       if(!false){
-            add(new H1("Falta Autenticar"), autentificationForm);
-       } else {
+    /* 
+       switch ("INVITADO") {
+    case "INVITADO":
+        // El usuario acaba de entrar y no ha iniciado sesión
+        add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea); 
+        break;
+
+    case false:
+        // Se registró pero falta completar su perfil (onboarding)
+        add(new H1("Completa tu perfil"), formularioOnboarding);
+        break;
+
+    case false:
+        // Estaba autenticado pero cerró sesión o expiró
+        add(new H1("Sesión finalizada"), mensajeDespedida, loginForm);
+        break;
+
+    case false:
+        // Usuario recurrente con sesión activa (Tu bloque 'else' original)
         add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
-        }
+        break;
+
+    case false:
+        // Cuenta suspendida o verificación de correo pendiente
+        add(new H1("Cuenta Inactiva"), mensajeSoporte);
+        break;
     }
+    } */
     /*FIN LOGICA AUTENTIFICACION */
     
     /*######--LOGICA DEL MODAL--######*/
