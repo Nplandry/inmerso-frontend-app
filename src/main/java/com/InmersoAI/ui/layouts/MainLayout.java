@@ -1,6 +1,7 @@
 package com.InmersoAI.ui.layouts;
 
 import com.InmersoAI.ui.views.focus.FocusView;
+import com.InmersoAI.ui.views.settings.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
@@ -38,6 +39,8 @@ public class MainLayout extends AppLayout {
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
+        nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()
+));
 
         addToDrawer(nav);
     }
