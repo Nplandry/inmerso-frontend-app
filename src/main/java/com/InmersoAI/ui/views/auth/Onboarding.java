@@ -205,7 +205,7 @@ public class Onboarding extends VerticalLayout {
         plansLayout.getStyle().set("flex-wrap", "wrap");
 
         VerticalLayout freePlan = buildPlanCard("Free", "$0 / mes", "Ideal para explorar", "Acceso a funcionalidades básicas", "Comenzar Gratis", false, () -> finishOnboarding("Free"));
-        VerticalLayout proPlan = buildPlanCard("Pro", "$19 / mes", "Para usuarios avanzados", "Modelos IA sin límites + Soporte prioritario", "Probar Pro 14 Días", true, () -> finishOnboarding("Pro"));
+        VerticalLayout proPlan = buildPlanCard("Pro", "$19 / mes", "Para usuarios avanzados", "Modelos IA sin límites y funcionalidades unicas", "Probar Pro 14 Días", true, () -> finishOnboarding("Pro"));
 
         plansLayout.add(freePlan, proPlan);
         step.add(title, subtitle, plansLayout);
