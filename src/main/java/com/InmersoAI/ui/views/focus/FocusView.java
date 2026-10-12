@@ -5,6 +5,7 @@ import com.InmersoAI.app.TareaAppService;
 import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.Tarea;
 import com.InmersoAI.ui.layouts.MainLayout;
+import com.InmersoAI.ui.views.auth.LoginView;
 import com.InmersoAI.ui.components.taskblocks.CompletedTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.CurrentTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.EmptyTaskBlock;
@@ -13,24 +14,27 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.DenyAll;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Input;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
-@Route(value = "", layout = MainLayout.class)
+
+
+@Route(value = "focus", layout = MainLayout.class)
 @PageTitle("Inicio")
-@PermitAll
-public class FocusView extends VerticalLayout {
+@DenyAll
+public class FocusView extends VerticalLayout implements BeforeEnterObserver {
     
     private final TareaAppService tareaService;
     private final ScheduleAppService scheduleService;
@@ -79,8 +83,12 @@ public class FocusView extends VerticalLayout {
         listoButton.addClickListener(click -> completarTareaActual());
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
+    
     add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
+    
     }
+    
+    
     /*######--LOGICA DEL MODAL--######*/
     public void abrirModal() {
         Dialog dialog = new Dialog();
@@ -223,5 +231,15 @@ public class FocusView extends VerticalLayout {
     }
     public Component NoBloquesSiguentesDisponibles() {
         return new EmptyTaskBlock();
+    }
+    
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        //boolean usuarioAutenticado = comprobarSesion();
+
+        if (true) {
+            event.forwardTo(LoginView.class);
+        }
     }
 }

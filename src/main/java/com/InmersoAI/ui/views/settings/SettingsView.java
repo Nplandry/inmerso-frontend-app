@@ -6,7 +6,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 
-@Route (value = "Configuración", layout = MainLayout.class)
+@Route (value = "Configuracion", layout = MainLayout.class)
 public class SettingsView extends VerticalLayout {
     public SettingsView() {
         add(new H1("Configuración"));
