@@ -128,21 +128,37 @@ html {
     -webkit-backdrop-filter: blur(12px);
     box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
-
 .focus-block--next {
+    border: none;
+    border-top-left-radius: 1.5rem !important;
+    border-top-right-radius: 1.5rem !important;
+    
+}
+.focus-block--next,
+.SkeletonBlock {
     width: 100%;
     box-sizing: border-box;
     transition: opacity 0.2s, border-color 0.2s;
-    min-height: 200px;
+    min-height: 160px;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     position: relative;
     overflow: hidden;
     opacity: 0.6;
-    border-top-left-radius: 1.5rem !important;
-    border-top-right-radius: 1.5rem !important;
+    border-bottom-left-radius: 1.5rem !important;
+    border-bottom-right-radius: 1.5rem !important;
     padding: 0.8rem 1.25rem 1.25rem !important;
     background: linear-gradient(rgb(18, 20, 28) -20%, rgba(42, 201, 222, 0.08) 30%, rgba(42, 201, 222, 0) 90%) !important;
+}
+
+.SkeletonBlock {
+    background: linear-gradient(0deg, rgb(18, 20, 28) -30%, rgba(42, 201, 222, 0.08) 10%, rgba(42, 201, 222, 0) 60%) !important;
+    opacity: 70%;
+    margin-top: 20px;
+}
+
+.SkeletonBlock > .block-title, .SkeletonBlock > .task-title {
+    opacity: 40%;
 }
 
 .block-title {
@@ -473,21 +489,6 @@ vaadin-dialog.modal-container::part(backdrop) {
 .focus-block--completed.focus-unavailable-task h1::before {
     background-color: #FF9500;
     box-shadow: 0 0 8px #FF9500;
-}
-
-.SkeletonBlock {
-    margin-top: 0 !important;
-    background: linear-gradient(0deg, rgb(18, 20, 28) 0%, rgba(42, 201, 222, 0.08) 30%, rgba(42, 201, 222, 0) 80%) !important;
-    opacity: 30%;
-    height: 115px;
-    border-bottom-left-radius: 1.5rem !important;
-    border-bottom-right-radius: 1.5rem !important;
-    border: 1px solid rgba(42, 201, 222, 0.03) !important;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
 }
 
 html,

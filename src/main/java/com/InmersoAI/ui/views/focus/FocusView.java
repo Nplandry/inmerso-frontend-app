@@ -21,6 +21,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -72,7 +73,14 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         bloqueControles.addClassName("controls-container");
 
         var skeletonBloque = new VerticalLayout();
-        skeletonBloque.addClassName("SkeletonBlock");
+        skeletonBloque.addClassNames("SkeletonBlock", "focus-block", "focus-block--next");
+        H2 ultimo = new H2("ULTIMO");
+        ultimo.addClassName("block-title");
+        H2 tareaUltima = new H2("Estudiar una Hora");
+        tareaUltima.addClassName("task-title");
+        H3 terminaEn = new H3("Termina en: 3 MIN");
+        terminaEn.addClassName("task-countdown");
+        skeletonBloque.add(ultimo, tareaUltima, terminaEn);
         /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
         //#######--[Listeners]----#######
@@ -238,7 +246,7 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         //boolean usuarioAutenticado = comprobarSesion();
 
-        if (true) {
+        if (!true) {
             event.forwardTo(LoginView.class);
         }
     }

@@ -40,7 +40,7 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         SideNav nav = new SideNav();
 
-        if (false) {
+        if (!false) {
             nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
             nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()));
         } else {
