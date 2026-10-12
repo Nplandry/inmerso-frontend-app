@@ -82,6 +82,9 @@ public class Onboarding extends VerticalLayout {
         btnNext.setWidth("42%");
         btnNext.setHeight("52px");
         btnNext.getStyle().set("border-radius", "999px");
+        nameField.addValueChangeListener(e -> updateNextButtonState());
+        usageType.addValueChangeListener(e -> updateNextButtonState());
+        roleSelect.addValueChangeListener(e -> updateNextButtonState());
 
         HorizontalLayout navigationLayout = new HorizontalLayout(btnBack, btnNext);
         navigationLayout.setWidth("92%");
@@ -102,6 +105,9 @@ public class Onboarding extends VerticalLayout {
     }
 
     private void navigate(int delta) {
+        if (delta > 0 && !isCurrentStepValid()) {
+            return;
+        }
         currentStep += delta;
         if (currentStep < 1) {
             currentStep = 1;
@@ -120,6 +126,7 @@ public class Onboarding extends VerticalLayout {
         btnBack.setVisible(currentStep > 1);
         btnBack.setEnabled(currentStep > 1);
         btnNext.setVisible(currentStep < TOTAL_STEPS);
+        updateNextButtonState();
 
         switch (currentStep) {
             case 1 -> contentContainer.add(createStepOne());
@@ -142,6 +149,7 @@ public class Onboarding extends VerticalLayout {
 
         nameField.setPlaceholder("Tu nombre o apodo");
         nameField.setWidthFull();
+        nameField.setRequiredIndicatorVisible(true);
 
         step.add(title, description, nameField);
         btnNext.setText("Siguiente");
@@ -158,12 +166,13 @@ public class Onboarding extends VerticalLayout {
         H2 title = new H2("¿Para qué usas InmersoAI?");
 
         usageType.setItems("Proyectos Personales", "Trabajo Profesional / Freelance", "Estudios / Investigación", "Empresa / Equipo");
-        usageType.setValue("Proyectos Personales");
         usageType.setWidthFull();
+        usageType.setRequiredIndicatorVisible(true);
 
         roleSelect.setItems("Desarrollador", "Diseñador", "Product Manager", "Estudiante", "Otro");
         roleSelect.setPlaceholder("Selecciona una opción");
         roleSelect.setWidthFull();
+        roleSelect.setRequiredIndicatorVisible(true);
 
         step.add(title, usageType, roleSelect);
         btnNext.setText("Siguiente");
@@ -247,5 +256,17 @@ public class Onboarding extends VerticalLayout {
 
     private void finishOnboarding(String planSelected) {
         getUI().ifPresent(ui -> ui.navigate(""));
+    }
+
+    private void updateNextButtonState() {
+        btnNext.setEnabled(isCurrentStepValid());
+    }
+
+    private boolean isCurrentStepValid() {
+        return switch (currentStep) {
+            case 1 -> nameField.getValue() != null && !nameField.getValue().isBlank();
+            case 2 -> usageType.getValue() != null && roleSelect.getValue() != null;
+            default -> true;
+        };
     }
 }
