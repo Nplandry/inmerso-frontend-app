@@ -10,7 +10,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
-@Route(value = "", layout = MainLayout.class)
+@Route(value = "Login", layout = MainLayout.class)
 @RouteAlias("inicio-sesion") 
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
@@ -27,8 +27,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         //boolean usuarioAutenticado = comprobarSesion();
 
-        if (true) {
+        if (false) {
             event.forwardTo(FocusView.class);
+        } else if(true) {
+            event.forwardTo(Onboarding.class);
         }
     }
 

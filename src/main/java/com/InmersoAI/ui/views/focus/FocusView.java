@@ -6,6 +6,7 @@ import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.Tarea;
 import com.InmersoAI.ui.layouts.MainLayout;
 import com.InmersoAI.ui.views.auth.LoginView;
+import com.InmersoAI.ui.views.auth.Onboarding;
 import com.InmersoAI.ui.components.taskblocks.CompletedTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.CurrentTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.EmptyTaskBlock;
@@ -32,7 +33,7 @@ import com.vaadin.flow.component.textfield.TextField;
 
 
 
-@Route(value = "focus", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("Inicio")
 @DenyAll
 public class FocusView extends VerticalLayout implements BeforeEnterObserver {
@@ -246,8 +247,10 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         //boolean usuarioAutenticado = comprobarSesion();
 
-        if (!true) {
+        if (false) {
             event.forwardTo(LoginView.class);
+        } else if(true) {
+            event.forwardTo(Onboarding.class);
         }
     }
 }

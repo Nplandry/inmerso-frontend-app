@@ -19,9 +19,11 @@ public class MainLayout extends AppLayout {
 
     public MainLayout() {
         //if (authContext.isAuthenticated())
-        if (true) {
+        if (false) {
             createHeader();
             createDrawer();
+        } else if (true){
+            System.out.println("Usuario Nuevo");
         }
     }
 
@@ -40,9 +42,11 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         SideNav nav = new SideNav();
 
-        if (!false) {
+        if (false) {
             nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
             nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()));
+        } else if(true){
+            System.out.println("Usuario Nuevo");
         } else {
             nav.addItem(new SideNavItem("Logueo", LoginView.class, VaadinIcon.HOME.create()));
             nav.addItem(new SideNavItem("Registro", RegisterView.class, VaadinIcon.HOME.create()));
