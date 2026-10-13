@@ -6,19 +6,23 @@ import com.InmersoAI.domain.Usuario;
 import com.InmersoAI.domain.UsuarioRepositoryPort;
 
 @Repository
-public class UsuarioSecurityAdapter implements UsuarioRepositoryPort {
+public class SecurityAdapter implements UsuarioRepositoryPort {
     private final SecurityEntityRepository repository;
 
-    public UsuarioSecurityAdapter(SecurityEntityRepository repository) {
+    public SecurityAdapter(SecurityEntityRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public Usuario guardar(Usuario usuario) {
-        SecurityEntity entity = new SecurityEntity();
+        SecurityEntity entity = usuario.getId() == null
+                ? new SecurityEntity()
+                : repository.findById(usuario.getId())
+                        .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         entity.setUsername(usuario.getUsername());
         entity.setPassword(usuario.getPassword());
         entity.setRole(usuario.getRole());
+        entity.setOnboardingCompletado(usuario.isOnboardingCompletado());
         return toDomain(repository.save(entity));
     }
 
@@ -37,7 +41,8 @@ public class UsuarioSecurityAdapter implements UsuarioRepositoryPort {
                 entity.getId(),
                 entity.getUsername(),
                 entity.getPassword(),
-                entity.getRole()
+                entity.getRole(),
+                entity.isOnboardingCompletado()
         );
     }
 }

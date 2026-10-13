@@ -1,7 +1,7 @@
 package com.InmersoAI.ui.views.focus;
 
-import com.InmersoAI.app.ScheduleAppService;
-import com.InmersoAI.app.TareaAppService;
+import com.InmersoAI.app.Tarea.ScheduleAppService;
+import com.InmersoAI.app.Tarea.TareaAppService;
 import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.Tarea;
 import com.InmersoAI.ui.layouts.MainLayout;

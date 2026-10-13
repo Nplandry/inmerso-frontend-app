@@ -3,7 +3,7 @@ package com.InmersoAI.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.InmersoAI.app.TareaAppService;
+import com.InmersoAI.app.Tarea.TareaAppService;
 import com.InmersoAI.domain.Tarea;
 
 import java.util.List;

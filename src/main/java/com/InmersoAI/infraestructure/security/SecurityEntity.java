@@ -14,15 +14,23 @@ public class SecurityEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     @Column(unique = true)
     private Long id;
 
+    @NotBlank
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @NotBlank
+    @Column(nullable = false)
     private String password;
 
+    @NotBlank
+    @Column(nullable = false)
     private String role;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean onboardingCompletado;
 
     public SecurityEntity() {
     }
@@ -39,12 +47,31 @@ public class SecurityEntity {
         return username;
     }
 
-    public String setRole(String role) {
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
         this.role = role;
-        return role;
     }
 
     public String getRole() {
         return role;
+    }
+
+    public boolean isOnboardingCompletado() {
+        return onboardingCompletado;
+    }
+
+    public void setOnboardingCompletado(boolean onboardingCompletado) {
+        this.onboardingCompletado = onboardingCompletado;
     }
 }

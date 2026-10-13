@@ -1,4 +1,4 @@
-package com.InmersoAI.app;
+package com.InmersoAI.app.Tarea;
 
 import org.springframework.stereotype.Service;
 

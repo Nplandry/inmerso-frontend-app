@@ -1,17 +1,21 @@
-package com.InmersoAI.infraestructure.config;
+package com.InmersoAI.infraestructure.security;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.InmersoAI.domain.Usuario;
 import com.InmersoAI.domain.UsuarioRepositoryPort;
 
 @Configuration
-public class DataInitializerConfig {
+public class UsuariosMock {
 
     @Bean
-    public CommandLineRunner initDatabase(UsuarioRepositoryPort usuarioRepositoryPort) {
+    public CommandLineRunner initDatabase(
+            UsuarioRepositoryPort usuarioRepositoryPort,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
             String clientUsername = "cliente_prueba";
 
@@ -19,8 +23,9 @@ public class DataInitializerConfig {
                 Usuario cliente = new Usuario(
                         null,
                         clientUsername,
-                        "cliente123", 
-                        Usuario.ROLE_USER
+                        passwordEncoder.encode("cliente123"),
+                        Usuario.ROLE_USER,
+                        false
                 );
                 usuarioRepositoryPort.guardar(cliente);
             }
