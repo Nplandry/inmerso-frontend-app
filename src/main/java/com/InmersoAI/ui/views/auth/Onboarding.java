@@ -1,7 +1,7 @@
 package com.InmersoAI.ui.views.auth;
 
 import com.InmersoAI.app.User.CrearUsuarioUseCase;
-import com.InmersoAI.domain.Usuario;
+import com.InmersoAI.domain.model.Usuario;
 import com.InmersoAI.ui.layouts.MainLayout;
 import com.InmersoAI.ui.views.focus.FocusView;
 import com.vaadin.flow.component.Component;

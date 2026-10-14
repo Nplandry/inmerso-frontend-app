@@ -1,7 +1,8 @@
 package com.InmersoAI.app.User;
 
-import com.InmersoAI.domain.Usuario;
 import java.util.Optional;
+
+import com.InmersoAI.domain.model.Usuario;
 
 public interface CrearUsuarioUseCase {
     Usuario crearUsuario(String username, String password);

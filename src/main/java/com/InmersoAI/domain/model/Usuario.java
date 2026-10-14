@@ -1,4 +1,4 @@
-package com.InmersoAI.domain;
+package com.InmersoAI.domain.model;
 
 public class Usuario {
     public static final String ROLE_USER = "ROLE_USER";

@@ -2,8 +2,9 @@ package com.InmersoAI.infraestructure.security;
 
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import com.InmersoAI.domain.Usuario;
+
 import com.InmersoAI.domain.UsuarioRepositoryPort;
+import com.InmersoAI.domain.model.Usuario;
 
 @Repository
 public class SecurityAdapter implements UsuarioRepositoryPort {

@@ -1,4 +1,4 @@
-package com.InmersoAI.infraestructure.security;
+package com.InmersoAI.config;
 
 import com.InmersoAI.ui.views.auth.LoginView;
 import com.InmersoAI.ui.views.auth.Onboarding;

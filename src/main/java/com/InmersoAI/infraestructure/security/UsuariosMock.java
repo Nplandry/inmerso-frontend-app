@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.InmersoAI.domain.Usuario;
 import com.InmersoAI.domain.UsuarioRepositoryPort;
+import com.InmersoAI.domain.model.Usuario;
 
 @Configuration
 public class UsuariosMock {

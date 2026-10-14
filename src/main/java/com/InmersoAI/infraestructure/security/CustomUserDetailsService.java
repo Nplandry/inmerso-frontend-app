@@ -1,7 +1,8 @@
 package com.InmersoAI.infraestructure.security;
 
-import com.InmersoAI.domain.Usuario;
 import com.InmersoAI.domain.UsuarioRepositoryPort;
+import com.InmersoAI.domain.model.Usuario;
+
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

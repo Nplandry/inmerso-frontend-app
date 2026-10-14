@@ -1,7 +1,8 @@
 package com.InmersoAI.app.User;
 
-import com.InmersoAI.domain.Usuario;
 import com.InmersoAI.domain.UsuarioRepositoryPort;
+import com.InmersoAI.domain.model.Usuario;
+
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
