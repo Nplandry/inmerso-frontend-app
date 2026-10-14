@@ -515,3 +515,117 @@ vaadin-app-layout::part(content) {
     overflow-y: hidden;
     overscroll-behavior-y: none;
 }
+
+.onboarding-view {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    gap: 0;
+    align-items: stretch;
+    background-color: var(--lumo-contrast-5pct);
+}
+
+.onboarding-progress {
+    width: 100%;
+    height: 6px;
+    flex-shrink: 0;
+}
+
+.onboarding-step-label {
+    align-self: flex-end;
+    padding: 0.75rem 5%;
+}
+
+.onboarding-content {
+    width: 92%;
+    max-width: 560px;
+    flex-grow: 1;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: var(--lumo-space-m);
+    padding: var(--lumo-space-m);
+    border: 1px solid var(--lumo-contrast-10pct);
+    border-radius: 28px;
+    background-color: var(--lumo-base-color);
+    box-shadow: 0 12px 32px var(--lumo-contrast-10pct);
+}
+
+.onboarding-navigation {
+    width: 92%;
+    max-width: 560px;
+    align-items: center;
+    justify-content: space-between;
+    align-self: center;
+    box-sizing: border-box;
+    margin-top: auto;
+    padding: 1.25rem 0 2rem;
+}
+
+.onboarding-navigation-button {
+    width: 42%;
+    height: 52px;
+    border-radius: 999px;
+}
+
+.onboarding-step {
+    gap: var(--lumo-space-m);
+    padding: 0;
+}
+
+.onboarding-step--centered {
+    align-items: center;
+}
+
+.onboarding-step--full {
+    width: 100%;
+    align-items: flex-start;
+}
+
+.onboarding-field {
+    width: 100%;
+}
+
+.onboarding-success-icon {
+    color: var(--lumo-success-color);
+    font-size: 64px;
+}
+
+.onboarding-plans {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--lumo-space-m);
+}
+
+.onboarding-plan-card {
+    width: 240px;
+    align-items: center;
+    gap: var(--lumo-space-m);
+    padding: 1.25rem;
+    box-sizing: border-box;
+    border: 1px solid var(--lumo-contrast-20pct);
+    border-radius: 20px;
+    background-color: var(--lumo-base-color);
+}
+
+.onboarding-plan-card--highlighted {
+    border-color: var(--lumo-primary-color);
+    background-color: var(--lumo-primary-color-10pct);
+}
+
+.onboarding-plan-price {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.onboarding-plan-description {
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.onboarding-plan-feature {
+    font-size: 0.8rem;
+    text-align: center;
+}

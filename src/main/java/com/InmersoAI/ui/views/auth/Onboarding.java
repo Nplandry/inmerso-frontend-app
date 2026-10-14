@@ -59,66 +59,32 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         this.crearUsuarioUseCase = crearUsuarioUseCase;
         this.authenticationContext = authenticationContext;
 
-        setSizeFull();
-        setPadding(false);
-        setSpacing(false);
-        setAlignItems(Alignment.STRETCH);
-        getStyle().set("background-color", "var(--lumo-contrast-5pct)");
+        addClassName("onboarding-view");
 
+        progressBar.addClassName("onboarding-progress");
         progressBar.setMin(0.0);
         progressBar.setMax(1.0);
         progressBar.setValue(0.25);
-        progressBar.setHeight("6px");
-        progressBar.setWidthFull();
-        progressBar.getStyle().set("flex-shrink", "0");
 
-        stepLabel.getStyle()
-                .set("align-self", "flex-end")
-                .set("padding", "0.75rem 5%");
+        stepLabel.addClassName("onboarding-step-label");
 
-        contentContainer.setWidth("92%");
-        contentContainer.setMaxWidth("560px");
-        contentContainer.setPadding(true);
-        contentContainer.setSpacing(true);
-        contentContainer.setAlignItems(Alignment.CENTER);
-        contentContainer.setJustifyContentMode(JustifyContentMode.CENTER);
-        contentContainer.getStyle()
-                .set("align-self", "center")
-                .set("box-sizing", "border-box")
-                .set("border", "1px solid var(--lumo-contrast-10pct)")
-                .set("border-radius", "28px")
-                .set("background-color", "var(--lumo-base-color)")
-                .set("box-shadow", "0 12px 32px var(--lumo-contrast-10pct)");
+        contentContainer.addClassName("onboarding-content");
 
+        btnBack.addClassName("onboarding-navigation-button");
         btnBack.setEnabled(false);
         btnBack.addClickListener(e -> navigate(-1));
-        btnBack.setWidth("42%");
-        btnBack.setHeight("52px");
-        btnBack.getStyle().set("border-radius", "999px");
 
+        btnNext.addClassName("onboarding-navigation-button");
         btnNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnNext.addClickListener(e -> navigate(1));
-        btnNext.setWidth("42%");
-        btnNext.setHeight("52px");
-        btnNext.getStyle().set("border-radius", "999px");
         nameField.addValueChangeListener(e -> updateNextButtonState());
         usageType.addValueChangeListener(e -> updateNextButtonState());
         roleSelect.addValueChangeListener(e -> updateNextButtonState());
 
         HorizontalLayout navigationLayout = new HorizontalLayout(btnBack, btnNext);
-        navigationLayout.setWidth("92%");
-        navigationLayout.setMaxWidth("560px");
-        navigationLayout.setAlignItems(Alignment.CENTER);
-        navigationLayout.setJustifyContentMode(JustifyContentMode.BETWEEN);
-        navigationLayout.setPadding(false);
-        navigationLayout.getStyle()
-                .set("margin-top", "auto")
-                .set("padding", "1.25rem 0 2rem")
-                .set("align-self", "center")
-                .set("box-sizing", "border-box");
+        navigationLayout.addClassName("onboarding-navigation");
 
         add(progressBar, stepLabel, contentContainer, navigationLayout);
-        setFlexGrow(1, contentContainer);
 
         renderStep();
 
@@ -166,15 +132,13 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     private Component createStepOne() {
         VerticalLayout step = new VerticalLayout();
-        step.setAlignItems(Alignment.CENTER);
-        step.setPadding(false);
-        step.setSpacing(true);
+        step.addClassNames("onboarding-step", "onboarding-step--centered");
 
         H1 title = new H1("¡Bienvenido a InmersoAI!");
         Paragraph description = new Paragraph("Configuremos tu cuenta en solo un par de minutos para personalizar tu experiencia.");
 
         nameField.setPlaceholder("Tu nombre o apodo");
-        nameField.setWidthFull();
+        nameField.addClassName("onboarding-field");
         nameField.setRequiredIndicatorVisible(true);
 
         step.add(title, description, nameField);
@@ -184,20 +148,17 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     private Component createStepTwo() {
         VerticalLayout step = new VerticalLayout();
-        step.setAlignItems(Alignment.START);
-        step.setPadding(false);
-        step.setSpacing(true);
-        step.setWidthFull();
+        step.addClassNames("onboarding-step", "onboarding-step--full");
 
         H2 title = new H2("¿Para qué usas InmersoAI?");
 
         usageType.setItems("Proyectos Personales", "Trabajo Profesional / Freelance", "Estudios / Investigación", "Empresa / Equipo");
-        usageType.setWidthFull();
+        usageType.addClassName("onboarding-field");
         usageType.setRequiredIndicatorVisible(true);
 
         roleSelect.setItems("Desarrollador", "Diseñador", "Product Manager", "Estudiante", "Otro");
         roleSelect.setPlaceholder("Selecciona una opción");
-        roleSelect.setWidthFull();
+        roleSelect.addClassName("onboarding-field");
         roleSelect.setRequiredIndicatorVisible(true);
 
         step.add(title, usageType, roleSelect);
@@ -207,17 +168,13 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     private Component createStepThree() {
         VerticalLayout step = new VerticalLayout();
-        step.setAlignItems(Alignment.CENTER);
-        step.setPadding(false);
-        step.setSpacing(true);
+        step.addClassNames("onboarding-step", "onboarding-step--centered");
 
         H2 title = new H2("¡Todo casi listo!");
         Paragraph text = new Paragraph("Hemos adaptado tu entorno de trabajo según tus objetivos. Haz clic en continuar para explorar los planes y activar tu cuenta.");
 
         Icon icon = VaadinIcon.CHECK_CIRCLE.create();
-        icon.getStyle()
-                .set("font-size", "64px")
-                .set("color", "var(--lumo-success-color)");
+        icon.addClassName("onboarding-success-icon");
 
         step.add(icon, title, text);
         btnNext.setText("Ver Planes");
@@ -226,18 +183,13 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     private Component createStepFourPlans() {
         VerticalLayout step = new VerticalLayout();
-        step.setAlignItems(Alignment.CENTER);
-        step.setPadding(false);
-        step.setSpacing(true);
+        step.addClassNames("onboarding-step", "onboarding-step--centered");
 
         H2 title = new H2("Elige el plan ideal para ti");
         Paragraph subtitle = new Paragraph("Comienza gratis o desbloquea todo el potencial con nuestras opciones Pro.");
 
         HorizontalLayout plansLayout = new HorizontalLayout();
-        plansLayout.setWidthFull();
-        plansLayout.setJustifyContentMode(JustifyContentMode.CENTER);
-        plansLayout.setSpacing(true);
-        plansLayout.getStyle().set("flex-wrap", "wrap");
+        plansLayout.addClassName("onboarding-plans");
 
         VerticalLayout freePlan = buildPlanCard("Free", "$0 / mes", "Ideal para explorar", "Acceso a funcionalidades básicas", "Comenzar Gratis", false, () -> finishOnboarding("Free"));
         VerticalLayout proPlan = buildPlanCard("Pro", "$19 / mes", "Para usuarios avanzados", "Modelos IA sin límites y funcionalidades unicas", "Probar Pro 14 Días", true, () -> finishOnboarding("Pro"));
@@ -250,26 +202,20 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     private VerticalLayout buildPlanCard(String name, String price, String desc, String feature, String buttonText, boolean highlighted, Runnable onSelect) {
         VerticalLayout card = new VerticalLayout();
-        card.setWidth("240px");
-        card.setPadding(true);
-        card.setSpacing(true);
-        card.setAlignItems(Alignment.CENTER);
-        card.getStyle()
-                .set("border", highlighted ? "1px solid var(--lumo-primary-color)" : "1px solid var(--lumo-contrast-20pct)")
-                .set("border-radius", "20px")
-                .set("background-color", highlighted ? "var(--lumo-primary-color-10pct)" : "var(--lumo-base-color)")
-                .set("padding", "1.25rem")
-                .set("box-sizing", "border-box");
+        card.addClassName("onboarding-plan-card");
+        if (highlighted) {
+            card.addClassName("onboarding-plan-card--highlighted");
+        }
 
         H3 planName = new H3(name);
         Span planPrice = new Span(price);
-        planPrice.getStyle().set("font-weight", "600").set("font-size", "1.2rem");
+        planPrice.addClassName("onboarding-plan-price");
 
         Paragraph planDesc = new Paragraph(desc);
-        planDesc.getStyle().set("font-size", "0.85rem").set("text-align", "center");
+        planDesc.addClassName("onboarding-plan-description");
 
         Paragraph planFeature = new Paragraph("• " + feature);
-        planFeature.getStyle().set("font-size", "0.8rem").set("text-align", "center");
+        planFeature.addClassName("onboarding-plan-feature");
 
         Button selectBtn = new Button(buttonText, e -> onSelect.run());
         if (highlighted) {
