@@ -1,5 +1,7 @@
 package com.InmersoAI.ui.views.auth;
 
+import com.InmersoAI.app.User.CrearUsuarioUseCase;
+import com.InmersoAI.domain.Usuario;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -19,6 +21,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 @Route("Onboarding")
 @RouteAlias("onboarding-nuevos-usuarios")
@@ -38,8 +41,17 @@ public class Onboarding extends VerticalLayout {
     private final TextField nameField = new TextField("¿Cómo prefieres que te llamemos?");
     private final RadioButtonGroup<String> usageType = new RadioButtonGroup<>("¿Cuál es tu objetivo principal?");
     private final ComboBox<String> roleSelect = new ComboBox<>("Tu rol principal");
+    private final CrearUsuarioUseCase crearUsuarioUseCase;
+    private final AuthenticationContext authenticationContext;
+    private Usuario usuarioActual;
 
-    public Onboarding() {
+    public Onboarding(
+            CrearUsuarioUseCase crearUsuarioUseCase,
+            AuthenticationContext authenticationContext
+    ) {
+        this.crearUsuarioUseCase = crearUsuarioUseCase;
+        this.authenticationContext = authenticationContext;
+
         setSizeFull();
         setPadding(false);
         setSpacing(false);
@@ -102,7 +114,18 @@ public class Onboarding extends VerticalLayout {
         setFlexGrow(1, contentContainer);
 
         renderStep();
+        
+
+        boolean existe = crearUsuarioUseCase
+        .buscarPorUsername("cliente_prueba")
+        .isPresent();
+
+        System.out.println("¿Existe cliente_prueba?: " + existe);
     }
+
+
+
+
 
     private void navigate(int delta) {
         if (delta > 0 && !isCurrentStepValid()) {
@@ -255,6 +278,9 @@ public class Onboarding extends VerticalLayout {
     }
 
     private void finishOnboarding(String planSelected) {
+        if (usuarioActual != null && !usuarioActual.isOnboardingCompletado()) {
+            crearUsuarioUseCase.completarOnboarding(usuarioActual.getUsername());
+        }
         getUI().ifPresent(ui -> ui.navigate(""));
     }
 
