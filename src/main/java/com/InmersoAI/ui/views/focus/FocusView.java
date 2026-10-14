@@ -65,8 +65,12 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         agregarTiempoButton.setEnabled(false);
 
         /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
+        var snapFocus = new Button("Grabar");
         var nuevaTarea = new Button("Nueva Tarea");
-        nuevaTarea.addClassNames("action-btn", "action-btn--voice");
+        nuevaTarea.addClassNames("action-btn", "action-btn--text");
+        snapFocus.addClassNames("action-btn", "action-btn--voice");
+        var bloquesEntrada = new HorizontalLayout(nuevaTarea, snapFocus);
+        bloquesEntrada.addClassName("controls-container");
         var todosLayout = new VerticalLayout();
         todosLayout.addClassName("todos-container");
         bloqueActual.setPadding(false);
@@ -93,7 +97,7 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
     
-    add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, nuevaTarea);
+    add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, bloquesEntrada);
     
     }
     
