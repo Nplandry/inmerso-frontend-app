@@ -2,8 +2,8 @@ package com.InmersoAI.ui.views.focus;
 
 import com.InmersoAI.app.Tarea.ScheduleAppService;
 import com.InmersoAI.app.Tarea.TareaAppService;
-import com.InmersoAI.domain.Schedule;
-import com.InmersoAI.domain.Tarea;
+import com.InmersoAI.domain.model.Schedule;
+import com.InmersoAI.domain.model.Tarea;
 import com.InmersoAI.ui.layouts.MainLayout;
 import com.InmersoAI.ui.views.auth.LoginView;
 import com.InmersoAI.ui.views.auth.Onboarding;
@@ -249,7 +249,7 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
 
         if (false) {
             event.forwardTo(LoginView.class);
-        } else if(true) {
+        } else if(false) {
             event.forwardTo(Onboarding.class);
         }
     }

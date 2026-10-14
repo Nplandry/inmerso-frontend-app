@@ -3,8 +3,8 @@ package com.InmersoAI.app.Tarea;
 import org.springframework.stereotype.Service;
 
 import com.InmersoAI.domain.FocusScheduleRequest;
-import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.SchedulePort;
+import com.InmersoAI.domain.model.Schedule;
 
 import java.util.Optional;
 

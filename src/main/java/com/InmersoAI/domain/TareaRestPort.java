@@ -1,5 +1,8 @@
 package com.InmersoAI.domain;
 import java.util.Optional;
+
+import com.InmersoAI.domain.model.Tarea;
+
 import java.util.List;
 
 

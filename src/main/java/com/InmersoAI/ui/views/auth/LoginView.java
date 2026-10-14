@@ -27,10 +27,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         //boolean usuarioAutenticado = comprobarSesion();
 
-        if (false) {
+        if (true) {
             event.forwardTo(FocusView.class);
-        } else if(true) {
+        } else if(false) {
             event.forwardTo(Onboarding.class);
+        } else {
+            event.forwardTo(LoginView.class);
         }
     }
 

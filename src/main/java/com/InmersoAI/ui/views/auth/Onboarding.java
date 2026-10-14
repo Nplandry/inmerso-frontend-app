@@ -2,6 +2,8 @@ package com.InmersoAI.ui.views.auth;
 
 import com.InmersoAI.app.User.CrearUsuarioUseCase;
 import com.InmersoAI.domain.Usuario;
+import com.InmersoAI.ui.layouts.MainLayout;
+import com.InmersoAI.ui.views.focus.FocusView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -18,15 +20,20 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 
-@Route("Onboarding")
+import jakarta.annotation.security.DenyAll;
+
+@Route(value = "Onboarding", layout = MainLayout.class)
 @RouteAlias("onboarding-nuevos-usuarios")
 @PageTitle("Bienvenido a InmersoAI")
-public class Onboarding extends VerticalLayout {
+@DenyAll
+public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     private static final int TOTAL_STEPS = 4;
     private int currentStep = 1;
@@ -114,7 +121,6 @@ public class Onboarding extends VerticalLayout {
         setFlexGrow(1, contentContainer);
 
         renderStep();
-        
 
         boolean existe = crearUsuarioUseCase
         .buscarPorUsername("cliente_prueba")
@@ -122,9 +128,6 @@ public class Onboarding extends VerticalLayout {
 
         System.out.println("¿Existe cliente_prueba?: " + existe);
     }
-
-
-
 
 
     private void navigate(int delta) {
@@ -294,5 +297,17 @@ public class Onboarding extends VerticalLayout {
             case 2 -> usageType.getValue() != null && roleSelect.getValue() != null;
             default -> true;
         };
+    }
+
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        //boolean usuarioAutenticado = comprobarSesion();
+
+        if (true) {
+            event.forwardTo(FocusView.class);
+        } else if(false) {
+            event.forwardTo(Onboarding.class);
+        }
     }
 }

@@ -2,8 +2,8 @@ package com.InmersoAI.app.Tarea;
 
 import org.springframework.stereotype.Service;
 
-import com.InmersoAI.domain.Tarea;
 import com.InmersoAI.domain.TareaRestPort;
+import com.InmersoAI.domain.model.Tarea;
 
 import java.util.List;
 import java.util.Optional;

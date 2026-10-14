@@ -1,5 +1,5 @@
 package com.InmersoAI.ui.components.taskblocks;
-import com.InmersoAI.domain.Schedule;
+import com.InmersoAI.domain.model.Schedule;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 

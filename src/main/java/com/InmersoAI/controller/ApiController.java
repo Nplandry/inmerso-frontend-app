@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.InmersoAI.app.Tarea.TareaAppService;
-import com.InmersoAI.domain.Tarea;
+import com.InmersoAI.domain.model.Tarea;
 
 import java.util.List;
 

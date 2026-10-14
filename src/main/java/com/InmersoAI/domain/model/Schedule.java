@@ -1,4 +1,4 @@
-package com.InmersoAI.domain;
+package com.InmersoAI.domain.model;
 
 public record Schedule(
         String currentTaskTitle,

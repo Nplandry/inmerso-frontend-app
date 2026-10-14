@@ -1,6 +1,6 @@
 package com.InmersoAI.ui.components.taskblocks;
 
-import com.InmersoAI.domain.Tarea;
+import com.InmersoAI.domain.model.Tarea;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 

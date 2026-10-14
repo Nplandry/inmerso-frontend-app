@@ -8,8 +8,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.InmersoAI.domain.FocusScheduleRequest;
-import com.InmersoAI.domain.Schedule;
 import com.InmersoAI.domain.SchedulePort;
+import com.InmersoAI.domain.model.Schedule;
 import com.InmersoAI.infraestructure.external.dto.ScheduleMapper;
 import com.InmersoAI.infraestructure.external.dto.ScheduleResponse;
 
