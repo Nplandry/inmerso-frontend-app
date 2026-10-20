@@ -3,6 +3,7 @@ package com.InmersoAI.ui.views.auth;
 import com.InmersoAI.app.User.CrearUsuarioUseCase;
 import com.InmersoAI.domain.model.Usuario;
 import com.InmersoAI.ui.layouts.MainLayout;
+import com.InmersoAI.ui.session.SesionUsuario;
 import com.InmersoAI.ui.views.focus.FocusView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -50,14 +51,18 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
     private final ComboBox<String> roleSelect = new ComboBox<>("Tu rol principal");
     private final CrearUsuarioUseCase crearUsuarioUseCase;
     private final AuthenticationContext authenticationContext;
+    private final SesionUsuario sesion;
     private Usuario usuarioActual;
 
     public Onboarding(
             CrearUsuarioUseCase crearUsuarioUseCase,
-            AuthenticationContext authenticationContext
+            AuthenticationContext authenticationContext,
+            SesionUsuario sesion
     ) {
         this.crearUsuarioUseCase = crearUsuarioUseCase;
         this.authenticationContext = authenticationContext;
+        this.sesion = sesion;
+        this.usuarioActual = sesion.usuarioActual().orElse(null);
 
         addClassName("onboarding-view");
 
@@ -248,12 +253,10 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        //boolean usuarioAutenticado = comprobarSesion();
-
-        if (true) {
+        if (!sesion.estaAutenticado()) {
+            event.forwardTo(LoginView.class);
+        } else if(sesion.onboardingCompletado()) {
             event.forwardTo(FocusView.class);
-        } else if(false) {
-            event.forwardTo(Onboarding.class);
         }
     }
 }

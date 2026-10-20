@@ -5,6 +5,7 @@ import com.InmersoAI.app.Tarea.TareaAppService;
 import com.InmersoAI.domain.model.Schedule;
 import com.InmersoAI.domain.model.Tarea;
 import com.InmersoAI.ui.layouts.MainLayout;
+import com.InmersoAI.ui.session.SesionUsuario;
 import com.InmersoAI.ui.views.auth.LoginView;
 import com.InmersoAI.ui.views.auth.Onboarding;
 import com.InmersoAI.ui.components.taskblocks.CompletedTaskBlock;
@@ -40,6 +41,7 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
     
     private final TareaAppService tareaService;
     private final ScheduleAppService scheduleService;
+    private final SesionUsuario sesion;
 
     private final VerticalLayout bloqueActual = new VerticalLayout();
     private final VerticalLayout bloqueProximo = new VerticalLayout();
@@ -49,9 +51,10 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
     private final Button agregarTiempoButton;
 
 
-    public FocusView(TareaAppService tareaService, ScheduleAppService scheduleService) {
+    public FocusView(TareaAppService tareaService, ScheduleAppService scheduleService, SesionUsuario sesion) {
         this.tareaService = tareaService;
         this.scheduleService = scheduleService;
+        this.sesion = sesion;
         addClassName("main-view");
         bloqueProximo.setPadding(false); 
     
@@ -249,11 +252,9 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        //boolean usuarioAutenticado = comprobarSesion();
-
-        if (false) {
+        if (!sesion.estaAutenticado()) {
             event.forwardTo(LoginView.class);
-        } else if(false) {
+        } else if(sesion.necesitaOnboarding()) {
             event.forwardTo(Onboarding.class);
         }
     }

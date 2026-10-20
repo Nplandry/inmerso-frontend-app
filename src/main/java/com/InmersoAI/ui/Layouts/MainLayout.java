@@ -1,5 +1,6 @@
 package com.InmersoAI.ui.layouts;
 
+import com.InmersoAI.ui.session.SesionUsuario;
 import com.InmersoAI.ui.views.auth.LoginView;
 import com.InmersoAI.ui.views.auth.RegisterView;
 import com.InmersoAI.ui.views.focus.FocusView;
@@ -15,11 +16,12 @@ import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 public class MainLayout extends AppLayout {
 
-    //instanciar objeto, clase autentificaion...
+    private final SesionUsuario sesion;
 
-    public MainLayout() {
-        //if (authContext.isAuthenticated())
-        if (true) {
+    public MainLayout(SesionUsuario sesion) {
+        this.sesion = sesion;
+
+        if (sesion.estaAutenticado()) {
             createHeader();
             createDrawer();
         } else if (false){
@@ -42,10 +44,10 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         SideNav nav = new SideNav();
 
-        if (true) {
+        if (sesion.onboardingCompletado()) {
             nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
             nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()));
-        } else if(false){
+        } else if(sesion.necesitaOnboarding()){
             System.out.println("Usuario Nuevo");
         } else {
             nav.addItem(new SideNavItem("Logueo", LoginView.class, VaadinIcon.HOME.create()));
