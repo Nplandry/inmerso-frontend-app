@@ -37,7 +37,7 @@ public class UsuariosMock {
                 log.info("[UsuariosMock] Usuario mock '{}' ya existe. No se recrea.", clientUsername);
             }
 
-            // si el oboarding esta completado -> deberia ir a FocusView.
+            // si el oboarding esta completado -> deberia ir al FocusView
             String veteranoUsername = "cliente_listo";
             if (!usuarioRepositoryPort.existePorUsername(veteranoUsername)) {
                 Usuario veterano = new Usuario(

@@ -27,16 +27,23 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         this.sesion = sesion;
         log.info("[LoginView] Construyendo vista de login. Autenticado={}", sesion.estaAutenticado());
 
-        addClassName("login-view");
+        addClassName("auth-view");
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         setAlignItems(FlexComponent.Alignment.CENTER);
 
-        // Envia el POST de las credenciales a Spring Security 
+        // Envia el POST de las credenciales a Spring Security
         loginForm.setAction("login");
         loginForm.setForgotPasswordButtonVisible(false);
+        loginForm.addClassName("auth-form");
 
-        add(loginForm);
+        VerticalLayout card = new VerticalLayout(loginForm);
+        card.addClassName("auth-card");
+        card.setPadding(true);
+        card.setSpacing(true);
+        card.setAlignItems(FlexComponent.Alignment.STRETCH);
+
+        add(card);
     }
 
     @Override

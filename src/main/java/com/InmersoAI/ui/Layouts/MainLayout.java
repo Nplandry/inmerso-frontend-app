@@ -24,8 +24,9 @@ public class MainLayout extends AppLayout {
         if (sesion.estaAutenticado()) {
             createHeader();
             createDrawer();
-        } else if (false){
-            System.out.println("Usuario Nuevo");
+        } else if (!sesion.estaAutenticado()){
+            createHeader();
+            createDrawer();
         }
     }
 

@@ -897,3 +897,120 @@ vaadin-app-layout::part(content) {
     .action-btn:active,
     .action-btn:hover { transform: none; }
 }
+
+.auth-view {
+    width: 100%;
+    height: 100%;
+    background: var(--inm-bg-radial);
+    color: var(--inm-text-primary);
+    font-family: var(--inm-font-sans);
+    box-sizing: border-box;
+    padding: var(--inm-space-lg);
+}
+
+.auth-card {
+    width: 92%;
+    max-width: 420px;
+    box-sizing: border-box;
+    gap: var(--inm-space-md) !important;
+    padding: var(--inm-space-xl) !important;
+    border: var(--inm-glass-border);
+    border-radius: var(--inm-radius-xl) !important;
+    background: linear-gradient(145deg, var(--inm-cyan-05) 0%, rgba(18, 20, 28, 0.05) 100%);
+    box-shadow: var(--inm-elev-2-shadow), var(--inm-glow-cyan);
+    backdrop-filter: var(--inm-glass-blur);
+    -webkit-backdrop-filter: var(--inm-glass-blur);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--inm-cyan), transparent);
+    opacity: 0.8;
+}
+
+.auth-card__title {
+    font-size: var(--inm-fs-h2) !important;
+    font-weight: var(--inm-fw-bold);
+    color: var(--inm-text-primary) !important;
+    letter-spacing: -0.02em;
+    margin: 0 !important;
+}
+
+.auth-card__subtitle {
+    font-size: var(--inm-fs-body) !important;
+    color: var(--inm-text-secondary) !important;
+    margin: 0 0 var(--inm-space-xs) 0 !important;
+}
+
+.auth-field {
+    width: 100%;
+}
+
+.auth-field::part(input-field) {
+    background: var(--inm-white-04) !important;
+    border: var(--inm-glass-border) !important;
+    border-radius: var(--inm-radius-sm) !important;
+    color: var(--inm-text-primary) !important;
+    backdrop-filter: var(--inm-blur-sm);
+    transition: var(--inm-transition);
+}
+
+.auth-field[focused]::part(input-field) {
+    border-color: var(--inm-cyan) !important;
+    box-shadow: 0 0 12px var(--inm-cyan-25) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.auth-field::part(label) {
+    color: var(--inm-text-secondary) !important;
+    font-size: var(--inm-fs-label);
+    font-weight: var(--inm-fw-semibold);
+}
+
+.auth-submit {
+    width: 100%;
+    height: 3.25rem;
+    margin-top: var(--inm-space-xs) !important;
+    border-radius: var(--inm-radius-md) !important;
+    font-weight: var(--inm-fw-semibold) !important;
+    cursor: pointer;
+    transition: var(--inm-transition);
+    background: linear-gradient(135deg, rgba(42, 201, 222, 0.9) 0%, rgba(20, 150, 175, 0.9) 100%) !important;
+    color: var(--inm-bg) !important;
+    border: 1px solid var(--inm-white-25) !important;
+}
+
+.auth-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--inm-glow-cyan), 0 8px 20px -6px rgba(42, 201, 222, 0.4);
+}
+
+.auth-form {
+    width: 100%;
+}
+
+vaadin-login-form,
+vaadin-login-form-wrapper {
+    background: transparent !important;
+    width: 100% !important;
+}
+
+vaadin-login-form-wrapper::part(form) {
+    padding: 0 !important;
+}
+
+vaadin-login-form vaadin-button[part="vaadin-login-submit"] {
+    border-radius: var(--inm-radius-md) !important;
+    font-weight: var(--inm-fw-semibold) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-submit:hover { transform: none; }
+}

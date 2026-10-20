@@ -2,6 +2,7 @@ package com.InmersoAI.config;
 
 import com.InmersoAI.ui.views.auth.LoginView;
 import com.InmersoAI.ui.views.auth.Onboarding;
+import com.InmersoAI.ui.views.auth.RegisterView;
 import com.InmersoAI.ui.views.focus.FocusView;
 import com.InmersoAI.ui.views.settings.SettingsView;
 import com.vaadin.flow.server.auth.AnnotatedViewAccessChecker;
@@ -34,7 +35,7 @@ public class SecurityConfiguration {
                 .withNavigationAccessChecker(context -> {
                     Class<?> navigationTarget = context.getNavigationTarget();
                     if (navigationTarget == LoginView.class || navigationTarget == Onboarding.class || navigationTarget == FocusView.class
-                        || navigationTarget == SettingsView.class) {
+                        || navigationTarget == SettingsView.class || navigationTarget == RegisterView.class) {
                         return context.allow();
                     }
                     return annotatedViewAccessChecker.check(context);
