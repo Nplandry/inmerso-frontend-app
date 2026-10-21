@@ -21,7 +21,7 @@ public class UsuariosMock {
             PasswordEncoder passwordEncoder
     ) {
         return args -> {
-            // Usuario nuevo: onboarding pendiente -> deberia ir a Onboarding.
+            // Usuario nuevo: onboarding pendiente -> deberia ir al Onboarding
             String clientUsername = "cliente_prueba";
             if (!usuarioRepositoryPort.existePorUsername(clientUsername)) {
                 Usuario cliente = new Usuario(
