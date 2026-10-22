@@ -6,7 +6,6 @@ html {
 
 :root,
 :host {
-  /* ---- Color (identidad InmersoAI, sin cambios) ---- */
   --inm-bg: #090A0D;
   --inm-cyan: #2AC9DE;
   --inm-green: #30D158;
@@ -15,7 +14,6 @@ html {
   --inm-text-secondary: #94A3B8;
   --inm-text-muted: #93a5bf;
 
-  /* Superficies derivadas */
   --inm-surface-raise: #11151F;
   --inm-cyan-05: rgba(42, 201, 222, 0.05);
   --inm-cyan-08: rgba(42, 201, 222, 0.08);
@@ -28,10 +26,8 @@ html {
   --inm-white-12: rgba(255, 255, 255, 0.12);
   --inm-white-25: rgba(255, 255, 255, 0.25);
 
-  /* ---- Fondo radial compartido ---- */
   --inm-bg-radial: radial-gradient(circle at 50% 0%, var(--inm-surface-raise) 0%, var(--inm-bg) 75%);
 
-  /* ---- Tipografia ---- */
   --inm-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --inm-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --inm-fs-caption: 0.68rem;
@@ -43,7 +39,6 @@ html {
   --inm-fw-semibold: 700;
   --inm-fw-bold: 800;
 
-  /* ---- Espaciado ---- */
   --inm-space-2xs: 0.25rem;
   --inm-space-xs: 0.5rem;
   --inm-space-sm: 0.75rem;
@@ -51,26 +46,22 @@ html {
   --inm-space-lg: 1.5rem;
   --inm-space-xl: 2rem;
 
-  /* ---- Radios ---- */
   --inm-radius-sm: 0.85rem;
   --inm-radius-md: 1.15rem;
   --inm-radius-lg: 1.5rem;
   --inm-radius-xl: 1.75rem;
   --inm-radius-pill: 9999px;
 
-  /* ---- Blur ---- */
   --inm-blur-sm: blur(12px);
   --inm-blur-md: blur(24px);
   --inm-blur-lg: blur(32px) saturate(180%);
 
-  /* ---- Sombras / glow ---- */
   --inm-shadow-1: 0 8px 20px -6px rgba(0, 0, 0, 0.35);
   --inm-shadow-2: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
   --inm-shadow-3: 0 24px 60px -10px rgba(0, 0, 0, 0.8);
   --inm-glow-cyan: 0 0 20px -2px rgba(42, 201, 222, 0.15);
   --inm-glow-green: 0 0 20px -2px rgba(48, 209, 88, 0.15);
 
-  /* ---- Capas de elevacion ---- */
   --inm-elev-0-bg: transparent;
   --inm-elev-1-bg: var(--inm-cyan-05);
   --inm-elev-1-shadow: var(--inm-shadow-1);
@@ -80,18 +71,15 @@ html {
   --inm-opacity-foreground: 1;
   --inm-opacity-secondary: 0.6;
 
-  /* ---- Movimiento ---- */
   --inm-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --inm-duration-fast: 0.15s;
   --inm-duration: 0.25s;
   --inm-duration-slow: 0.35s;
   --inm-transition: all var(--inm-duration) var(--inm-ease);
 
-  /* ---- Glass (acabado compartido) ---- */
   --inm-glass-border: 1px solid var(--inm-white-12);
   --inm-glass-blur: var(--inm-blur-md);
 
-  /* ---- Puentes a tokens Aura / Lumo ---- */
   --aura-background-color-light: var(--inm-bg);
   --aura-background-color-dark: var(--inm-bg);
   --aura-accent-color-light: var(--inm-cyan);
@@ -308,9 +296,11 @@ html {
 .controls-container {
     width: 100%;
     display: flex;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    gap: var(--inm-space-sm);
     margin-top: auto;
-    padding-top: 0.5rem;
+    padding-top: var(--inm-space-xs);
+    box-sizing: border-box;
 }
 
 .action-btn {
@@ -344,8 +334,9 @@ html {
 }
 
 .action-btn--primary {
-    flex: 1;
-    height: 3.5rem;
+    flex: 1 1 auto;
+    height: 3rem;
+    min-width: 120px;
     background: linear-gradient(135deg, rgba(48, 209, 88, 0.22) 0%, rgba(20, 80, 40, 0.28) 100%) !important;
     color: #43EE6D !important;
     border: 1px solid rgba(48, 209, 88, 0.3) !important;
@@ -362,8 +353,9 @@ html {
 }
 
 .action-btn--secondary {
-    flex: 1;
-    height: 3.5rem;
+    flex: 1 1 auto;
+    height: 3rem;
+    min-width: 120px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
     color: #F1F5F9 !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -382,18 +374,18 @@ html {
 
 .action-btn--voice,
 .action-btn--text {
-    height: 3.5rem;
+    height: 3rem;
+    flex: 1 1 auto;
+    min-width: 120px;
 }
 
 .action-btn--voice {
-    flex: 1 1 0;
     background: linear-gradient(135deg, rgba(42, 201, 222, 0.1) 0%, rgba(18, 20, 28, 0.3) 100%) !important;
     color: #A5F3FC !important;
     border: 1px solid rgba(42, 201, 222, 0.2) !important;
 }
 
 .action-btn--text {
-    flex: 4 1 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(18, 20, 28, 0.3) 100%) !important;
     color: #E2E8F0 !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -411,6 +403,43 @@ html {
 
 .action-btn--voice::before {
     background: linear-gradient(90deg, transparent, rgba(42, 201, 222, 0.6), transparent);
+}
+
+/* Media queries para responsive - botones simétricos */
+@media (max-width: 768px) {
+    .controls-container {
+        flex-direction: row;
+        gap: var(--inm-space-xs);
+    }
+    
+    .action-btn--primary,
+    .action-btn--secondary,
+    .action-btn--voice,
+    .action-btn--text {
+        height: 2.75rem;
+        font-size: 0.75rem !important;
+    }
+    
+    .action-btn--text::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    }
+}
+
+@media (max-width: 480px) {
+    .controls-container {
+        flex-direction: column;
+        gap: var(--inm-space-sm);
+    }
+    
+    .action-btn--primary,
+    .action-btn--secondary,
+    .action-btn--voice,
+    .action-btn--text {
+        width: 100%;
+        height: 2.75rem;
+        font-size: 0.75rem !important;
+        min-width: unset;
+    }
 }
 
 vaadin-dialog.modal-container::part(overlay) {
@@ -875,7 +904,6 @@ vaadin-app-layout::part(content) {
 }
 
 
-/* ---- Micro-interacciones compartidas ---- */
 @keyframes inm-rise {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1013,4 +1041,117 @@ vaadin-login-form vaadin-button[part="vaadin-login-submit"] {
 
 @media (prefers-reduced-motion: reduce) {
     .auth-submit:hover { transform: none; }
+}
+
+/*Skeleton loader css*/
+
+.skeleton-view {
+    width: 100%;
+    gap: .9rem !important;
+    animation: skeleton-fade-in var(--inm-duration) var(--inm-ease);
+    margin-top: 20px !important;
+}
+
+/* fade-out */
+.skeleton-view[hidden] {
+    display: none !important;
+}
+
+.skeleton-block {
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-line {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--inm-radius-sm);
+    background: var(--inm-white-08);
+    isolation: isolate;
+}
+
+.skeleton-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(42, 201, 222, 0.18) 45%,
+        rgba(42, 201, 222, 0.28) 50%,
+        rgba(42, 201, 222, 0.18) 55%,
+        transparent 100%
+    );
+    animation: skeleton-shimmer 1.4s var(--inm-ease) infinite;
+}
+
+.skeleton-line--chip {
+    width: 38%;
+    height: 0.7rem;
+    margin-bottom: var(--inm-space-md);
+    border-radius: var(--inm-radius-pill);
+}
+
+.skeleton-line--title {
+    width: 72%;
+    height: 1.5rem;
+    margin: var(--inm-space-2xs) 0;
+}
+
+.skeleton-line--text {
+    width: 90%;
+    height: 0.9rem;
+    margin: var(--inm-space-2xs) 0;
+}
+
+.skeleton-line--countdown {
+    width: 46%;
+    height: 1.6rem;
+    margin-top: var(--inm-space-md);
+    border-radius: var(--inm-radius-pill);
+}
+
+.skeleton-line--button {
+    flex: 1 1 auto;
+    min-width: unset;
+    height: 3rem;
+    border-radius: var(--inm-radius-md);
+}
+
+.skeleton-line--button-wide {
+    flex: 1 1 auto;
+    min-width: unset;
+    height: 3rem;
+    border-radius: var(--inm-radius-md);
+}
+
+.skeleton-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--inm-space-sm);
+    margin-top: 3px !important;
+    box-sizing: border-box;
+}
+
+@keyframes skeleton-shimmer {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+}
+
+@keyframes skeleton-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-line::after {
+        animation: none;
+    }
+    .skeleton-view {
+        animation: none;
+    }
 }

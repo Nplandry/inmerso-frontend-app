@@ -12,10 +12,12 @@ import com.InmersoAI.ui.components.taskblocks.CompletedTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.CurrentTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.EmptyTaskBlock;
 import com.InmersoAI.ui.components.taskblocks.NextTaskBlock;
+import com.InmersoAI.ui.components.taskblocks.SkeletonView;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.security.DenyAll;
 
 import com.vaadin.flow.component.button.Button;
@@ -45,10 +47,14 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
 
     private final VerticalLayout bloqueActual = new VerticalLayout();
     private final VerticalLayout bloqueProximo = new VerticalLayout();
+    private final SkeletonView skeleton = new SkeletonView();
     private Tarea tareaActual;
     private Integer tiempoActual;
     private final Button listoButton;
     private final Button agregarTiempoButton;
+    private HorizontalLayout bloqueControles;
+    private HorizontalLayout bloquesEntrada;
+    private VerticalLayout bloqueUltimo;
 
 
     public FocusView(TareaAppService tareaService, ScheduleAppService scheduleService, SesionUsuario sesion) {
@@ -67,7 +73,6 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         agregarTiempoButton.addClassNames("action-btn", "action-btn--secondary");
         agregarTiempoButton.setEnabled(false);
 
-        /*###IGNORAR: DEF VARIABLES ESTATICOS ###*/
         var snapFocus = new Button("Grabar");
         var nuevaTarea = new Button("Nueva Tarea");
         nuevaTarea.addClassNames("action-btn", "action-btn--text");
@@ -89,7 +94,6 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         H3 terminaEn = new H3("Termina en: 3 MIN");
         terminaEn.addClassName("task-countdown");
         skeletonBloque.add(ultimo, tareaUltima, terminaEn);
-        /*###FIN IGNORAR: DEF VARIABLES ESTATICOS ###*/
 
         //#######--[Listeners]----#######
         nuevaTarea.addClickListener(click -> {
@@ -99,9 +103,20 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         listoButton.addClickListener(click -> completarTareaActual());
         agregarTiempoButton.addClickListener(click -> agregarTiempoATareaActual(15));
     //#######----[END Listeners]----#######
-    
-    add(skeletonBloque, bloqueActual, bloqueProximo, bloqueControles, bloquesEntrada);
-    
+
+    // El contenido real empieza oculto; se muestra cuando llega realmente el schedule.
+    // Mientras tanto se ve el skeleton animado 
+    bloqueActual.setVisible(false);
+    bloqueProximo.setVisible(false);
+    bloqueControles.setVisible(false);
+    bloquesEntrada.setVisible(false);
+    skeletonBloque.setVisible(false);
+    this.bloqueControles = bloqueControles;
+    this.bloquesEntrada = bloquesEntrada;
+    this.bloqueUltimo = skeletonBloque;
+
+    add(skeletonBloque, skeleton, bloqueActual, bloqueProximo, bloqueControles, bloquesEntrada);
+
     }
     
     
@@ -138,19 +153,9 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
 
         var scheduleActualizado = scheduleService.actualizarSchedule(descripcion);
         tareaService.crearTarea(descripcion);
-        scheduleActualizado.ifPresentOrElse(
-                this::actualizarBloqueSiguiente,
-                this::actualizarBloqueSiguiente
-        );
+        // Usamos el Schedule que ya devuelve el POST...
+        actualizarBloqueSiguiente(scheduleActualizado.orElse(null));
         dialog.close();
-    }
-
-    private void actualizarBloqueSiguiente() {
-
-        scheduleService.obtenerSchedule().ifPresentOrElse(
-                this::actualizarBloqueSiguiente,
-                () -> actualizarBloqueSiguiente(null)
-        );
     }
 
     private void actualizarBloqueSiguiente(Schedule schedule) {
@@ -208,9 +213,28 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
         actualizarBloqueActual();
     }
     /*######--FIN: LOGICA DEL MODAL--######*/
-    @PostConstruct
-    public void cargarTareaDelBackend(){
-        scheduleService.obtenerSchedule().ifPresentOrElse(schedule -> {
+    /**
+    Al adjuntarse la vista mostramos de inmediato el skeleton y se dispara la carga del schedule en un hilo aparte. Cuando llega
+    la respuesta del backend externo se actualizara la UI con {@link UI#access}
+     */
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+        final UI ui = attachEvent.getUI();
+        new Thread(() -> {
+            // Llamada de red fuera del hilo de la UI.
+            var scheduleOpt = scheduleService.obtenerSchedule();
+            // Aplicamos el resultado dentro del lock de sesion de Vaadin.
+            ui.access(() -> aplicarSchedule(scheduleOpt.orElse(null)));
+        }, "focus-schedule-loader").start();
+    }
+
+    /**
+     * Refleja en la UI el schedule recibido del backend
+     * Debe invocarse siempre dentro de {@link UI#access}.
+     */
+    private void aplicarSchedule(Schedule schedule) {
+        if (schedule != null) {
             String tituloTareaActual = schedule.currentTaskTitle();
             if (tituloTareaActual != null && !tituloTareaActual.isBlank()) {
                 tareaActual = tareaService.crearTarea(tituloTareaActual);
@@ -223,14 +247,25 @@ public class FocusView extends VerticalLayout implements BeforeEnterObserver {
             }
             actualizarBloqueActual();
             actualizarBloqueSiguiente(schedule);
-        }, () -> {
+        } else {
             tareaActual = null;
             tiempoActual = null;
             actualizarBloqueActual();
             actualizarBloqueSiguiente(null);
-        });
+        }
+        mostrarContenido();
     }
-    /*######--FIN LOGICA DEL BACKEND [se ejecuta al cargar la pagina]--######*/
+
+    /** Oculta el skeleton animado y revela el contenido real de la vista. */
+    private void mostrarContenido() {
+        skeleton.setVisible(false);
+        bloqueUltimo.setVisible(true);
+        bloqueActual.setVisible(true);
+        bloqueProximo.setVisible(true);
+        bloqueControles.setVisible(true);
+        bloquesEntrada.setVisible(true);
+    }
+    /*######--FIN LOGICA DEL BACKEND [carga asincrona cuando se adjunta la vista]--######*/
 
     private Component crearBloque(Tarea tarea) {
         return tarea == null

@@ -11,23 +11,19 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
-public class MainLayout extends AppLayout {
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
+
+public class MainLayout extends AppLayout implements AfterNavigationObserver {
 
     private final SesionUsuario sesion;
 
     public MainLayout(SesionUsuario sesion) {
         this.sesion = sesion;
-
-        if (sesion.estaAutenticado()) {
-            createHeader();
-            createDrawer();
-        } else if (!sesion.estaAutenticado()){
-            createHeader();
-            createDrawer();
-        }
+        createHeader();
+        // El drawer se construira en afterNavigation()
     }
 
     private void createHeader() {
@@ -42,19 +38,29 @@ public class MainLayout extends AppLayout {
         addToNavbar(header);
     }
 
-    private void createDrawer() {
+    // Reconstruye el drawer en cada navegacion segun el estado de sesion.
+    private void refreshDrawer() {
         SideNav nav = new SideNav();
 
         if (sesion.onboardingCompletado()) {
             nav.addItem(new SideNavItem("Inicio", FocusView.class, VaadinIcon.HOME.create()));
             nav.addItem(new SideNavItem("Configuración", SettingsView.class, VaadinIcon.COG.create()));
-        } else if(sesion.necesitaOnboarding()){
-            System.out.println("Usuario Nuevo");
+        } else if (sesion.necesitaOnboarding()) {
+            // Usuario nuevo en onboarding: sin menu lateral.
         } else {
             nav.addItem(new SideNavItem("Logueo", LoginView.class, VaadinIcon.HOME.create()));
             nav.addItem(new SideNavItem("Registro", RegisterView.class, VaadinIcon.HOME.create()));
         }
 
+        // Reemplaza el contenido previo del drawer.
         addToDrawer(nav);
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+        getElement().getChildren()
+                .filter(child -> "drawer".equals(child.getAttribute("slot")))
+                .forEach(child -> child.removeAllChildren());
+        refreshDrawer();
     }
 }

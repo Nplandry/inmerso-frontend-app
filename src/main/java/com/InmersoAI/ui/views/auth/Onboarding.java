@@ -92,12 +92,6 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         add(progressBar, stepLabel, contentContainer, navigationLayout);
 
         renderStep();
-
-        boolean existe = crearUsuarioUseCase
-        .buscarPorUsername("cliente_prueba")
-        .isPresent();
-
-        System.out.println("¿Existe cliente_prueba?: " + existe);
     }
 
 
