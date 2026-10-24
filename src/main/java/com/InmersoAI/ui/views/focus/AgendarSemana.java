@@ -21,11 +21,13 @@ import jakarta.annotation.security.DenyAll;
 public class AgendarSemana extends VerticalLayout {
 
     private final VerticalLayout calendarSection = new VerticalLayout();
-    private final Div calendar = new Div();
+    private final HorizontalLayout calendarRow = new HorizontalLayout();
+    private final VerticalLayout searchMessages = new VerticalLayout();
     private final Input searchInput = new Input();
     private final Button searchButton = new Button("Buscar");
     private final Button voiceButton = new Button("Voz");
     private final HorizontalLayout searchBar = new HorizontalLayout();
+    private boolean calendarsExpanded;
 
     public AgendarSemana() {
         addClassNames("main-view", "calendar-page");
@@ -41,20 +43,67 @@ public class AgendarSemana extends VerticalLayout {
         calendarSection.setPadding(false);
         calendarSection.setSpacing(false);
 
-        calendar.addClassName("Calendar");
-        calendar.add(createTimeColumn(), createDays());
+        calendarRow.addClassName("calendar-row");
+        calendarRow.setWidthFull();
+        calendarRow.setPadding(false);
+        calendarRow.setSpacing(false);
+        calendarRow.add(createCalendarPanel("calendar-panel--initial"));
+
+        searchMessages.addClassName("calendar-chat");
+        searchMessages.setPadding(false);
+        searchMessages.setSpacing(false);
 
         searchInput.setPlaceholder("Buscar en tu semana");
         searchInput.addClassName("calendar-search-input");
         searchButton.addClassNames("action-btn", "action-btn--primary", "calendar-search-button");
         voiceButton.addClassNames("action-btn", "action-btn--voice", "calendar-voice-button");
+        searchButton.addClickListener(event -> addSearchMessage());
 
         searchBar.addClassName("calendar-search");
         searchBar.setWidthFull();
         searchBar.add(searchInput, searchButton, voiceButton);
 
-        calendarSection.add(createCalendarHeader(), calendar, searchBar);
+        calendarSection.add(calendarRow, searchMessages, searchBar);
         add(title, description, calendarSection);
+    }
+
+    private void addSearchMessage() {
+        String phrase = searchInput.getValue() == null ? "" : searchInput.getValue().trim();
+        if (phrase.isBlank()) {
+            return;
+        }
+
+        Div message = new Div(new Span(phrase));
+        message.addClassName("calendar-chat-message");
+        searchMessages.add(message);
+        searchInput.setValue("");
+        expandCalendars();
+    }
+
+    private void expandCalendars() {
+        if (calendarsExpanded) {
+            return;
+        }
+
+        calendarsExpanded = true;
+        calendarRow.removeAll();
+        calendarRow.removeClassName("calendar-row");
+        calendarRow.addClassName("calendar-triple");
+        calendarRow.addClassName("calendar-triple--revealed");
+        calendarRow.add(
+                createCalendarPanel(),
+                createCalendarPanel(),
+                createCalendarPanel()
+        );
+    }
+
+    private Component createCalendarPanel(String... additionalClasses) {
+        VerticalLayout panel = new VerticalLayout(createCalendarHeader(), createCalendarGrid());
+        panel.addClassName("calendar-panel");
+        panel.addClassNames(additionalClasses);
+        panel.setPadding(false);
+        panel.setSpacing(false);
+        return panel;
     }
 
     private Component createCalendarHeader() {
@@ -72,6 +121,13 @@ public class AgendarSemana extends VerticalLayout {
         Div header = new Div(heading);
         header.addClassName("calendar-header");
         return header;
+    }
+
+    private Component createCalendarGrid() {
+        Div calendar = new Div();
+        calendar.addClassName("Calendar");
+        calendar.add(createTimeColumn(), createDays());
+        return calendar;
     }
 
     private Div createTimeColumn() {
