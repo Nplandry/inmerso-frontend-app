@@ -1,6 +1,9 @@
 package com.InmersoAI.ui.views.focus;
 
 import com.InmersoAI.ui.layouts.MainLayout;
+import com.InmersoAI.ui.session.SesionUsuario;
+import com.InmersoAI.ui.views.auth.LoginView;
+import com.InmersoAI.ui.views.auth.Onboarding;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -10,6 +13,8 @@ import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -18,7 +23,9 @@ import jakarta.annotation.security.DenyAll;
 @Route(value = "AgendarSemana", layout = MainLayout.class)
 @PageTitle("AgendarSemana")
 @DenyAll
-public class AgendarSemana extends VerticalLayout {
+public class AgendarSemana extends VerticalLayout implements BeforeEnterObserver {
+
+    private final SesionUsuario sesion;
 
     private final VerticalLayout calendarSection = new VerticalLayout();
     private final HorizontalLayout calendarRow = new HorizontalLayout();
@@ -29,7 +36,8 @@ public class AgendarSemana extends VerticalLayout {
     private final HorizontalLayout searchBar = new HorizontalLayout();
     private boolean calendarsExpanded;
 
-    public AgendarSemana() {
+    public AgendarSemana(SesionUsuario sesion) {
+        this.sesion = sesion;
         addClassNames("main-view", "calendar-page");
         setPadding(false);
 
@@ -188,5 +196,14 @@ public class AgendarSemana extends VerticalLayout {
         }
         dayColumn.add(dayBody);
         return dayColumn;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (!sesion.estaAutenticado()) {
+            event.forwardTo(LoginView.class);
+        } else if (sesion.necesitaOnboarding()) {
+            event.forwardTo(Onboarding.class);
+        }
     }
 }
