@@ -177,7 +177,10 @@ public class AgendarSemana extends VerticalLayout {
             Div timeSlot = new Div();
             timeSlot.addClassName("calendar-time-slot");
             if (slot < events.length && events[slot] != null) {
-                Div event = new Div(new Span(events[slot]));
+                Span eventText = new Span(events[slot]);
+                eventText.addClassName("calendar-event-text");
+
+                Div event = new Div(eventText);
                 event.addClassName("calendar-event");
                 timeSlot.add(event);
             }
