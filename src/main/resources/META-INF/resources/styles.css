@@ -1174,6 +1174,7 @@ vaadin-login-form vaadin-button[part="vaadin-login-submit"] {
     font-weight: var(--inm-fw-bold) !important;
     letter-spacing: -0.02em;
     margin: 0 !important;
+    margin-top: 5px !important;
 }
 
 .calendar-description {
@@ -1188,7 +1189,7 @@ vaadin-login-form vaadin-button[part="vaadin-login-submit"] {
     max-width: none;
     box-sizing: border-box;
     gap: var(--inm-space-md) !important;
-    padding: var(--inm-space-lg) !important;
+    padding: 1rem !important;
     margin: 0;
     border: var(--inm-glass-border);
     border-radius: var(--inm-radius-xl);
@@ -1347,7 +1348,6 @@ vaadin-login-form vaadin-button[part="vaadin-login-submit"] {
 .calendar-search {
     align-items: center;
     gap: var(--inm-space-sm);
-    margin-top: var(--inm-space-xs);
 }
 
 .calendar-search-input {
@@ -1505,7 +1505,6 @@ vaadin-login-form vaadin-button[part="vaadin-login-submit"] {
     width: 100%;
     align-items: flex-end;
     gap: var(--inm-space-xs) !important;
-    margin-top: var(--inm-space-xs);
 }
 
 .calendar-chat:empty {
