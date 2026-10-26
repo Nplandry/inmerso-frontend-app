@@ -46,8 +46,8 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
     private final Button btnBack = new Button("Anterior");
     private final Button btnNext = new Button("Siguiente");
 
-    private final TextField nameField = new TextField("¿Cómo prefieres que te llamemos?");
-    private final RadioButtonGroup<String> usageType = new RadioButtonGroup<>("¿Cuál es tu objetivo principal?");
+    private final TextField nameField = new TextField("Cómo prefieres que te llamemos?");
+    private final RadioButtonGroup<String> usageType = new RadioButtonGroup<>("Cual es tu objetivo principal?");
     private final ComboBox<String> roleSelect = new ComboBox<>("Tu rol principal");
     private final CrearUsuarioUseCase crearUsuarioUseCase;
     private final AuthenticationContext authenticationContext;
@@ -94,7 +94,6 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         renderStep();
     }
 
-
     private void navigate(int delta) {
         if (delta > 0 && !isCurrentStepValid()) {
             return;
@@ -119,13 +118,14 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         btnNext.setVisible(currentStep < TOTAL_STEPS);
         updateNextButtonState();
 
-        switch (currentStep) {
-            case 1 -> contentContainer.add(createStepOne());
-            case 2 -> contentContainer.add(createStepTwo());
-            case 3 -> contentContainer.add(createStepThree());
-            case 4 -> contentContainer.add(createStepFourPlans());
-            default -> {
-            }
+        if (currentStep == 1) {
+            contentContainer.add(createStepOne());
+        } else if (currentStep == 2) {
+            contentContainer.add(createStepTwo());
+        } else if (currentStep == 3) {
+            contentContainer.add(createStepThree());
+        } else if (currentStep == 4) {
+            contentContainer.add(createStepFourPlans());
         }
     }
 
@@ -133,7 +133,7 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         VerticalLayout step = new VerticalLayout();
         step.addClassNames("onboarding-step", "onboarding-step--centered");
 
-        H1 title = new H1("¡Bienvenido a InmersoAI!");
+        H1 title = new H1("Bienvenido a InmersoAI!");
         Paragraph description = new Paragraph("Configuremos tu cuenta en solo un par de minutos para personalizar tu experiencia.");
 
         nameField.setPlaceholder("Tu nombre o apodo");
@@ -149,14 +149,14 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         VerticalLayout step = new VerticalLayout();
         step.addClassNames("onboarding-step", "onboarding-step--full");
 
-        H2 title = new H2("¿Para qué usas InmersoAI?");
+        H2 title = new H2("Para que usas InmersoAI?");
 
-        usageType.setItems("Proyectos Personales", "Trabajo Profesional / Freelance", "Estudios / Investigación", "Empresa / Equipo");
+        usageType.setItems("Proyectos Personales", "Trabajo Profesional / Freelance", "Estudios / Investigacion", "Empresa / Equipo");
         usageType.addClassName("onboarding-field");
         usageType.setRequiredIndicatorVisible(true);
 
         roleSelect.setItems("Desarrollador", "Diseñador", "Product Manager", "Estudiante", "Otro");
-        roleSelect.setPlaceholder("Selecciona una opción");
+        roleSelect.setPlaceholder("Selecciona una opcion");
         roleSelect.addClassName("onboarding-field");
         roleSelect.setRequiredIndicatorVisible(true);
 
@@ -169,8 +169,8 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         VerticalLayout step = new VerticalLayout();
         step.addClassNames("onboarding-step", "onboarding-step--centered");
 
-        H2 title = new H2("¡Todo casi listo!");
-        Paragraph text = new Paragraph("Hemos adaptado tu entorno de trabajo según tus objetivos. Haz clic en continuar para explorar los planes y activar tu cuenta.");
+        H2 title = new H2("Todo casi listo!");
+        Paragraph text = new Paragraph("Hemos adaptado tu entorno de trabajo segun tus objetivos. Haz clic en continuar para explorar los planes y activar tu cuenta.");
 
         Icon icon = VaadinIcon.CHECK_CIRCLE.create();
         icon.addClassName("onboarding-success-icon");
@@ -190,8 +190,8 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         HorizontalLayout plansLayout = new HorizontalLayout();
         plansLayout.addClassName("onboarding-plans");
 
-        VerticalLayout freePlan = buildPlanCard("Free", "$0 / mes", "Ideal para explorar", "Acceso a funcionalidades básicas", "Comenzar Gratis", false, () -> finishOnboarding("Free"));
-        VerticalLayout proPlan = buildPlanCard("Pro", "$19 / mes", "Para usuarios avanzados", "Modelos IA sin límites y funcionalidades unicas", "Probar Pro 14 Días", true, () -> finishOnboarding("Pro"));
+        VerticalLayout freePlan = buildPlanCard("Free", "$0 / mes", "Ideal para explorar", "Acceso a funcionalidades basicas", "Comenzar Gratis", false, () -> finishOnboarding("Free"));
+        VerticalLayout proPlan = buildPlanCard("Pro", "$19 / mes", "Para usuarios avanzados", "Modelos IA sin limites y funcionalidades unicas", "Probar Pro 14 Dias", true, () -> finishOnboarding("Pro"));
 
         plansLayout.add(freePlan, proPlan);
         step.add(title, subtitle, plansLayout);
@@ -213,7 +213,7 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
         Paragraph planDesc = new Paragraph(desc);
         planDesc.addClassName("onboarding-plan-description");
 
-        Paragraph planFeature = new Paragraph("• " + feature);
+        Paragraph planFeature = new Paragraph("* " + feature);
         planFeature.addClassName("onboarding-plan-feature");
 
         Button selectBtn = new Button(buttonText, e -> onSelect.run());
@@ -237,19 +237,20 @@ public class Onboarding extends VerticalLayout implements BeforeEnterObserver {
     }
 
     private boolean isCurrentStepValid() {
-        return switch (currentStep) {
-            case 1 -> nameField.getValue() != null && !nameField.getValue().isBlank();
-            case 2 -> usageType.getValue() != null && roleSelect.getValue() != null;
-            default -> true;
-        };
+        if (currentStep == 1) {
+            return nameField.getValue() != null && !nameField.getValue().isBlank();
+        } else if (currentStep == 2) {
+            return usageType.getValue() != null && roleSelect.getValue() != null;
+        } else {
+            return true;
+        }
     }
-
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (!sesion.estaAutenticado()) {
             event.forwardTo(LoginView.class);
-        } else if(sesion.onboardingCompletado()) {
+        } else if (sesion.onboardingCompletado()) {
             event.forwardTo(FocusView.class);
         }
     }
